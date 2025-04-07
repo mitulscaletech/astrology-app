@@ -21,56 +21,54 @@ export default function UserLogin() {
   };
 
   return (
-    <div className="container flex flex-col items-center justify-center min-h-screen p-4">
-      <Link href="/" className="flex items-center space-x-2 mb-8">
-        <MoonStar className="h-6 w-6" />
-        <span className="text-xl font-bold">WeWake</span>
+    <div className='container flex flex-col items-center justify-center min-h-screen p-4'>
+      <Link href='/' className='flex items-center space-x-2 mb-8'>
+        <MoonStar className='h-6 w-6' />
+        <span className='text-xl font-bold'>WeWake</span>
       </Link>
-      <Card className="w-full max-w-md">
+      <Card className='w-full max-w-md'>
         <CardHeader>
           <CardTitle>User Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account
-          </CardDescription>
+          <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
+          <CardContent className='space-y-4'>
+            <div className='space-y-2'>
+              <label htmlFor='email' className='text-sm font-medium'>
                 Email
               </label>
               <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
+                id='email'
+                type='email'
+                placeholder='Enter your email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">
+            <div className='space-y-2'>
+              <label htmlFor='password' className='text-sm font-medium'>
                 Password
               </label>
               <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
+                id='password'
+                type='password'
+                placeholder='Enter your password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full">
+          <CardFooter className='flex flex-col space-y-4'>
+            <Button type='submit' className='w-full'>
               Sign In
             </Button>
-            <div className="flex items-center justify-between w-full text-sm text-secondary-300">
-              <Link href="/" className="hover:underline">
+            <div className='flex items-center justify-between w-full text-sm text-secondary-300'>
+              <Link href='/' className='hover:underline'>
                 Back to Home
               </Link>
-              <Link href="#" className="text-primary hover:underline">
+              <Link href='#' className='text-primary hover:underline'>
                 Sign up
               </Link>
             </div>

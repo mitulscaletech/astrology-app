@@ -1,16 +1,12 @@
-import AstrologerLayout from '@/components/layouts/astrologer-layout';
-import React, { ReactNode } from 'react';
+import AstrologerLayout from "@/components/layouts/astrologer-layout";
+import React, { ReactNode } from "react";
 
 interface LayoutProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-    return (
-        <AstrologerLayout>
-            {children}
-        </AstrologerLayout>
-    );
+  return <AstrologerLayout>{children}</AstrologerLayout>;
 };
 
 export default Layout;

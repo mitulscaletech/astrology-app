@@ -1,12 +1,8 @@
-export default function AstrologerLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AstrologerLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="">
-      <h1 className="text-center">Astrologer Layout</h1>
-      <main className="flex-1 p-6">{children}</main>
+    <div className=''>
+      <h1 className='text-center'>Astrologer Layout</h1>
+      <main className='flex-1 p-6'>{children}</main>
     </div>
   );
 }

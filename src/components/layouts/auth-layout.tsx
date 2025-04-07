@@ -1,13 +1,9 @@
 "use client";
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-1">{children}</main>
+    <div className='flex min-h-screen flex-col'>
+      <main className='flex-1'>{children}</main>
     </div>
   );
 }

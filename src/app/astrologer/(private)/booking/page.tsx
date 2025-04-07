@@ -21,16 +21,13 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">Booking Page</h1>
+    <div className='p-4'>
+      <h1 className='text-xl font-bold'>Booking Page</h1>
 
       {accessToken ? (
         <p>✅ You are logged in with Calendly!</p>
       ) : (
-        <button
-          onClick={handleCalendlyLogin}
-          className="bg-blue-500 text-accent-white px-4 py-2 rounded"
-        >
+        <button onClick={handleCalendlyLogin} className='bg-blue-500 text-accent-white px-4 py-2 rounded'>
           Login with Calendly
         </button>
       )}

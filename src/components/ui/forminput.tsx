@@ -14,6 +14,6 @@ export const FormInput = ({ label, id, type = "text", register, error }: FormInp
   <div>
     <Label htmlFor={id}>{label}</Label>
     <Input id={id} type={type} {...register(id)} />
-    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+    {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
   </div>
 );

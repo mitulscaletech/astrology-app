@@ -21,7 +21,7 @@ export default function LoginButton() {
     }
   }, []);
   return (
-    <div className="p-4">
+    <div className='p-4'>
       {/* {session ? (
         <div>
           <p>Welcome, {session.user?.name}!</p>
@@ -44,7 +44,7 @@ export default function LoginButton() {
         onClick={() =>
           (window.location.href = `https://auth.calendly.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_CALENDLY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_CALENDLY_REDIRECT_URI}`)
         }
-        className="bg-blue-500 text-accent-white px-4 py-2 rounded"
+        className='bg-blue-500 text-accent-white px-4 py-2 rounded'
       >
         Sign in with Calendly
       </button>
