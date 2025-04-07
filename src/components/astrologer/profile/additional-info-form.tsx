@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { InfoIcon } from "lucide-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
+import IconInfo from "@/shared/icons/info"
 
 const validationSchema = yup.object().shape({
   video: yup.mixed().required("Introduction video is required"),
@@ -50,7 +50,9 @@ export function AdditionalInfoForm() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <InfoIcon className='h-4 w-4 text-gray-500' />
+                <span className='h-4 w-4 text-gray-500'>
+                  <IconInfo />
+                </span>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Record a short video introducing yourself and your expertise</p>

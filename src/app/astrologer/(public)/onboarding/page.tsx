@@ -7,7 +7,6 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import moment from "moment";
-import { CalendarIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -118,7 +117,6 @@ export default function AstrologerOnboarding() {
                     variant='outline'
                     className={cn("w-full justify-start text-left font-normal", !dateOfBirth && "text-secondary-300")}
                   >
-                    <CalendarIcon className='mr-2 h-4 w-4' />
                     {dateOfBirth ? moment(dateOfBirth).format() : "Pick a date"}
                   </Button>
                 </PopoverTrigger>

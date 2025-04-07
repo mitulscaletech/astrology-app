@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Calendar, Settings, LogOut } from "lucide-react";
+import IconSetting from "@/shared/icons/setting";
+import IconCheck from "@/shared/icons/check";
 
 export function Sidebar() {
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
-    { icon: Users, label: "Users", href: "/admin/users" },
-    { icon: Calendar, label: "Appointments", href: "/admin/appointments" },
-    { icon: Settings, label: "Settings", href: "/admin/settings" }
+    { icon: IconSetting, label: "Dashboard", href: "/admin" },
+    { icon: IconSetting, label: "Users", href: "/admin/users" },
+    { icon: IconCheck, label: "Appointments", href: "/admin/appointments" },
+    { icon: IconSetting, label: "Settings", href: "/admin/settings" }
   ];
 
   return (
@@ -21,7 +22,9 @@ export function Sidebar() {
         {menuItems.map((item) => (
           <Link key={item.href} href={item.href}>
             <Button variant='ghost' className='w-full justify-start'>
-              <item.icon className='mr-2 h-5 w-5' />
+              <span className='mr-2 h-5 w-5'>
+                <item.icon />
+              </span>
               {item.label}
             </Button>
           </Link>
@@ -29,7 +32,6 @@ export function Sidebar() {
       </nav>
       <div className='border-t p-4'>
         <Button variant='ghost' className='w-full justify-start text-danger'>
-          <LogOut className='mr-2 h-5 w-5' />
           Logout
         </Button>
       </div>

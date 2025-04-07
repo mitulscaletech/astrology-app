@@ -6,11 +6,11 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
-import { Facebook } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import toast from "react-hot-toast";
+import IconFacebook from "@/shared/icons/facebook";
 
 export default function AstrologerLogin() {
   const [phone, setPhone] = useState("");
@@ -141,7 +141,9 @@ export default function AstrologerLogin() {
             <img src='https://www.google.com/favicon.ico' alt='Google' className='w-5 h-5' />
           </Button>
           <Button variant='outline' onClick={() => handleSocialLogin("facebook")}>
-            <Facebook className='w-5 h-5' />
+            <span className='w-5 h-5'>
+              <IconFacebook />
+            </span>
           </Button>
           {/* <Button variant='outline' onClick={() => handleSocialLogin("apple")}>
             <Apple className='w-5 h-5' />

@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { OTPInput, OTPInputContext } from "input-otp";
-import { Dot } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -60,7 +59,7 @@ InputOTPSlot.displayName = "InputOTPSlot";
 const InputOTPSeparator = React.forwardRef<React.ElementRef<"div">, React.ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => (
     <div ref={ref} role='separator' className={cn("mx-2 text-gray-500", className)} {...props}>
-      <Dot className='w-5 h-5' />
+      <span className="h-2.5 w-2.5 rounded-full bg-current" />
     </div>
   )
 );

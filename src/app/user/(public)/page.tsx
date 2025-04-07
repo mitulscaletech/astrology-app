@@ -7,7 +7,6 @@ import AuthLayout from "@/components/layouts/auth-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MoonStar } from "lucide-react";
 
 export default function UserLogin() {
   const [email, setEmail] = useState("");
@@ -23,7 +22,6 @@ export default function UserLogin() {
   return (
     <div className='container flex flex-col items-center justify-center min-h-screen p-4'>
       <Link href='/' className='flex items-center space-x-2 mb-8'>
-        <MoonStar className='h-6 w-6' />
         <span className='text-xl font-bold'>WeWake</span>
       </Link>
       <Card className='w-full max-w-md'>

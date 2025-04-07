@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-// import { MoonStar, Sun } from "lucide-react";
 // import { useTheme } from "next-themes";
 import Image from "next/image";
 import logoIcon from "@/assets/images/logo-icon.png";

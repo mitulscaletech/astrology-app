@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
-import { Apple, Facebook } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -23,6 +22,7 @@ import {
 } from "firebase/auth";
 import { auth, facebookProvider, googleProvider } from "@/firebaseConfig";
 import toast from "react-hot-toast";
+import IconFacebook from "@/shared/icons/facebook";
 
 export default function AstrologerSignup() {
   const router = useRouter();
@@ -221,7 +221,7 @@ export default function AstrologerSignup() {
                   maxLength={6}
                   value={otp}
                   onChange={setOtp}
-                  // onComplete={(e: any) => setOtp(e.target.value)}
+                // onComplete={(e: any) => setOtp(e.target.value)}
                 >
                   <InputOTPGroup>
                     {[...Array(6)].map((_, index) => (
@@ -267,7 +267,9 @@ export default function AstrologerSignup() {
             <Image src='https://www.google.com/favicon.ico' alt='Google' width={20} height={20} className='w-5 h-5' />
           </Button>
           <Button variant='outline' onClick={() => handleSocialSignup("facebook")}>
-            <Facebook className='w-5 h-5' />
+            <span className='w-5 h-5' >
+              <IconFacebook />
+            </span>
           </Button>
           {/* <Button variant='outline' onClick={() => handleSocialSignup("apple")}>
             <Apple className='w-5 h-5' />

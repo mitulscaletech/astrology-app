@@ -16,6 +16,6 @@ export const API_CONFIG = {
 export const getUrl = (url: string, params: any = {}): string => {
   if (isEmpty(params)) return url;
 
-  Object.keys(params).forEach((key) => (params[key] == null || params[key] === "") && delete params[key]);
+  Object.keys(params).forEach((key) => (params[key] === null || params[key] === "") && delete params[key]);
   return `${url}?${queryString.stringify(params)}`;
 };

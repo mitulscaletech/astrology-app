@@ -9,8 +9,10 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MoonStar, Mail, Phone } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import IconPhone from "@/shared/icons/check";
+import IconMoonStar from "@/shared/icons/moonStar";
+import IconMail from "@/shared/icons/mail";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -43,7 +45,9 @@ export default function UserSignup() {
   return (
     <div className='container flex flex-col items-center justify-center min-h-screen p-4'>
       <Link href='/' className='flex items-center space-x-2 mb-8'>
-        <MoonStar className='h-6 w-6' />
+        <span className='h-6 w-6' >
+          <IconMoonStar />
+        </span>
         <span className='text-xl font-bold'>WeWake</span>
       </Link>
       <Card className='w-full max-w-md'>
@@ -55,11 +59,15 @@ export default function UserSignup() {
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className='grid w-full grid-cols-2'>
               <TabsTrigger value='email' className='flex items-center'>
-                <Mail className='w-4 h-4 mr-2' />
+                <span className='w-4 h-4 mr-2' >
+                  <IconMail />
+                </span>
                 Email
               </TabsTrigger>
               <TabsTrigger value='phone' className='flex items-center'>
-                <Phone className='w-4 h-4 mr-2' />
+                <span className='w-4 h-4 mr-2'>
+                  <IconPhone />
+                </span>
                 Phone
               </TabsTrigger>
             </TabsList>

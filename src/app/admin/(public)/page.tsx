@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MoonStar, Shield } from "lucide-react";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -22,14 +21,10 @@ export default function AdminLogin() {
   return (
     <div className='container flex flex-col items-center justify-center min-h-screen p-4'>
       <Link href='/' className='flex items-center space-x-2 mb-8'>
-        <MoonStar className='h-6 w-6' />
         <span className='text-xl font-bold'>WeWake</span>
       </Link>
       <Card className='w-full max-w-md'>
         <CardHeader>
-          <div className='flex items-center justify-center mb-4'>
-            <Shield className='h-12 w-12 text-primary' />
-          </div>
           <CardTitle className='text-2xl text-center'>Admin Login</CardTitle>
           <CardDescription className='text-center'>Access the admin dashboard</CardDescription>
         </CardHeader>
