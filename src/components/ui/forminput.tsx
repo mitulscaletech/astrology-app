@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface FormInputProps {
   label: string;
@@ -8,12 +7,13 @@ interface FormInputProps {
   type?: string;
   register: any;
   error?: string;
+  name?: string;
 }
 
-export const FormInput = ({ label, id, type = "text", register, error }: FormInputProps) => (
+export const FormInput = ({ label, id, type = "text", register, error, ...rest }: FormInputProps) => (
   <div>
     <Label htmlFor={id}>{label}</Label>
-    <Input id={id} type={type} {...register(id)} />
-    {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
+    <Input id={id} type={type} {...register(id)} {...rest} />
+    {error && <p className='text-danger text-sm mt-1'>{error}</p>}
   </div>
 );

@@ -1,53 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 
+import Link from "next/link";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+import toast from "react-hot-toast";
+import PhoneInput from "react-phone-input-2";
 import ReCAPTCHA from "react-google-recaptcha";
+
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+
+import IconFacebook from "@/shared/icons/facebook";
+import { API_CONFIG } from "@/shared/constants/api";
+import HttpService from "@/shared/services/http.service";
+
 import {
   FacebookAuthProvider,
   fetchSignInMethodsForEmail,
   GoogleAuthProvider,
   linkWithCredential,
   signInWithPopup,
-  User
+  UserCredential
 } from "firebase/auth";
 import { auth, facebookProvider, googleProvider } from "@/firebaseConfig";
-import toast from "react-hot-toast";
-import IconFacebook from "@/shared/icons/facebook";
+// import AuthService from "@/shared/services/auth.service";
 
 export default function AstrologerSignup() {
   const router = useRouter();
 
-  const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(60);
   const [showOtp, setShowOtp] = useState(false);
   const [resendCount, setResendCount] = useState(0);
-  const [timer, setTimer] = useState(60);
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [error, setError] = useState("");
-  const [user, setUser] = useState<User | null>(null);
-  console.log(" user:", user);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
   const handleSendOtp = () => {
-    if (!phone) {
+    if (!mobileNumber) {
       toast.error("Please enter your phone number");
       return;
     }
     setShowOtp(true);
     startTimer();
     toast.success("OTP sent successfully!");
+    // HttpService.post(API_CONFIG.sendOtp, { country_code: "+91", mobile_number: mobileNumber,captcha_token:captchaToken })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       setShowOtp(true);
+    //       startTimer();
+    //       toast.success("OTP sent successfully!");
+    //     } else {
+    //       toast.error("Failed to send OTP");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error sending OTP:", error);
+    //     toast.error("Failed to send OTP");
+    //   });
   };
   const startTimer = () => {
     setTimer(60);
@@ -75,89 +94,91 @@ export default function AstrologerSignup() {
       toast.error("Please enter OTP");
       return;
     }
-
     try {
-      // const result = await signIn("credentials", {
-      //   phone,
-      //   otp,
-      //   redirect: false,
-      // });
-      router.push("/astrologer/onboarding");
+      const mockUser = {
+        id: "otp_user_1",
+        name: "OTP User",
+        email: `otpuser${Date.now()}@example.com`,
+        mobile_number: mobileNumber,
+        isNewUser: true
+      };
+      const result = await signIn("credentials", {
+        redirect: false,
+        token: JSON.stringify(mockUser)
+      });
 
-      // if (result?.error) {
-      //   toast.error("Signup failed");
-      //   return;
-      // }
+      // HttpService.post(API_CONFIG.verifyOtp, { country_code: "+91", mobile_number: mobileNumber, otp: otp })
+      //   .then(async (response) => {
+      //     if (response.status === 200) {
+      //       const result = await signIn("credentials", {
+      //         redirect: false,
+      //         token: JSON.stringify(response.data)
+      //       });
+      //       router.push("/astrologer/onboarding");
+      //       toast.success("Signup successful!");
+      //     } else {
+      //       toast.error("Invalid OTP");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     toast.error("Invalid OTP");
+      //   });
 
-      toast.success("Signup successful!");
-      router.push("/astrologer/onboarding");
+      if (result?.ok) {
+        router.push("/astrologer/onboarding");
+        toast.success("Signup successful!");
+      } else {
+        toast.error("OTP login failed");
+      }
     } catch (error) {
       toast.error("Signup failed");
     }
   };
-
-  const handleSocialSignup = (provider: string) => {
-    console.log(" provider:", provider);
-    try {
-      signIn(provider, {
-        callbackUrl: "/astrologer/onboarding",
-        redirect: false
+  const handleSocialSignup = async (result: UserCredential, provider: string) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    console.log(" credential:", credential);
+    const user: any = result.user;
+    const params = {
+      access_token: credential?.accessToken,
+      name: result.user.displayName,
+      provider_name: provider,
+      provider_user_id: result.user.providerData[0].uid,
+      refresh_token: user?.stsTokenManager.refreshToken,
+      expires_at: user?.stsTokenManager.expirationTime,
+      social_photo: user.photoURL
+    };
+    HttpService.post(API_CONFIG.socialLogin, { params })
+      .then(async (response) => {
+        if (response.status === 200) {
+          await signIn("credentials", {
+            redirect: false,
+            token: JSON.stringify(params)
+          });
+          router.push("/astrologer/onboarding");
+          toast.success("Signup successful!");
+        } else {
+          toast.error("Invalid OTP");
+        }
       })
-        .then((res) => {
-          console.log(" res:", res);
-          if (res?.error) {
-            alert("Authentication failed. Please try again.");
-            return;
-          }
-
-          if (res?.ok && res?.url) {
-            // // Step 2: Call your API after successful login
-            // const apiResponse = await fetch("/api/custom-auth-callback", {
-            //   method: "POST",
-            //   headers: { "Content-Type": "application/json" },
-            //   body: JSON.stringify({ provider }),
-            // });
-            // const data = await apiResponse.json();
-            // if (apiResponse.ok) {
-            //   // Step 3: Redirect only after API response
-            //   router.push("/astrologer/onboarding");
-            // } else {
-            //   alert(data.message || "Something went wrong");
-            // }
-          }
-        })
-        .catch(() => {
-          alert("Sign-in failed. Please try again.");
-        });
-
-      // if (result?.error) {
-      //   toast.error("Signup failed");
-      //   return;
-      // }
-
-      // router.push("/astrologer/onboarding");
-    } catch (error) {
-      alert("Signup failed");
-    }
+      .catch(() => {
+        toast.error("Invalid OTP");
+      });
   };
-
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(result.user);
+      console.log(" result:", result);
+      handleSocialSignup(result, "google");
     } catch (error) {
       console.error(error);
     }
   };
   const handleFacebookLogin = async () => {
     try {
-      // const result = await signInWithPopup(auth, facebookProvider);
-      // console.log(" result.user:", result.user)
-      // setUser(result.user);
       signInWithPopup(auth, facebookProvider)
         .then((result) => {
-          // Logged in!
           console.log("User:", result.user);
+          handleSocialSignup(result, "facebook");
         })
         .catch(async (error) => {
           if (error.code === "auth/account-exists-with-different-credential") {
@@ -177,7 +198,7 @@ export default function AstrologerSignup() {
                 await linkWithCredential(googleResult.user, pendingCred!);
                 console.log("Facebook linked to Google account!");
               } else {
-                alert(`Please sign in using: ${methods.join(", ")}`);
+                toast.error("Account already exists with a different provider");
               }
             }
           } else {
@@ -188,6 +209,12 @@ export default function AstrologerSignup() {
       console.error("Facebook Login Error:", error);
     }
   };
+  const handleChangeMobile = (value: string, country: any) => {
+    const dialCode = country?.dialCode || "";
+    const number = value.replace(`${dialCode}`, "");
+    setMobileNumber(number);
+    setCountryCode(`+${dialCode}`);
+  };
   return (
     <div className='min-h-screen bg-primary-100 flex items-center justify-center p-4'>
       <Card className='w-full max-w-md p-6 space-y-6'>
@@ -197,16 +224,15 @@ export default function AstrologerSignup() {
         </div>
 
         <div className='space-y-4'>
-          <div>
-            <Label htmlFor='phone'>Phone Number</Label>
-            <Input
-              id='phone'
-              type='tel'
-              placeholder='Enter your phone number'
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
+          <Label htmlFor='mobileNumber'>Mobile Number</Label>
+          <PhoneInput
+            country='in'
+            value={`${countryCode}${mobileNumber}`}
+            onlyCountries={["us", "in", "gb"]}
+            onChange={(value, country: any) => handleChangeMobile(value, country)}
+            inputProps={{ name: "phone-input" }}
+            inputStyle={{ width: "100%", height: "40px" }}
+          />
 
           {!showOtp ? (
             <Button className='w-full' onClick={handleSendOtp}>
@@ -221,7 +247,7 @@ export default function AstrologerSignup() {
                   maxLength={6}
                   value={otp}
                   onChange={setOtp}
-                // onComplete={(e: any) => setOtp(e.target.value)}
+                  // onComplete={(e: any) => setOtp(e.target.value)}
                 >
                   <InputOTPGroup>
                     {[...Array(6)].map((_, index) => (
@@ -246,8 +272,6 @@ export default function AstrologerSignup() {
             </>
           )}
         </div>
-        <button onClick={handleGoogleLogin}>Login with Google</button>
-        <button onClick={handleFacebookLogin}>Login with Facebook</button>
         <div className='relative'>
           <div className='absolute inset-0 flex items-center'>
             <div className='w-full border-t border-gray-300'></div>
@@ -258,22 +282,14 @@ export default function AstrologerSignup() {
         </div>
 
         <div className='grid grid-cols-2 gap-2'>
-          <Button variant='outline' onClick={() => handleSocialSignup("google")}>
-            {/* <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google"
-              className="w-5 h-5"
-            /> */}
+          <Button variant='outline' onClick={() => handleGoogleLogin()}>
             <Image src='https://www.google.com/favicon.ico' alt='Google' width={20} height={20} className='w-5 h-5' />
           </Button>
-          <Button variant='outline' onClick={() => handleSocialSignup("facebook")}>
-            <span className='w-5 h-5' >
+          <Button variant='outline' onClick={() => handleFacebookLogin()}>
+            <span className='w-5 h-5'>
               <IconFacebook />
             </span>
           </Button>
-          {/* <Button variant='outline' onClick={() => handleSocialSignup("apple")}>
-            <Apple className='w-5 h-5' />
-          </Button> */}
         </div>
 
         <div className='text-center text-sm'>

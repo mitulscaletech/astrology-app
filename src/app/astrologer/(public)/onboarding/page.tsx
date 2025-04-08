@@ -1,23 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import moment from "moment";
+
+import * as yup from "yup";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import PhoneInput from "react-phone-input-2";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/datepicker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-import { cn } from "@/lib/utils";
-import toast from "react-hot-toast";
+import HttpService from "@/shared/services/http.service";
+import { API_CONFIG } from "@/shared/constants/api";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
@@ -41,7 +43,8 @@ const schema: yup.ObjectSchema<OnboardingFormData> = yup.object({
 });
 
 export default function AstrologerOnboarding() {
-  const { data: session } = useSession();
+  const { update, data: session } = useSession();
+
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,22 +54,39 @@ export default function AstrologerOnboarding() {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch
+    getValues
   } = useForm<OnboardingFormData>({
     resolver: yupResolver(schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
-      email: session?.user?.email || ""
+      email: session?.user?.email || "",
+      mobile: session?.user?.mobile_number || ""
     }
   });
-
-  const dateOfBirth = watch("dateOfBirth");
 
   // Submit handler
   const onSubmit = async (data: OnboardingFormData) => {
     try {
       setIsSubmitting(true);
+
+      // HttpService.post(API_CONFIG.register, { data })
+      //   .then(async (response) => {
+      //     if (response.status === 200) {
+      //       toast.success("Profile created successfully!");
+      //       update(data);
+      //       router.push("/astrologer/profile");
+      //     } else {
+      //       toast.error("FInvalid OTP");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     toast.error("FInvalid OTP");
+      //   });
+
       console.log("Form Data:", data);
       toast.success("Profile created successfully!");
+      update(data);
       router.push("/astrologer/profile");
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
@@ -97,7 +117,16 @@ export default function AstrologerOnboarding() {
             {/* Mobile Number */}
             <div>
               <Label htmlFor='mobile'>Mobile Number *</Label>
-              <Input id='mobile' type='tel' {...register("mobile")} placeholder='+91 XXXXXXXXXX' />
+              <PhoneInput
+                country={"us"}
+                value={getValues("mobile")}
+                onChange={(phone) => console.log(phone)}
+                inputProps={{
+                  name: "mobile",
+                  required: true,
+                  autoFocus: false
+                }}
+              />
               {errors.mobile && <p className='text-red-500 text-sm mt-1'>{errors.mobile.message}</p>}
             </div>
 
@@ -111,25 +140,13 @@ export default function AstrologerOnboarding() {
             {/* Date of Birth */}
             <div>
               <Label>Date of Birth *</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant='outline'
-                    className={cn("w-full justify-start text-left font-normal", !dateOfBirth && "text-secondary-300")}
-                  >
-                    {dateOfBirth ? moment(dateOfBirth).format() : "Pick a date"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0'>
-                  <Calendar
-                    mode='single'
-                    selected={dateOfBirth}
-                    onSelect={(date: any) => setValue("dateOfBirth", date as Date)}
-                    disabled={(date: any) => date > new Date() || date < new Date("1900-01-01")}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker
+                label='Date of Birth *'
+                value={getValues("dateOfBirth")}
+                onChange={(date) => {
+                  setValue("dateOfBirth", date as Date);
+                }}
+              />
               {errors.dateOfBirth && <p className='text-red-500 text-sm mt-1'>{errors.dateOfBirth.message}</p>}
             </div>
 

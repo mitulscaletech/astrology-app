@@ -27,11 +27,15 @@ export interface IDropdownOptions {
 }
 
 export interface IUserData {
-  id: number;
+  id: string;
   username: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
+  name: string;
+  phone: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  image?: string;
+  token: string;
+  country_code: string;
 }
