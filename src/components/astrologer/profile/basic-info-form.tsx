@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { Label } from "@radix-ui/react-label";
+
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/forminput";
 import { DatePicker } from "@/components/ui/datepicker";
@@ -134,15 +136,18 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
           register={register}
           error={errors.last_name?.message}
         />
-        <PhoneInput
-          country='in'
-          value={`${getValues("country_code")}${getValues("mobile_number")}`}
-          onlyCountries={["us", "in", "gb"]}
-          onChange={(value, country: any) => handleChangeMobile(value, country)}
-          inputProps={{ name: "phone-input" }}
-        />
-        <input type='hidden' {...register("mobile_number", { required: "Phone is required" })} />
-        {errors.mobile_number && <p style={{ color: "red" }}>{errors.mobile_number.message}</p>}
+        <div>
+          <Label htmlFor='mobile'>Mobile Number *</Label>
+          <PhoneInput
+            country='in'
+            value={`${getValues("country_code")}${getValues("mobile_number")}`}
+            onlyCountries={["us", "in", "gb"]}
+            onChange={(value, country: any) => handleChangeMobile(value, country)}
+            inputProps={{ name: "phone-input" }}
+            inputStyle={{ width: "100%", height: "40px" }}
+          />
+          {errors.mobile_number && <p className='text-red-500 text-sm mt-1'>{errors.mobile_number.message}</p>}
+        </div>
 
         <FormInput
           label='Email Address *'

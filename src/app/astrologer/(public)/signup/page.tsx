@@ -94,13 +94,18 @@ export default function AstrologerSignup() {
       toast.error("Please enter OTP");
       return;
     }
+    if (!captchaToken) {
+      toast.error("Please solve the captcha");
+      return;
+    }
     try {
       const mockUser = {
         id: "otp_user_1",
         name: "OTP User",
         email: `otpuser${Date.now()}@example.com`,
         mobile_number: mobileNumber,
-        isNewUser: true
+        isNewUser: true,
+        country_code: countryCode
       };
       const result = await signIn("credentials", {
         redirect: false,

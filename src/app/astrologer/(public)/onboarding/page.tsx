@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
@@ -24,22 +24,24 @@ import { API_CONFIG } from "@/shared/constants/api";
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
   fullName: string;
-  mobile: string;
+  mobile_number: string;
   email: string;
   dateOfBirth: Date;
   gender: string;
-  profilePhoto?: FileList | null | undefined;
+  profilePhoto?: File | null | undefined;
+  country_code?: string;
 };
 const schema: yup.ObjectSchema<OnboardingFormData> = yup.object({
   fullName: yup.string().required("Full name is required"),
-  mobile: yup
+  mobile_number: yup
     .string()
     .matches(/^[0-9]{10}$/, "Invalid mobile number (10 digits required)")
     .required("Mobile number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   dateOfBirth: yup.date().typeError("Date of birth is required").required("Date of birth is required"),
   gender: yup.string().required("Gender is required"),
-  profilePhoto: yup.mixed<FileList>().nullable().default(undefined)
+  profilePhoto: yup.mixed<File>().nullable().default(undefined),
+  country_code: yup.string()
 });
 
 export default function AstrologerOnboarding() {
@@ -54,14 +56,15 @@ export default function AstrologerOnboarding() {
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues
+    getValues,
+    reset
   } = useForm<OnboardingFormData>({
     resolver: yupResolver(schema),
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
-      email: session?.user?.email || "",
-      mobile: session?.user?.mobile_number || ""
+      email: "",
+      mobile_number: ""
     }
   });
 
@@ -95,6 +98,28 @@ export default function AstrologerOnboarding() {
     }
   };
 
+  const handleChangeMobile = (value: string, country: any) => {
+    const dialCode = country?.dialCode || "";
+    const number = value.replace(`${dialCode}`, "");
+    setValue("country_code", `+${dialCode}`, { shouldValidate: true });
+    setValue("mobile_number", number, { shouldValidate: true });
+  };
+
+  useEffect(() => {
+    console.log(" session:", session);
+    if (session?.user) {
+      reset({
+        email: session.user.email || "",
+        mobile_number: session.user.mobile_number || "",
+        country_code: session.user.country_code || "+91",
+        fullName: `${session.user.name} + ${session.user.name}` || "",
+        dateOfBirth: session.user.dateOfBirth || undefined,
+        gender: session.user.gender || "",
+        profilePhoto: session.user.profilePhoto || undefined
+      });
+    }
+  }, [session, reset]);
+
   return (
     <div className='min-h-screen bg-primary-100 p-6'>
       <div className='max-w-2xl mx-auto'>
@@ -118,16 +143,14 @@ export default function AstrologerOnboarding() {
             <div>
               <Label htmlFor='mobile'>Mobile Number *</Label>
               <PhoneInput
-                country={"us"}
-                value={getValues("mobile")}
-                onChange={(phone) => console.log(phone)}
-                inputProps={{
-                  name: "mobile",
-                  required: true,
-                  autoFocus: false
-                }}
+                country='in'
+                value={`${getValues("country_code")}${getValues("mobile_number")}`}
+                onlyCountries={["us", "in", "gb"]}
+                onChange={(value, country: any) => handleChangeMobile(value, country)}
+                inputProps={{ name: "phone-input" }}
+                inputStyle={{ width: "100%", height: "40px" }}
               />
-              {errors.mobile && <p className='text-red-500 text-sm mt-1'>{errors.mobile.message}</p>}
+              {errors.mobile_number && <p className='text-red-500 text-sm mt-1'>{errors.mobile_number.message}</p>}
             </div>
 
             {/* Email */}
@@ -139,7 +162,6 @@ export default function AstrologerOnboarding() {
 
             {/* Date of Birth */}
             <div>
-              <Label>Date of Birth *</Label>
               <DatePicker
                 label='Date of Birth *'
                 value={getValues("dateOfBirth")}

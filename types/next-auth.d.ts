@@ -28,6 +28,8 @@ declare module "next-auth" {
       isPhoneVerified?: boolean;
       isEmailVerified?: boolean;
       country_code?: string;
+      gender: string;
+      profilePhoto: File | undefined;
     };
   }
 
