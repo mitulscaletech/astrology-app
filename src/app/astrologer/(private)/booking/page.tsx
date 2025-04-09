@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Views, SlotInfo, NavigateAction } from "react-big-calendar";
+import { Calendar, Views, SlotInfo, NavigateAction, View } from "react-big-calendar";
 import { localizer } from "@/lib/calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
@@ -56,6 +56,7 @@ interface EventType {
 export default function BookingPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [currentView, setCurrentView] = useState<"month" | "week" | "day">(Views.WEEK);
   const [selectedSlots, setSelectedSlots] = useState<number[]>([]);
   const [eventList, setEventList] = useState<EventType[]>([]);
   const [isRecurring, setIsRecurring] = useState<boolean>(false);
@@ -71,8 +72,15 @@ export default function BookingPage() {
     setSelectedDate(slotInfo.start);
   };
 
-  const handleNavigate = (date: Date, view: string, action: NavigateAction) => {
+  const handleNavigate = (date: Date) => {
     setCurrentDate(date);
+  };
+
+  const handleView = (view: View) => {
+    // Ensure only valid views are set
+    if (view === "month" || view === "week" || view === "day") {
+      setCurrentView(view);
+    }
   };
 
   const toggleSlot = (index: number) => {
@@ -135,10 +143,12 @@ export default function BookingPage() {
         events={eventList}
         startAccessor="start"
         endAccessor="end"
-        views={[Views.WEEK]}
+        views={[Views.WEEK, Views.MONTH, Views.DAY]}
         defaultView={Views.WEEK}
+        view={currentView}
         date={currentDate}
         onNavigate={handleNavigate}
+        onView={(view) => handleView(view)}
         selectable
         onSelectSlot={handleSelectSlot}
         min={new Date(0, 0, 0, 7, 0)}     // 07:00
@@ -150,8 +160,6 @@ export default function BookingPage() {
             style: {
               backgroundColor: isBlocked ? "#f87171" : "#3b82f6", // red vs blue
               borderRadius: "6px",
-              color: "white",
-              border: "none",
               padding: "2px 4px",
             },
           };
