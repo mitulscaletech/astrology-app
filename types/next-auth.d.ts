@@ -8,12 +8,12 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
       mobile_number?: string | null; // 👈 Add your custom property
-      dateOfBirth?: Date | null;
-      placeOfBirth?: string | null;
-      timeOfBirth?: string | null;
-      languages?: string | null;
-      currentAddress?: string | null;
-      permanentAddress?: string | null;
+      date_of_birth?: Date | null;
+      place_of_birth?: string | null;
+      time_of_birth?: string | null;
+      languages_spoken?: string | null;
+      current_address?: string | null;
+      permanent_address?: string | null;
       sameAsCurrentAddress?: boolean;
       isNewUser?: boolean;
       role?: string | null;

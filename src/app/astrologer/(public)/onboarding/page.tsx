@@ -20,13 +20,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import { handleUploadMedia } from "@/lib/utils";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
   fullName: string;
   mobile_number: string;
   email: string;
-  dateOfBirth: Date;
+  date_of_birth: Date;
   gender: string;
   profilePhoto?: File | null | undefined;
   country_code?: string;
@@ -38,9 +39,9 @@ const schema: yup.ObjectSchema<OnboardingFormData> = yup.object({
     .matches(/^[0-9]{10}$/, "Invalid mobile number (10 digits required)")
     .required("Mobile number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  dateOfBirth: yup.date().typeError("Date of birth is required").required("Date of birth is required"),
+  date_of_birth: yup.date().typeError("Date of birth is required").required("Date of birth is required"),
   gender: yup.string().required("Gender is required"),
-  profilePhoto: yup.mixed<File>().nullable().default(undefined),
+  profilePhoto: yup.mixed<File>().nullable(),
   country_code: yup.string()
 });
 
@@ -77,6 +78,7 @@ export default function AstrologerOnboarding() {
       //   .then(async (response) => {
       //     if (response.status === 200) {
       //       toast.success("Profile created successfully!");
+      //const uploadCertificate = await handleUploadMedia(data.profilePhoto, "profile_photo");
       //       update(data);
       //       router.push("/astrologer/profile");
       //     } else {
@@ -113,7 +115,7 @@ export default function AstrologerOnboarding() {
         mobile_number: session.user.mobile_number || "",
         country_code: session.user.country_code || "+91",
         fullName: `${session.user.name} + ${session.user.name}` || "",
-        dateOfBirth: session.user.dateOfBirth || undefined,
+        date_of_birth: session.user.date_of_birth || undefined,
         gender: session.user.gender || "",
         profilePhoto: session.user.profilePhoto || undefined
       });
@@ -164,12 +166,12 @@ export default function AstrologerOnboarding() {
             <div>
               <DatePicker
                 label='Date of Birth *'
-                value={getValues("dateOfBirth")}
+                value={getValues("date_of_birth")}
                 onChange={(date) => {
-                  setValue("dateOfBirth", date as Date);
+                  setValue("date_of_birth", date as Date);
                 }}
               />
-              {errors.dateOfBirth && <p className='text-red-500 text-sm mt-1'>{errors.dateOfBirth.message}</p>}
+              {errors.date_of_birth && <p className='text-red-500 text-sm mt-1'>{errors.date_of_birth.message}</p>}
             </div>
 
             {/* Gender */}
@@ -191,7 +193,7 @@ export default function AstrologerOnboarding() {
             {/* Profile Photo */}
             <div>
               <Label htmlFor='profilePhoto'>Profile Photo</Label>
-              <Input id='profilePhoto' type='file' accept='image/*' {...register("profilePhoto")} />
+              <Input id='profilePhoto' type='file' accept='.jpg,.jpeg,.png' {...register("profilePhoto")} />
             </div>
 
             {/* Submit Button */}

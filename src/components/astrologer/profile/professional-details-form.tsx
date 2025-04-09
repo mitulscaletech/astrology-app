@@ -7,18 +7,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FormInput } from "@/components/ui/forminput";
 import toast from "react-hot-toast";
+import { handleUploadMedia } from "@/lib/utils";
 
 const schema = yup.object().shape({
-  experience: yup
+  years_of_experience: yup
     .number()
     .typeError("Experience must be a number")
     .required("Experience is required")
     .min(1, "Must be at least 1 year")
     .max(50, "Must be less than 50 years"),
   specialization: yup.string().required("Specialization is required"),
-  qualification: yup.string().required("Qualification is required"),
+  highest_qualification: yup.string().required("Qualification is required"),
   certification: yup.mixed().notRequired(),
-  institute: yup.string().notRequired(),
+  institute_university_name: yup.string().notRequired(),
   resume: yup.mixed().notRequired()
 });
 
@@ -42,6 +43,8 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
     try {
       console.log("Professional details data:", data);
       toast.success("Professional details saved!");
+      // const uploadCertificate = await handleUploadMedia(data.certification, "certification");
+      // const uploadResume = await handleUploadMedia(data.resume, "resume");
       onComplete();
     } catch (error) {
       toast.error("Failed to save professional details");
@@ -52,10 +55,10 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
       <FormInput
         label='Years of Experience *'
-        id='experience'
+        id='years_of_experience'
         type='number'
         register={register}
-        error={errors.experience?.message}
+        error={errors.years_of_experience?.message}
       />
 
       <div>
@@ -77,7 +80,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
 
       <div>
         <label className='block text-sm font-medium'>Highest Qualification *</label>
-        <Select onValueChange={(value: string) => setValue("qualification", value)}>
+        <Select onValueChange={(value: string) => setValue("highest_qualification", value)}>
           <SelectTrigger>
             <SelectValue placeholder='Select qualification' />
           </SelectTrigger>
@@ -87,19 +90,26 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
             <SelectItem value='diploma'>Diploma</SelectItem>
           </SelectContent>
         </Select>
-        {errors.qualification && <p className='text-red-500 text-sm mt-1'>{errors.qualification.message}</p>}
+        {errors.highest_qualification && (
+          <p className='text-red-500 text-sm mt-1'>{errors.highest_qualification.message}</p>
+        )}
       </div>
 
       <FormInput
         label='Institute/University Name'
-        id='institute'
+        id='institute_university_name'
         register={register}
-        error={errors.institute?.message}
+        error={errors.institute_university_name?.message}
       />
 
       <div>
         <label className='block text-sm font-medium'>Astrology Certification</label>
-        <input type='file' accept='.pdf,.doc,.docx' {...register("certification")} className='mt-1 block w-full' />
+        <input
+          type='file'
+          accept='.jpg,.jpeg,.png,.pdf,.doc,.docx'
+          {...register("certification")}
+          className='mt-1 block w-full'
+        />
       </div>
 
       <div>

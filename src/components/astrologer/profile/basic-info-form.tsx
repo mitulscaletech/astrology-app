@@ -25,13 +25,13 @@ const schema = yup.object().shape({
   last_name: yup.string().required("Last name is required"),
   mobile_number: yup.string().required("Mobile number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  dateOfBirth: yup.date().required("Date of birth is required"),
-  placeOfBirth: yup.string(),
-  timeOfBirth: yup.string(),
-  languages: yup.string(),
-  currentAddress: yup.string().required("Current address is required"),
+  date_of_birth: yup.date().required("Date of birth is required"),
+  place_of_birth: yup.string(),
+  time_of_birth: yup.string(),
+  languages_spoken: yup.string(),
+  current_address: yup.string().required("Current address is required"),
   sameAsCurrentAddress: yup.boolean(),
-  permanentAddress: yup.string().when("sameAsCurrentAddress", {
+  permanent_address: yup.string().when("sameAsCurrentAddress", {
     is: false,
     then: (schema) => schema.required("Permanent address is required")
   }),
@@ -61,12 +61,12 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
       mobile_number: "",
       first_name: "",
       last_name: "",
-      dateOfBirth: undefined,
-      placeOfBirth: "",
-      timeOfBirth: "",
-      languages: "",
-      currentAddress: "",
-      permanentAddress: "",
+      date_of_birth: undefined,
+      place_of_birth: "",
+      time_of_birth: "",
+      languages_spoken: "",
+      current_address: "",
+      permanent_address: "",
       country_code: "+91",
       sameAsCurrentAddress: false
     }
@@ -107,12 +107,12 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
         mobile_number: session.user.mobile_number || "",
         first_name: session.user.name || "",
         last_name: session.user.name || "",
-        dateOfBirth: session.user.dateOfBirth || undefined,
-        placeOfBirth: session.user.placeOfBirth || "",
-        timeOfBirth: session.user.timeOfBirth || "",
-        languages: session.user.languages || "",
-        currentAddress: session.user.currentAddress || "",
-        permanentAddress: session.user.permanentAddress || "",
+        date_of_birth: session.user.date_of_birth || undefined,
+        place_of_birth: session.user.place_of_birth || "",
+        time_of_birth: session.user.time_of_birth || "",
+        languages_spoken: session.user.languages_spoken || "",
+        current_address: session.user.current_address || "",
+        permanent_address: session.user.permanent_address || "",
         sameAsCurrentAddress: session.user.sameAsCurrentAddress || false,
         country_code: session.user.country_code || "+91"
       });
@@ -159,22 +159,22 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
         />
         <DatePicker
           label='Date of Birth *'
-          value={getValues("dateOfBirth")}
+          value={getValues("date_of_birth")}
           onChange={(date) => {
-            setValue("dateOfBirth", date as Date);
+            setValue("date_of_birth", date as Date);
           }}
         />
 
-        <FormInput label='Place of Birth' id='placeOfBirth' register={register} />
-        <FormInput label='Time of Birth' id='timeOfBirth' type='time' register={register} />
-        <FormInput label='Languages Spoken' id='languages' register={register} />
+        <FormInput label='Place of Birth' id='place_of_birth' register={register} />
+        <FormInput label='Time of Birth' id='time_of_birth' type='time' register={register} />
+        <FormInput label='Languages Spoken' id='languages_spoken' register={register} />
       </div>
 
       <FormInput
         label='Current Address *'
-        id='currentAddress'
+        id='current_address'
         register={register}
-        error={errors.currentAddress?.message}
+        error={errors.current_address?.message}
       />
 
       <div className='flex items-center space-x-2'>
@@ -187,9 +187,9 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
       {!sameAsCurrentAddress && (
         <FormInput
           label='Permanent Address *'
-          id='permanentAddress'
+          id='permanent_address'
           register={register}
-          error={errors.permanentAddress?.message}
+          error={errors.permanent_address?.message}
         />
       )}
 

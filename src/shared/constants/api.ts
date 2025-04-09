@@ -14,7 +14,8 @@ export const API_CONFIG = {
   register: "user/register",
   basicForm: "intake-form/basic",
   professionalForm: "intake-form/professional",
-  socialLogin: "user/social-login"
+  socialLogin: "user/social-login",
+  uploadMedia: "media"
 };
 
 export const getUrl = (url: string, params: any = {}): string => {

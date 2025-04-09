@@ -9,16 +9,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
-import IconInfo from "@/shared/icons/info"
+import IconInfo from "@/shared/icons/info";
 
 const validationSchema = yup.object().shape({
   video: yup.mixed().required("Introduction video is required"),
-  bio: yup.string().required("Short bio is required").max(500, "Bio must be 500 characters or less")
+  short_bio: yup.string().required("Short bio is required").max(500, "Bio must be 500 characters or less")
 });
 
 interface FormData {
   video: FileList;
-  bio: string;
+  short_bio: string;
 }
 
 export function AdditionalInfoForm() {
@@ -70,14 +70,14 @@ export function AdditionalInfoForm() {
       </div>
 
       <div>
-        <Label htmlFor='bio'>Short Bio *</Label>
+        <Label htmlFor='short_bio'>Short Bio *</Label>
         <Textarea
-          id='bio'
-          {...register("bio")}
+          id='short_bio'
+          {...register("short_bio")}
           placeholder='Tell us about yourself and your expertise (max 500 characters)'
           maxLength={500}
         />
-        {errors.bio && <p className='text-red-500 text-sm mt-1'>{errors.bio.message}</p>}
+        {errors.short_bio && <p className='text-red-500 text-sm mt-1'>{errors.short_bio.message}</p>}
       </div>
 
       <div className='flex justify-end'>
