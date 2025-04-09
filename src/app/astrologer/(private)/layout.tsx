@@ -1,4 +1,5 @@
 import AstrologerLayout from "@/components/layouts/astrologer-layout";
+// import { SocketProvider } from "@/context/SocketProvider";
 import React, { ReactNode } from "react";
 
 interface LayoutProps {
@@ -6,7 +7,11 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return <AstrologerLayout>{children}</AstrologerLayout>;
+  return (
+    // <SocketProvider>
+    <AstrologerLayout>{children}</AstrologerLayout>
+    // </SocketProvider>
+  );
 };
 
 export default Layout;
