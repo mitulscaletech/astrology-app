@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import * as yup from "yup";
+import moment from "moment";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
@@ -18,22 +19,22 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/datepicker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
-import { handleUploadMedia } from "@/lib/utils";
+import HttpService from "@/shared/services/http.service";
+import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
-  fullName: string;
+  full_name: string;
   mobile_number: string;
   email: string;
   date_of_birth: Date;
   gender: string;
-  profilePhoto?: File | null | undefined;
-  country_code?: string;
+  country_code: string;
+  profilePhoto?: File | null;
 };
 const schema: yup.ObjectSchema<OnboardingFormData> = yup.object({
-  fullName: yup.string().required("Full name is required"),
+  full_name: yup.string().required("Full name is required"),
   mobile_number: yup
     .string()
     .matches(/^[0-9]{10}$/, "Invalid mobile number (10 digits required)")
@@ -42,16 +43,14 @@ const schema: yup.ObjectSchema<OnboardingFormData> = yup.object({
   date_of_birth: yup.date().typeError("Date of birth is required").required("Date of birth is required"),
   gender: yup.string().required("Gender is required"),
   profilePhoto: yup.mixed<File>().nullable(),
-  country_code: yup.string()
+  country_code: yup.string().required("Country code is required")
 });
 
 export default function AstrologerOnboarding() {
-  const { update, data: session } = useSession();
-
   const router = useRouter();
+  const { update, data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // react-hook-form setup
   const {
     register,
     handleSubmit,
@@ -65,36 +64,39 @@ export default function AstrologerOnboarding() {
     reValidateMode: "onChange",
     defaultValues: {
       email: "",
-      mobile_number: ""
+      mobile_number: "",
+      gender: "Male"
     }
   });
 
-  // Submit handler
   const onSubmit = async (data: OnboardingFormData) => {
     try {
       setIsSubmitting(true);
-
-      // HttpService.post(API_CONFIG.register, { data })
-      //   .then(async (response) => {
-      //     if (response.status === 200) {
-      //       toast.success("Profile created successfully!");
-      //const uploadCertificate = await handleUploadMedia(data.profilePhoto, "profile_photo");
-      //       update(data);
-      //       router.push("/astrologer/profile");
-      //     } else {
-      //       toast.error("FInvalid OTP");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     toast.error("FInvalid OTP");
-      //   });
-
-      console.log("Form Data:", data);
-      toast.success("Profile created successfully!");
-      update(data);
-      router.push("/astrologer/profile");
+      const formData = new FormData();
+      formData.append("full_name", data.full_name);
+      formData.append("mobile_number", data.mobile_number);
+      formData.append("email", data.email);
+      formData.append("country_code", data.country_code);
+      formData.append("date_of_birth", moment(data.date_of_birth).format("YYYY-MM-DD") || "");
+      formData.append("gender", data.gender);
+      if (data.profilePhoto && typeof data.profilePhoto === "object" && data.profilePhoto instanceof File) {
+        formData.append("avatar", data.profilePhoto);
+      }
+      HttpService.put(API_CONFIG.updateProfile, formData, { contentType: "multipart/form-data" })
+        .then(async (response) => {
+          if (!response.is_error) {
+            toast.success(response.message);
+            update({ ...data, profilePhoto: response.data.avatar });
+            router.push("/astrologer/profile");
+          } else {
+            toast.error(response.message);
+          }
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -108,70 +110,62 @@ export default function AstrologerOnboarding() {
   };
 
   useEffect(() => {
-    console.log(" session:", session);
     if (session?.user) {
       reset({
         email: session.user.email || "",
         mobile_number: session.user.mobile_number || "",
-        country_code: session.user.country_code || "+91",
-        fullName: `${session.user.name} + ${session.user.name}` || "",
-        date_of_birth: session.user.date_of_birth || undefined,
+        country_code: session.user.country_code || DEFAULT_COUNTRY_CODE,
+        full_name: session.user.full_name || "",
         gender: session.user.gender || "",
-        profilePhoto: session.user.profilePhoto || undefined
+        profilePhoto: session.user.profilePhoto || null
       });
     }
   }, [session, reset]);
 
   return (
-    <div className='min-h-screen bg-primary-100 p-6'>
-      <div className='max-w-2xl mx-auto'>
-        <Card className='p-6'>
-          <div className='text-center mb-6'>
-            <h1 className='text-2xl font-bold text-primary'>Complete Your Profile</h1>
-            <p className='text-gray-600'>Let&apos;s get to know you better</p>
+    <div className="min-h-screen bg-primary-100 p-6">
+      <div className="max-w-2xl mx-auto">
+        <Card className="p-6">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-primary">Complete Your Profile</h1>
+            <p className="text-gray-600">Let&apos;s get to know you better</p>
           </div>
-
-          <Button onClick={() => signOut({ redirect: true, callbackUrl: "/astrologer/signup" })}>Sign out</Button>
-
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-            {/* Full Name */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <Label htmlFor='fullName'>Full Name *</Label>
-              <Input id='fullName' {...register("fullName")} placeholder='Enter your full name' />
-              {errors.fullName && <p className='text-red-500 text-sm mt-1'>{errors.fullName.message}</p>}
+              <Label htmlFor="full_name">Full Name *</Label>
+              <Input id="full_name" {...register("full_name")} placeholder="Enter your full name" />
+              {errors.full_name && <p className="text-red-500 text-sm mt-1">{errors.full_name.message}</p>}
             </div>
-
-            {/* Mobile Number */}
             <div>
-              <Label htmlFor='mobile'>Mobile Number *</Label>
+              <Label htmlFor="mobile">Mobile Number *</Label>
               <PhoneInput
-                country='in'
+                country="in"
                 value={`${getValues("country_code")}${getValues("mobile_number")}`}
                 onlyCountries={["us", "in", "gb"]}
                 onChange={(value, country: any) => handleChangeMobile(value, country)}
                 inputProps={{ name: "phone-input" }}
                 inputStyle={{ width: "100%", height: "40px" }}
               />
-              {errors.mobile_number && <p className='text-red-500 text-sm mt-1'>{errors.mobile_number.message}</p>}
+              {errors.mobile_number && <p className="text-red-500 text-sm mt-1">{errors.mobile_number.message}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <Label htmlFor='email'>Email Address *</Label>
-              <Input id='email' type='email' {...register("email")} placeholder='your@email.com' />
-              {errors.email && <p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>}
+              <Label htmlFor="email">Email Address *</Label>
+              <Input id="email" type="email" {...register("email")} placeholder="your@email.com" />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
 
             {/* Date of Birth */}
             <div>
               <DatePicker
-                label='Date of Birth *'
+                label="Date of Birth *"
                 value={getValues("date_of_birth")}
                 onChange={(date) => {
                   setValue("date_of_birth", date as Date);
                 }}
               />
-              {errors.date_of_birth && <p className='text-red-500 text-sm mt-1'>{errors.date_of_birth.message}</p>}
+              {errors.date_of_birth && <p className="text-red-500 text-sm mt-1">{errors.date_of_birth.message}</p>}
             </div>
 
             {/* Gender */}
@@ -179,25 +173,25 @@ export default function AstrologerOnboarding() {
               <Label>Gender *</Label>
               <Select onValueChange={(value: any) => setValue("gender", value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder='Select gender' />
+                  <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='male'>Male</SelectItem>
-                  <SelectItem value='female'>Female</SelectItem>
-                  <SelectItem value='other'>Other</SelectItem>
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.gender && <p className='text-red-500 text-sm mt-1'>{errors.gender.message}</p>}
+              {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender.message}</p>}
             </div>
 
             {/* Profile Photo */}
             <div>
-              <Label htmlFor='profilePhoto'>Profile Photo</Label>
-              <Input id='profilePhoto' type='file' accept='.jpg,.jpeg,.png' {...register("profilePhoto")} />
+              <Label htmlFor="profilePhoto">Profile Photo</Label>
+              <Input id="profilePhoto" type="file" accept=".jpg,.jpeg,.png" {...register("profilePhoto")} />
             </div>
 
             {/* Submit Button */}
-            <Button type='submit' className='w-full' disabled={isSubmitting}>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Continue"}
             </Button>
           </form>

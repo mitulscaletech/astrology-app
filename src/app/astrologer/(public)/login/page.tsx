@@ -18,6 +18,10 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import IconFacebook from "@/shared/icons/facebook";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
+import AuthService from "@/shared/services/auth.service";
+import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
+
+import { handleUserStatusRedirect } from "@/lib/utils";
 
 import {
   FacebookAuthProvider,
@@ -36,7 +40,7 @@ export default function AstrologerLogin() {
   const [showOtp, setShowOtp] = useState(false);
   const [resendCount, setResendCount] = useState(0);
   const [mobileNumber, setMobileNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+91");
+  const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleCaptchaChange = (token: string | null) => {
@@ -44,22 +48,21 @@ export default function AstrologerLogin() {
   };
   const handleSendOtp = () => {
     HttpService.post(API_CONFIG.sendOtp, {
-      country_code: "+91",
+      country_code: countryCode,
       mobile_number: mobileNumber,
       captcha_token: captchaToken
     })
       .then((response) => {
-        if (response.status === 200) {
+        if (!response.is_error) {
           setShowOtp(true);
           startTimer();
-          toast.success("OTP sent successfully!");
+          toast.success(response.message);
         } else {
-          toast.error("Failed to send OTP");
+          toast.error(response.message);
         }
       })
       .catch((error) => {
         console.error("Error sending OTP:", error);
-        toast.error("Failed to send OTP");
       });
   };
   const manageSendOtp = () => {
@@ -67,13 +70,10 @@ export default function AstrologerLogin() {
       toast.error("Please enter your phone number");
       return;
     }
-    setShowOtp(true);
-    startTimer();
-    // handleSendOtp();
-    toast.success("OTP sent successfully!");
+    handleSendOtp();
   };
   const startTimer = () => {
-    setTimer(3);
+    setTimer(60);
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
@@ -107,46 +107,40 @@ export default function AstrologerLogin() {
       toast.error("Please solve the captcha");
       return;
     }
-    const mockUser = {
-      id: "otp_user_1",
-      name: "OTP User",
-      email: `otpuser${Date.now()}@example.com`,
-      mobile_number: mobileNumber,
-      isNewUser: true
-    };
-    const result = await signIn("credentials", {
-      redirect: false,
-      token: JSON.stringify(mockUser)
-    });
-    if (result?.ok) {
-      toast.success("Login successful!");
-      router.push("/astrologer/dashboard");
-    } else {
-      toast.error("OTP login failed");
-    }
-
-    // HttpService.post(API_CONFIG.verifyOtp, { country_code: "+91", mobile_number: mobileNumber, otp: otp })
-    //   .then(async (response) => {
-    //     if (response.status === 200) {
-    //       const result = await signIn("credentials", {
-    //         redirect: false,
-    //         token: JSON.stringify(response.data)
-    //       });
-    //       router.push("/astrologer/onboarding");
-    //       toast.success("Signup successful!");
-    //     } else {
-    //       toast.error("Invalid OTP");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Invalid OTP");
-    //   });
+    HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
+      .then(async (response) => {
+        const { status, token } = response.data;
+        await signIn("credentials", {
+          redirect: false,
+          token: JSON.stringify({ status, access_token: token })
+        });
+        await AuthService.setAuthData(response.data);
+        if (!response.is_error) {
+          HttpService.get(API_CONFIG.me).then(async (userResponse) => {
+            if (!userResponse.is_error) {
+              await signIn("credentials", {
+                redirect: false,
+                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
+              });
+              const status = userResponse.data.status;
+              const path = handleUserStatusRedirect(status);
+              if (path) router.push(path);
+            } else {
+              toast.error(response.message);
+            }
+          });
+        } else {
+          toast.error(response.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending OTP:", error);
+      });
 
     // Verify OTP logic here
   };
   const handleSocialSignup = async (result: UserCredential, provider: string) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    console.log(" credential:", credential);
     const user: any = result.user;
     const params = {
       access_token: credential?.accessToken,
@@ -158,28 +152,29 @@ export default function AstrologerLogin() {
       expires_at: user?.stsTokenManager.expirationTime,
       social_photo: user.photoURL
     };
-    HttpService.post(API_CONFIG.socialLogin, { params })
+    HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {
-        if (response.status === 200) {
+        if (!response.is_error) {
           await signIn("credentials", {
             redirect: false,
             token: JSON.stringify(params)
           });
-          router.push("/astrologer/dashboard");
-          toast.success("Signup successful!");
+          const status = response.data.status;
+          const path = handleUserStatusRedirect(status);
+          if (path) router.push(path);
+          toast.success(response.message);
         } else {
-          toast.error("Invalid OTP");
+          toast.error(response.message);
         }
       })
-      .catch(() => {
-        toast.error("Invalid OTP");
+      .catch((error) => {
+        console.error(error);
       });
   };
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(" result:", result);
-      // handleSocialSignup(result, "google");
+      handleSocialSignup(result, "google");
     } catch (error) {
       console.error(error);
     }
@@ -226,17 +221,17 @@ export default function AstrologerLogin() {
   };
 
   return (
-    <div className='min-h-screen bg-primary-100 flex items-center justify-center p-4'>
-      <Card className='w-full max-w-md p-6 space-y-6'>
-        <div className='text-center'>
-          <h1 className='text-2xl font-bold text-primary'>Astrologer Login</h1>
-          <p className='text-gray-600'>Welcome back! Please login to continue.</p>
+    <div className="min-h-screen bg-primary-100 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-6 space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-primary">Astrologer Login</h1>
+          <p className="text-gray-600">Welcome back! Please login to continue.</p>
         </div>
 
-        <div className='space-y-4'>
-          <Label htmlFor='mobileNumber'>Phone Number</Label>
+        <div className="space-y-4">
+          <Label htmlFor="mobileNumber">Phone Number</Label>
           <PhoneInput
-            country='in'
+            country="in"
             value={`${countryCode}${mobileNumber}`}
             onlyCountries={["us", "in", "gb"]}
             onChange={(value, country: any) => handleChangeMobile(value, country)}
@@ -245,15 +240,15 @@ export default function AstrologerLogin() {
           />
 
           {!showOtp ? (
-            <Button className='w-full' onClick={manageSendOtp}>
+            <Button className="w-full" onClick={manageSendOtp}>
               Send OTP
             </Button>
           ) : (
             <>
               <div>
-                <Label htmlFor='otp'>Enter OTP</Label>
+                <Label htmlFor="otp">Enter OTP</Label>
                 <InputOTP
-                  id='otp'
+                  id="otp"
                   maxLength={6}
                   value={otp}
                   onChange={setOtp}
@@ -272,42 +267,42 @@ export default function AstrologerLogin() {
                   onChange={handleCaptchaChange}
                 />
               )}
-              <div className='flex justify-between items-center text-sm'>
-                <Button variant='ghost' disabled={timer > 0} onClick={handleResendOtp}>
+              <div className="flex justify-between items-center text-sm">
+                <Button variant="ghost" disabled={timer > 0} onClick={handleResendOtp}>
                   Resend OTP {timer > 0 && `(${timer}s)`}
                 </Button>
               </div>
 
-              <Button className='w-full' onClick={handleVerifyOtp}>
+              <Button className="w-full" onClick={handleVerifyOtp}>
                 Verify OTP
               </Button>
             </>
           )}
         </div>
 
-        <div className='relative'>
-          <div className='absolute inset-0 flex items-center'>
-            <div className='w-full border-t border-gray-300'></div>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
           </div>
-          <div className='relative flex justify-center text-sm'>
-            <span className='px-2 bg-primary-100 text-gray-500'>Or continue with</span>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-primary-100 text-gray-500">Or continue with</span>
           </div>
         </div>
 
-        <div className='grid grid-cols-2 gap-2'>
-          <Button variant='outline' onClick={() => handleGoogleLogin()}>
-            <img src='https://www.google.com/favicon.ico' alt='Google' className='w-5 h-5' />
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline" onClick={() => handleGoogleLogin()}>
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
           </Button>
-          <Button variant='outline' onClick={() => handleFacebookLogin()}>
-            <span className='w-5 h-5'>
+          <Button variant="outline" onClick={() => handleFacebookLogin()}>
+            <span className="w-5 h-5">
               <IconFacebook />
             </span>
           </Button>
         </div>
 
-        <div className='text-center text-sm'>
+        <div className="text-center text-sm">
           Don&apos;t have an account?{" "}
-          <Link href='/astrologer/signup' className='text-purple-600 hover:underline'>
+          <Link href="/astrologer/signup" className="text-purple-600 hover:underline">
             Sign up
           </Link>
         </div>

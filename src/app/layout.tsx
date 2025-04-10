@@ -25,11 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={`${poppins.className} antialiased`}>
         <AuthProvider>
           {children}
-          <Toaster position='bottom-center' reverseOrder={false} />
+          <Toaster position="bottom-center" reverseOrder={false} />
         </AuthProvider>
       </body>
     </html>

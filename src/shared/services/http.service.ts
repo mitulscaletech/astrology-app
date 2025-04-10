@@ -3,11 +3,11 @@ import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from "axios";
 import { API_BASE_URL } from "@/shared/constants";
 import { getUrl } from "@/shared/constants/api";
 import { IResponseObject } from "@/shared/interface";
-import AuthService from "./auth.service";
+import { getSession, signOut } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const axiosInstance = axios.create();
 let cancel_req: Canceler;
-
 export { cancel_req };
 
 interface IMiscellaneousRequestParams {
@@ -62,7 +62,7 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
  * commonAxios
  * @param object containing method, url, data, access token, content-type, isLogin
  */
-const commonAxios = (config: IAxiosParams): Promise<any> => {
+const commonAxios = async (config: IAxiosParams): Promise<any> => {
   const {
     method,
     url,
@@ -77,9 +77,10 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
   };
 
   if (!isPublic) {
-    const token = AuthService.getAccessToken();
+    const session = await getSession();
+    const token = session?.user.access_token;
     if (token) {
-      headers["access-token"] = `${token}`;
+      headers["Authorization"] = `Bearer ${token}`;
     }
   }
 
@@ -100,9 +101,21 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
   return new Promise((resolve, reject) => {
     axiosInstance(axiosInstanceParams)
       .then((response: AxiosResponse<IResponseObject<any>>) => {
-        resolve(fullResponse ? response.data : response.data.data);
+        // resolve(fullResponse ? response.data : response.data.data);
+        resolve(response.data);
       })
       .catch((error) => {
+        const res = error.response;
+        if (res && res.data && res.status) {
+          const status = res.status;
+          const responseData = res.data;
+          if ((status === 401 || status === 403) && responseData) {
+            signOut();
+            window.location.pathname = "/astrologer/login";
+          }
+          toast.error(responseData.message);
+          reject(error);
+        }
         reject(error);
       });
   });

@@ -1,19 +1,16 @@
 import isEmpty from "lodash/isEmpty";
-import { register } from "module";
 import queryString from "query-string";
 
-// const baseApiVersion = 'api/v1';
-
-const baseUrl = process.env.NEXT_PUBLIC_API || "";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 export const API_CONFIG = {
   baseUrl,
-
+  me: "user",
+  updateProfile: "user/update-profile",
   sendOtp: "user/send-otp",
   verifyOtp: "user/verify-otp",
   register: "user/register",
-  basicForm: "intake-form/basic",
-  professionalForm: "intake-form/professional",
+  intakeForm: "intake-form",
   socialLogin: "user/social-login",
   uploadMedia: "media"
 };

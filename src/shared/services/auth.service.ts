@@ -15,19 +15,18 @@ export const checkLogin = (): boolean =>
 /**
  * Get user access token.
  */
-const getAccessToken = (): null | string => {
+const getAccessToken = (): boolean | string => {
   if (token) return token;
   try {
     const data = typeof window !== "undefined" && localStorage.authInfo;
     if (data) {
       const bytes = CryptoJS.AES.decrypt(data.toString(), KEY);
       const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      token = decryptedData || false;
-      return token;
+      return decryptedData && decryptedData.token ? decryptedData.token : false;
     }
-    return null;
+    return false;
   } catch (e) {
-    return null;
+    return false;
   }
 };
 
@@ -51,8 +50,7 @@ const getUserData = (): IUserData => {
 /**
  * Set user authentication data.
  */
-const setAuthData = (data: string): void => {
-  token = data;
+const setAuthData = async (data: IUserData): Promise<void> => {
   const cipherText = CryptoJS.AES.encrypt(JSON.stringify(data), KEY);
   if (typeof window !== "undefined") {
     localStorage.setItem("authInfo", cipherText.toString());

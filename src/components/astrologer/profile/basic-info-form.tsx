@@ -21,8 +21,9 @@ import { API_CONFIG } from "@/shared/constants/api";
 
 // Validation Schema using Yup
 const schema = yup.object().shape({
-  first_name: yup.string().required("First name is required"),
-  last_name: yup.string().required("Last name is required"),
+  // first_name: yup.string().required("First name is required"),
+  // last_name: yup.string().required("Last name is required"),
+  full_name: yup.string().required("Full name is required"),
   mobile_number: yup.string().required("Mobile number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   date_of_birth: yup.date().required("Date of birth is required"),
@@ -47,7 +48,6 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     getValues,
     reset,
@@ -59,35 +59,34 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
     defaultValues: {
       email: "",
       mobile_number: "",
-      first_name: "",
-      last_name: "",
+      // first_name: "",
+      // last_name: "",
+      full_name: "",
       date_of_birth: undefined,
       place_of_birth: "",
       time_of_birth: "",
       languages_spoken: "",
       current_address: "",
       permanent_address: "",
-      country_code: "+91",
-      sameAsCurrentAddress: false
+      country_code: "+91"
     }
   });
 
-  const sameAsCurrentAddress = watch("sameAsCurrentAddress");
-
   const onSubmit = async (data: any) => {
     try {
-      console.log("Basic info data:", data);
-      // HttpService.post(API_CONFIG.basicForm, { ...data, completed_steps: 1 }).then((response) => {
-      //   if (response.status === 200) {
-      //     toast.success("Basic information saved!");
-      //     onComplete();
-      //   }else{
-      //     toast.error("Failed to save basic information");
-      //   }
-      // });
-      toast.success("Basic information saved!");
-      update(data);
-      onComplete();
+      HttpService.post(`${API_CONFIG.intakeForm}/basic`, {
+        ...data,
+        languages_spoken: [data.languages_spoken],
+        completed_steps: 1
+      }).then((response) => {
+        if (!response.is_error) {
+          toast.success(response.message);
+          onComplete();
+          update(data);
+        } else {
+          toast.error(response.message);
+        }
+      });
     } catch (error) {
       toast.error("Failed to save basic information");
     }
@@ -105,96 +104,78 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
       reset({
         email: session.user.email || "",
         mobile_number: session.user.mobile_number || "",
-        first_name: session.user.name || "",
-        last_name: session.user.name || "",
+        // first_name: session.user.name || "",
+        // last_name: session.user.name || "",
+        full_name: session.user.full_name || "",
         date_of_birth: session.user.date_of_birth || undefined,
         place_of_birth: session.user.place_of_birth || "",
         time_of_birth: session.user.time_of_birth || "",
         languages_spoken: session.user.languages_spoken || "",
         current_address: session.user.current_address || "",
         permanent_address: session.user.permanent_address || "",
-        sameAsCurrentAddress: session.user.sameAsCurrentAddress || false,
-        country_code: session.user.country_code || "+91"
+        country_code: session.user.country_code
       });
     }
   }, [session, reset]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-      <div className='grid grid-cols-2 gap-4'>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-2 gap-4">
         <FormInput
-          label='First Name *'
-          id='first_name'
-          name='first_name'
+          label="Full Name *"
+          id="full_name"
+          name="full_name"
           register={register}
-          error={errors.first_name?.message}
-        />
-        <FormInput
-          label='Last Name *'
-          id='last_name'
-          name='last_name'
-          register={register}
-          error={errors.last_name?.message}
+          error={errors.full_name?.message}
         />
         <div>
-          <Label htmlFor='mobile'>Mobile Number *</Label>
+          <Label htmlFor="mobile">Mobile Number *</Label>
           <PhoneInput
-            country='in'
+            country="in"
             value={`${getValues("country_code")}${getValues("mobile_number")}`}
             onlyCountries={["us", "in", "gb"]}
             onChange={(value, country: any) => handleChangeMobile(value, country)}
             inputProps={{ name: "phone-input" }}
             inputStyle={{ width: "100%", height: "40px" }}
           />
-          {errors.mobile_number && <p className='text-red-500 text-sm mt-1'>{errors.mobile_number.message}</p>}
+          {errors.mobile_number && <p className="text-red-500 text-sm mt-1">{errors.mobile_number.message}</p>}
         </div>
 
         <FormInput
-          label='Email Address *'
-          id='email'
-          type='email'
-          name='email'
+          label="Email Address *"
+          id="email"
+          type="email"
+          name="email"
           register={register}
           error={errors.email?.message}
         />
         <DatePicker
-          label='Date of Birth *'
+          label="Date of Birth *"
           value={getValues("date_of_birth")}
           onChange={(date) => {
             setValue("date_of_birth", date as Date);
           }}
         />
 
-        <FormInput label='Place of Birth' id='place_of_birth' register={register} />
-        <FormInput label='Time of Birth' id='time_of_birth' type='time' register={register} />
-        <FormInput label='Languages Spoken' id='languages_spoken' register={register} />
+        <FormInput label="Place of Birth" id="place_of_birth" register={register} />
+        <FormInput label="Time of Birth" id="time_of_birth" type="time" register={register} />
+        <FormInput label="Languages Spoken" id="languages_spoken" register={register} />
       </div>
 
       <FormInput
-        label='Current Address *'
-        id='current_address'
+        label="Current Address *"
+        id="current_address"
         register={register}
         error={errors.current_address?.message}
       />
-
-      <div className='flex items-center space-x-2'>
-        <input type='checkbox' id='sameAsCurrentAddress' {...register("sameAsCurrentAddress")} className='w-4 h-4' />
-        <label htmlFor='sameAsCurrentAddress' className='text-sm'>
-          Same as current address
-        </label>
-      </div>
-
-      {!sameAsCurrentAddress && (
-        <FormInput
-          label='Permanent Address *'
-          id='permanent_address'
-          register={register}
-          error={errors.permanent_address?.message}
-        />
-      )}
-
-      <div className='flex justify-end'>
-        <Button type='submit'>Save & Continue</Button>
+      <FormInput
+        label="Permanent Address *"
+        id="permanent_address"
+        register={register}
+        error={errors.permanent_address?.message}
+      />
+      <div className="flex justify-end">
+        <Button type="submit">Save & Continue</Button>
       </div>
     </form>
   );
