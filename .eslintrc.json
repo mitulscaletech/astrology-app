@@ -1,5 +1,5 @@
 {
-  "extends": ["next", "next/core-web-vitals", "eslint:recommended", "prettier"],
+  "extends": ["next", "next/core-web-vitals", "eslint:recommended", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
   "globals": {
     "React": "readonly"
@@ -12,6 +12,7 @@
     "no-trailing-spaces": "error",
     "eol-last": ["error", "always"],
     "quotes": ["error", "double"],
+    "prettier/prettier": ["error", { "singleQuote": false, "jsxSingleQuote": false }],
     "eqeqeq": ["error", "always"],
     "prefer-const": "error",
     "no-undef": "error"
