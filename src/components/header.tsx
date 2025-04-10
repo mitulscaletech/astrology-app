@@ -4,6 +4,7 @@ import Link from "next/link";
 // import { useTheme } from "next-themes";
 import Image from "next/image";
 import logoIcon from "@/assets/images/logo-icon.png";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
   // const { setTheme, theme } = useTheme();
@@ -25,14 +26,14 @@ export function Header() {
             <MoonStar className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </button> */}
           <Link href='/astrologer/signup'>
-            <button
-            // variant="outline"
+            <Button
+              variant="outline"
             >
               Astrologer Login
-            </button>
+            </Button>
           </Link>
           <Link href='/user'>
-            <button>User Login</button>
+            <Button>User Login</Button>
           </Link>
         </div>
       </div>

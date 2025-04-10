@@ -2,32 +2,40 @@
 import React, { useState } from "react";
 import logoIcon from "@/assets/images/logo-icon.png";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const UserMenu = () => {
   const [userOpen, setUserOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
-    <div className='relative'>
-      <Button onClick={() => setUserOpen((prev) => !prev)} className='flex items-center gap-2'>
-        <span className='size-6 rounded-full bg-accent-white overflow-hidden'>
-          <Image src={logoIcon} alt='logo' width={24} height={24} />
-        </span>
-        <span className='hidden sm:inline'>Astrologer</span>
-      </Button>
+    <div className="relative">
+      <button
+        onClick={() => setUserOpen((prev) => !prev)}
+        className="size-8 bg-accent-white flex justify-center items-center gap-2 p-0 rounded-full overflow-hidden border border-primary"
+      >
+        {
+          session?.user?.image ?
+            <Image src={logoIcon} alt="logo" width={24} height={24} className="w-full" /> :
+            <div className="text-primary font-medium">
+              {session?.user?.name?.split(" ").map((word) => word.charAt(0).toUpperCase()).join("")}
+            </div>
+        }
+      </button>
       {userOpen && (
-        <div className='absolute right-0 mt-2 w-48 bg-accent-white text-black rounded-xl shadow-lg overflow-hidden z-10'>
-          <ul>
-            <li className='px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer'>Profile</li>
-            <li className='px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer'>Booking</li>
-            <li
-              className='px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer'
-              onClick={() => signOut({ redirect: true, callbackUrl: "/astrologer/signup" })}
-            >
+        <div className="absolute right-0 mt-2 w-48 bg-accent-white text-black rounded-xl shadow-lg overflow-hidden z-10">
+          <nav>
+            <Link href="/astrologer/dashboard" className="block w-full text-start px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer">
+              Profile
+            </Link>
+            <Link href="/astrologer/booking" className="block w-full text-start px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer">
+              Booking
+            </Link>
+            <button onClick={() => signOut({ redirect: true, callbackUrl: "/astrologer/signup" })} className="block w-full text-start px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer">
               Logout
-            </li>
-          </ul>
+            </button>
+          </nav>
         </div>
       )}
     </div>

@@ -1,0 +1,122 @@
+// /* calendar.scss */
+
+// /* Base Calendar Styling */
+.rbc-calendar {
+  @apply bg-accent-white text-secondary font-sans;
+}
+
+.rbc-current-time-indicator {
+  @apply bg-primary-600;
+}
+
+/* Toolbar */
+.rbc-toolbar {
+  @apply flex flex-col md:flex-row gap-2 md:gap-4 mb-4;
+}
+
+.rbc-toolbar-label {
+  @apply text-xl font-semibold text-primary;
+}
+
+.rbc-btn-group button {
+  @apply bg-primary-100 text-primary px-3 py-1 rounded-md shadow-sm transition-all border-primary-200;
+}
+.rbc-btn-group button.rbc-active,
+.rbc-btn-group button.rbc-active:hover,
+.rbc-btn-group button:hover {
+  @apply bg-primary text-accent-white border-primary-200;
+}
+
+.rbc-active {
+  @apply bg-primary text-accent-white;
+}
+
+/* Time Slot Headers */
+.rbc-time-view .rbc-time-header {
+  @apply bg-primary-100 border-b border-primary-200;
+}
+
+  .rbc-header {
+    @apply text-primary font-medium text-sm p-2 border-b border-primary-200 h-max;
+  }
+
+  /* Time Labels (left side) */
+  .rbc-timeslot-group {
+    @apply border-secondary-200 text-sm;
+  }
+
+  .rbc-time-content {
+    @apply border-secondary-200;
+  }
+
+//   /* Events */
+.rbc-event {
+  @apply bg-primary text-accent-white px-2 py-1 rounded-md shadow-sm text-xs;
+}
+
+.rbc-event-content {
+  @apply truncate;
+}
+
+.rbc-day-slot .rbc-event {
+  @apply bg-primary text-accent-white border-primary;
+  &.rbc-event-blocked {
+    @apply bg-danger-100 border-danger-100;
+  }
+}
+
+/* Blocked Events (handled dynamically via inline style) */
+
+/* Today Highlight */
+.rbc-today {
+  @apply bg-primary-100;
+}
+
+/* Selected Slot (when selecting range) */
+.rbc-selected-cell {
+  @apply bg-primary-100;
+}
+
+/* Week and Day View Borders */
+.rbc-time-slot {
+  @apply border-t border-secondary-100;
+}
+
+.rbc-day-slot {
+  @apply border-l border-secondary-200;
+}
+
+/* Month View */
+.rbc-month-view {
+  @apply border border-primary-100;
+}
+
+.rbc-date-cell {
+  @apply text-sm text-secondary px-2 pt-1;
+}
+
+/* Off Range Dates */
+.rbc-off-range {
+  @apply text-secondary-300;
+}
+
+/* Agenda View */
+.rbc-agenda-view table.rbc-agenda-table {
+  @apply w-full text-left border border-primary-100;
+}
+
+.rbc-agenda-view th {
+  @apply bg-primary-100 text-primary text-sm font-semibold p-2 border-b;
+}
+
+.rbc-agenda-view td {
+  @apply text-sm text-secondary p-2 border-b;
+}
+
+  /* Scrollbars (if needed) */
+// .rbc-time-content::-webkit-scrollbar {
+//   width: 8px;
+// }
+// .rbc-time-content::-webkit-scrollbar-thumb {
+//   @apply bg-primary rounded;
+// }

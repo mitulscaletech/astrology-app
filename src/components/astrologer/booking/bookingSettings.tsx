@@ -6,32 +6,32 @@ const BookingSettings = () => {
           <h1 className="text-2xl font-bold">Settings</h1>
         </div>
 
-        <div className="border-b">
+        <div className="border-b border-secondary-200">
           <div className="flex flex-wrap -mb-px">
-            <button className="inline-flex items-center px-4 py-2 border-b-2 border-purple-500 text-sm font-medium text-purple-600">
+            <button className="inline-flex items-center px-4 py-2 border-b-2 border-primary text-sm font-medium text-primary">
               Booking Settings
             </button>
-            <button className="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            <button className="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-medium text-secondary-300 hover:text-gray-700 hover:border-gray-300">
               Cooling-Off Period
             </button>
-            <button className="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            <button className="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-medium text-secondary-300 hover:text-gray-700 hover:border-gray-300">
               Feedback System
             </button>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-lg border bg-white shadow-sm">
+          <div className="rounded-lg border border-secondary-200 bg-white shadow-sm">
             <div className="p-6">
               <h2 className="text-lg font-medium">Booking Preferences</h2>
-              <p className="text-sm text-gray-500">Configure how your booking system works</p>
+              <p className="text-sm text-secondary-300">Configure how your booking system works</p>
             </div>
             <div className="px-6 pb-6 space-y-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-medium">Auto-Accept Bookings</h3>
-                    <p className="text-sm text-gray-500">Automatically accept new bookings without notification</p>
+                    <p className="text-sm text-secondary-300">Automatically accept new bookings without notification</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" />
@@ -44,7 +44,7 @@ const BookingSettings = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-medium">Booking Notifications</h3>
-                    <p className="text-sm text-gray-500">Receive email notifications for new bookings</p>
+                    <p className="text-sm text-secondary-300">Receive email notifications for new bookings</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" checked />
@@ -55,7 +55,7 @@ const BookingSettings = () => {
 
               <div className="space-y-2">
                 <h3 className="font-medium">Booking Time Slots</h3>
-                <p className="text-sm text-gray-500">Configure your default session duration</p>
+                <p className="text-sm text-secondary-300">Configure your default session duration</p>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Default Session Duration</label>
@@ -93,17 +93,17 @@ const BookingSettings = () => {
         </div>
 
         <div className="hidden space-y-4">
-          <div className="rounded-lg border bg-white shadow-sm">
+          <div className="rounded-lg border border-secondary-200 bg-white shadow-sm">
             <div className="p-6">
               <h2 className="text-lg font-medium">Cooling-Off Period Settings</h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-secondary-300">
                 Set a minimum time before a session when bookings are no longer accepted
               </p>
             </div>
             <div className="px-6 pb-6 space-y-6">
               <div className="space-y-2">
                 <h3 className="font-medium">Enable Cooling-Off Period</h3>
-                <p className="text-sm text-gray-500">Prevent last-minute bookings by setting a cooling-off period</p>
+                <p className="text-sm text-secondary-300">Prevent last-minute bookings by setting a cooling-off period</p>
                 <div className="flex items-center space-x-2">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" checked />
@@ -117,7 +117,7 @@ const BookingSettings = () => {
 
               <div className="space-y-2">
                 <h3 className="font-medium">Cooling-Off Duration</h3>
-                <p className="text-sm text-gray-500">Select how much advance notice you need before a session</p>
+                <p className="text-sm text-secondary-300">Select how much advance notice you need before a session</p>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Preset Durations</label>
@@ -142,7 +142,7 @@ const BookingSettings = () => {
 
               <div className="space-y-2">
                 <h3 className="font-medium">Exceptions</h3>
-                <p className="text-sm text-gray-500">Configure exceptions to your cooling-off period</p>
+                <p className="text-sm text-secondary-300">Configure exceptions to your cooling-off period</p>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <input type="checkbox" id="vip-exception" className="h-4 w-4 rounded border-gray-300" />
@@ -168,15 +168,15 @@ const BookingSettings = () => {
         </div>
 
         <div className="hidden space-y-4">
-          <div className="rounded-lg border bg-white shadow-sm">
+          <div className="rounded-lg border border-secondary-200 bg-white shadow-sm">
             <div className="p-6">
               <h2 className="text-lg font-medium">Feedback System Settings</h2>
-              <p className="text-sm text-gray-500">Configure the feedback options for your clients</p>
+              <p className="text-sm text-secondary-300">Configure the feedback options for your clients</p>
             </div>
             <div className="px-6 pb-6 space-y-6">
               <div className="space-y-2">
                 <h3 className="font-medium">Enable Feedback Collection</h3>
-                <p className="text-sm text-gray-500">Automatically request feedback after completed sessions</p>
+                <p className="text-sm text-secondary-300">Automatically request feedback after completed sessions</p>
                 <div className="flex items-center space-x-2">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" checked />
@@ -190,7 +190,7 @@ const BookingSettings = () => {
 
               <div className="space-y-2">
                 <h3 className="font-medium">Feedback Timing</h3>
-                <p className="text-sm text-gray-500">When to send feedback requests to clients</p>
+                <p className="text-sm text-secondary-300">When to send feedback requests to clients</p>
                 <select className="w-full rounded-md border px-3 py-2">
                   <option value="immediately" selected>
                     Immediately after session
@@ -204,7 +204,7 @@ const BookingSettings = () => {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-medium">Feedback Questions</h3>
-                  <p className="text-sm text-gray-500">Manage the questions asked in your feedback form</p>
+                  <p className="text-sm text-secondary-300">Manage the questions asked in your feedback form</p>
                 </div>
 
                 <div className="space-y-2">

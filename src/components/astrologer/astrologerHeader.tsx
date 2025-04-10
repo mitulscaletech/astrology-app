@@ -7,14 +7,14 @@ import UserMenu from "@/components/header/userMenu";
 
 const AstrologerHeader = () => {
   return (
-    <header className='w-full bg-primary-100 text-white px-6 py-3 shadow-md flex justify-between items-center'>
+    <header className="w-full bg-primary-100 text-white px-6 py-3 shadow-md flex justify-between items-center">
       {/* Logo */}
-      <Link href='/' className='w-28'>
-        <Image src={logo} alt='logo' width={190} height={58} />
+      <Link href="/astrologer/dashboard" className="w-28">
+        <Image src={logo} alt="logo" width={190} height={58} />
       </Link>
 
       {/* Right side */}
-      <div className='flex items-center gap-6 relative'>
+      <div className="flex items-center gap-6 relative">
         {/* Notifications */}
         <Notification />
 

@@ -1,11 +1,12 @@
 "use client";
 
-import { Calendar, Views, SlotInfo, NavigateAction, View } from "react-big-calendar";
+import { Calendar, Views, SlotInfo, View } from "react-big-calendar";
 import { localizer } from "@/lib/calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
+import "@/assets/scss/calendar.scss";
 
 export const TIME_SLOTS = {
   hourly: [
@@ -61,8 +62,29 @@ export default function BookingCalendar() {
 
 
   const handleSelectSlot = (slotInfo: SlotInfo) => {
-    setSelectedDate(slotInfo.start);
+    const selected = slotInfo.start;
+
+    const matchingSlots: number[] = [];
+
+    // Reset slots on every new selection
+    timeSlots.forEach((slot, idx) => {
+      const slotStart = moment(selected).clone().hour(slot.startHour).minute(slot.startMinute);
+      const slotEnd = moment(selected).clone().hour(slot.endHour).minute(slot.endMinute);
+
+      const isBooked = eventList.some((event) =>
+        moment(event.start).isSame(slotStart) &&
+        moment(event.end).isSame(slotEnd)
+      );
+
+      if (isBooked) {
+        matchingSlots.push(idx);
+      }
+    });
+
+    setSelectedSlots(matchingSlots);
+    setSelectedDate(selected);
   };
+
 
   const handleNavigate = (date: Date) => {
     setCurrentDate(date);
@@ -85,7 +107,6 @@ export default function BookingCalendar() {
     if (!selectedDate) return;
 
     const newEvents: EventType[] = [];
-
     const daysToAdd = isRecurring ? 30 : 1;
 
     for (let i = 0; i < daysToAdd; i++) {
@@ -97,36 +118,36 @@ export default function BookingCalendar() {
       selectedSlots.forEach((slotIdx) => {
         const slot = timeSlots[slotIdx];
 
-        const start = day
-          .clone()
-          .hour(slot.startHour)
-          .minute(slot.startMinute)
-          .toDate();
+        const start = day.clone().hour(slot.startHour).minute(slot.startMinute).toDate();
+        const end = day.clone().hour(slot.endHour).minute(slot.endMinute).toDate();
 
-        const end = day
-          .clone()
-          .hour(slot.endHour)
-          .minute(slot.endMinute)
-          .toDate();
+        const alreadyExists = eventList.some(
+          (event) =>
+            moment(event.start).isSame(start) && moment(event.end).isSame(end)
+        );
 
-        newEvents.push({
-          id: `${day.format("YYYY-MM-DD")}-${slotIdx}`, // Generate a unique ID
-          title: "Booked",
-          start,
-          end,
-        });
+        if (!alreadyExists) {
+          newEvents.push({
+            id: `${day.format("YYYY-MM-DD")}-${slotIdx}`,
+            title: "Booked",
+            start,
+            end,
+          });
+        }
       });
     }
 
     setEventList((prev) => [...prev, ...newEvents]);
     setSelectedDate(null);
     setSelectedSlots([]);
-    setIsRecurring(false); // optional: reset after save
+    setIsRecurring(false);
   };
 
+
   return (
-    <div className="p-3">
-      <div className="flex justify-end items-center mb-4">
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Booking Calender</h1>
         <Button onClick={() => setIsBlockSidebarOpen(true)}>Block Time</Button>
       </div>
       <Calendar
@@ -147,12 +168,15 @@ export default function BookingCalendar() {
         style={{ height: 600 }}
         eventPropGetter={(event) => {
           const isBlocked = blockedEventIds.has(event.id);
+          // return {
+          //   style: {
+          //     backgroundColor: isBlocked ? "#DF2B2B" : "#3b82f6", // red vs blue
+          //     borderRadius: "6px",
+          //     padding: "2px 4px",
+          //   },
+          // };
           return {
-            style: {
-              backgroundColor: isBlocked ? "#f87171" : "#3b82f6", // red vs blue
-              borderRadius: "6px",
-              padding: "2px 4px",
-            },
+            className: isBlocked ? "rbc-event-blocked" : "rbc-event-available",
           };
         }}
       />

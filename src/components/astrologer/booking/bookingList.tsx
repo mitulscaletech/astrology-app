@@ -4,12 +4,10 @@ export default function BookingsList() {
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 rounded-lg border bg-white shadow-sm">
-          <div className="p-6">
-            <h3 className="text-lg font-medium">Booking Management</h3>
-            <p className="text-sm text-gray-500">View and manage all your bookings</p>
-          </div>
-          <div className="p-6 pt-0">
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
+          <h1 className="text-2xl font-bold mb-2">Booking Management</h1>
+          <p className="text-sm text-gray-500">View and manage all your bookings</p>
+          <div className="mt-4">
             <div className="space-y-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-2">
@@ -30,14 +28,12 @@ export default function BookingsList() {
                   Export
                 </button>
               </div>
-              <div className="rounded-lg border">
-                <div className="grid gap-2 p-4">
-                  <BookingItem name="Sarah Johnson" date="Apr 10, 2025" time="10:00 AM" status="pending" />
-                  <BookingItem name="Michael Chen" date="Apr 10, 2025" time="2:30 PM" status="confirmed" />
-                  <BookingItem name="Emily Rodriguez" date="Apr 11, 2025" time="11:15 AM" status="confirmed" />
-                  <BookingItem name="David Kim" date="Apr 12, 2025" time="4:00 PM" status="pending" />
-                  <BookingItem name="Jessica Taylor" date="Apr 13, 2025" time="1:30 PM" status="confirmed" />
-                </div>
+              <div className="flex flex-col gap-2">
+                <BookingItem name="Sarah Johnson" date="Apr 10, 2025" time="10:00 AM" status="pending" />
+                <BookingItem name="Michael Chen" date="Apr 10, 2025" time="2:30 PM" status="confirmed" />
+                <BookingItem name="Emily Rodriguez" date="Apr 11, 2025" time="11:15 AM" status="confirmed" />
+                <BookingItem name="David Kim" date="Apr 12, 2025" time="4:00 PM" status="pending" />
+                <BookingItem name="Jessica Taylor" date="Apr 13, 2025" time="1:30 PM" status="confirmed" />
               </div>
             </div>
           </div>
@@ -59,10 +55,10 @@ function BookingItem({
   status: "pending" | "confirmed" | "completed" | "cancelled"
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-2 rounded-lg border border-secondary-200 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <div className="font-medium">{name}</div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-secondary-400">
           {date} at {time}
         </div>
       </div>
