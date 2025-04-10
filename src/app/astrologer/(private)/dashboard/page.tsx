@@ -1,10 +1,9 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export default function AstrologerDashboard() {
   const { data: session, status } = useSession();
@@ -30,7 +29,6 @@ export default function AstrologerDashboard() {
         <Card className='p-6'>
           <h1 className='text-2xl font-bold text-primary mb-4'>Astrologer Dashboard</h1>
           <p className='text-gray-600'>Welcome to your dashboard!</p>
-          <Button onClick={() => signOut({ redirect: true, callbackUrl: "/astrologer/signup" })}>Sign out</Button>
           {session?.user && (
             <div className='mt-4 p-4 bg-primary-200 rounded-lg'>
               <h2 className='font-semibold text-primary'>Session Info</h2>
