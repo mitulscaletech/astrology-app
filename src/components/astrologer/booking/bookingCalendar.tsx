@@ -17,7 +17,7 @@ export const TIME_SLOTS = {
     { id: "hourly-5", label: "14:00 - 15:00", startHour: 14, startMinute: 0, endHour: 15, endMinute: 0 },
     { id: "hourly-6", label: "15:00 - 16:00", startHour: 15, startMinute: 0, endHour: 16, endMinute: 0 },
     { id: "hourly-7", label: "16:00 - 17:00", startHour: 16, startMinute: 0, endHour: 17, endMinute: 0 },
-    { id: "hourly-8", label: "17:00 - 18:00", startHour: 17, startMinute: 0, endHour: 18, endMinute: 0 },
+    { id: "hourly-8", label: "17:00 - 18:00", startHour: 17, startMinute: 0, endHour: 18, endMinute: 0 }
   ],
   halfHourly: [
     { id: "halfHourly-1", label: "10:00 - 10:30", startHour: 10, startMinute: 0, endHour: 10, endMinute: 30 },
@@ -35,8 +35,8 @@ export const TIME_SLOTS = {
     { id: "halfHourly-13", label: "16:00 - 16:30", startHour: 16, startMinute: 0, endHour: 16, endMinute: 30 },
     { id: "halfHourly-14", label: "16:30 - 17:00", startHour: 16, startMinute: 30, endHour: 17, endMinute: 0 },
     { id: "halfHourly-15", label: "17:00 - 17:30", startHour: 17, startMinute: 0, endHour: 17, endMinute: 30 },
-    { id: "halfHourly-16", label: "17:30 - 18:00", startHour: 17, startMinute: 30, endHour: 18, endMinute: 0 },
-  ],
+    { id: "halfHourly-16", label: "17:30 - 18:00", startHour: 17, startMinute: 30, endHour: 18, endMinute: 0 }
+  ]
 };
 
 interface EventType {
@@ -60,7 +60,6 @@ export default function BookingCalendar() {
   const [blockDate, setBlockDate] = useState<Date | null>(new Date());
   const [blockedEventIds, setBlockedEventIds] = useState<Set<string>>(new Set());
 
-
   const handleSelectSlot = (slotInfo: SlotInfo) => {
     const selected = slotInfo.start;
 
@@ -71,9 +70,8 @@ export default function BookingCalendar() {
       const slotStart = moment(selected).clone().hour(slot.startHour).minute(slot.startMinute);
       const slotEnd = moment(selected).clone().hour(slot.endHour).minute(slot.endMinute);
 
-      const isBooked = eventList.some((event) =>
-        moment(event.start).isSame(slotStart) &&
-        moment(event.end).isSame(slotEnd)
+      const isBooked = eventList.some(
+        (event) => moment(event.start).isSame(slotStart) && moment(event.end).isSame(slotEnd)
       );
 
       if (isBooked) {
@@ -84,7 +82,6 @@ export default function BookingCalendar() {
     setSelectedSlots(matchingSlots);
     setSelectedDate(selected);
   };
-
 
   const handleNavigate = (date: Date) => {
     setCurrentDate(date);
@@ -98,10 +95,8 @@ export default function BookingCalendar() {
   };
 
   const toggleSlot = (index: number) => {
-    setSelectedSlots((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  }
+    setSelectedSlots((prev) => (prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]));
+  };
 
   const handleSave = () => {
     if (!selectedDate) return;
@@ -122,8 +117,7 @@ export default function BookingCalendar() {
         const end = day.clone().hour(slot.endHour).minute(slot.endMinute).toDate();
 
         const alreadyExists = eventList.some(
-          (event) =>
-            moment(event.start).isSame(start) && moment(event.end).isSame(end)
+          (event) => moment(event.start).isSame(start) && moment(event.end).isSame(end)
         );
 
         if (!alreadyExists) {
@@ -131,7 +125,7 @@ export default function BookingCalendar() {
             id: `${day.format("YYYY-MM-DD")}-${slotIdx}`,
             title: "Booked",
             start,
-            end,
+            end
           });
         }
       });
@@ -142,7 +136,6 @@ export default function BookingCalendar() {
     setSelectedSlots([]);
     setIsRecurring(false);
   };
-
 
   return (
     <div>
@@ -163,8 +156,8 @@ export default function BookingCalendar() {
         onView={(view) => handleView(view)}
         selectable
         onSelectSlot={handleSelectSlot}
-        min={new Date(0, 0, 0, 7, 0)}     // 07:00
-        max={new Date(0, 0, 0, 22, 0)}    // 22:00
+        min={new Date(0, 0, 0, 7, 0)} // 07:00
+        max={new Date(0, 0, 0, 22, 0)} // 22:00
         style={{ height: 600 }}
         eventPropGetter={(event) => {
           const isBlocked = blockedEventIds.has(event.id);
@@ -176,16 +169,17 @@ export default function BookingCalendar() {
           //   },
           // };
           return {
-            className: isBlocked ? "rbc-event-blocked" : "rbc-event-available",
+            className: isBlocked ? "rbc-event-blocked" : "rbc-event-available"
           };
         }}
       />
 
       {selectedDate && (
         <div>
-          <div className="fixed top-0 end-0 w-full h-full bg-secondary bg-opacity-30 flex items-center justify-center z-20"
-            onClick={() => setSelectedDate(null)}>
-          </div>
+          <div
+            className="fixed top-0 end-0 w-full h-full bg-secondary bg-opacity-30 flex items-center justify-center z-20"
+            onClick={() => setSelectedDate(null)}
+          ></div>
           <div className="fixed flex flex-col top-0 end-0 w-96 h-full bg-accent-white bg-white rounded-s-xl p-6 shadow-xl z-30">
             <h2 className="text-lg font-semibold mb-2">Selected Date</h2>
             <p>{moment(selectedDate).format("dddd, MMMM Do YYYY, h:mm A")}</p>
@@ -272,26 +266,13 @@ export default function BookingCalendar() {
             {blockDate && (
               <div className="space-y-2 max-h-[60vh] overflow-y-auto">
                 {eventList
-                  .filter(
-                    (e) =>
-                      moment(e.start).isSame(blockDate, "day") &&
-                      !blockedEventIds.has(e.id)
-                  )
+                  .filter((e) => moment(e.start).isSame(blockDate, "day") && !blockedEventIds.has(e.id))
                   .map((event) => (
-                    <div
-                      key={event.id}
-                      className="flex items-center justify-between bg-gray-100 p-2 rounded"
-                    >
+                    <div key={event.id} className="flex items-center justify-between bg-gray-100 p-2 rounded">
                       <p className="text-sm">
-                        {moment(event.start).format("h:mm A")} -{" "}
-                        {moment(event.end).format("h:mm A")}
+                        {moment(event.start).format("h:mm A")} - {moment(event.end).format("h:mm A")}
                       </p>
-                      <Button
-                        size="sm"
-                        onClick={() =>
-                          setBlockedEventIds((prev) => new Set(prev).add(event.id))
-                        }
-                      >
+                      <Button size="sm" onClick={() => setBlockedEventIds((prev) => new Set(prev).add(event.id))}>
                         Block
                       </Button>
                     </div>
@@ -299,20 +280,14 @@ export default function BookingCalendar() {
               </div>
             )}
 
-            {!blockDate &&
-              <p>No Events</p>
-            }
+            {!blockDate && <p>No Events</p>}
 
-            <Button
-              onClick={() => setIsBlockSidebarOpen(false)}
-              className="mt-6 w-full"
-            >
+            <Button onClick={() => setIsBlockSidebarOpen(false)} className="mt-6 w-full">
               Close
             </Button>
           </div>
         </>
       )}
-
     </div>
   );
 }
