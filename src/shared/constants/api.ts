@@ -12,7 +12,8 @@ export const API_CONFIG = {
   register: "user/register",
   intakeForm: "intake-form",
   socialLogin: "user/social-login",
-  uploadMedia: "media"
+  uploadMedia: "media",
+  setAvailability: "astrologer-schedules"
 };
 
 export const getUrl = (url: string, params: any = {}): string => {

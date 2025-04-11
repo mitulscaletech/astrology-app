@@ -50,3 +50,17 @@ export const getMediaFile = (mediaFiles: IMediaFile[], type: string) => {
   const mediaFile = mediaFiles.find((file: any) => file.media_type === type);
   return mediaFile ? mediaFile.s3_path : "";
 };
+export const convertEventsToTimeSlots = (events: any, timeZone = "UTC") => {
+  const formatTime = (date: any) =>
+    date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone
+    });
+
+  return events.map((event: any) => ({
+    start_time: formatTime(new Date(event.start)),
+    end_time: formatTime(new Date(event.end))
+  }));
+};
