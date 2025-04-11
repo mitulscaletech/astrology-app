@@ -46,8 +46,8 @@ const InputOTPSlot = React.forwardRef<
     >
       {char}
       {hasFakeCaret && (
-        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <div className='h-5 w-[2px] animate-caret-blink bg-gray-900 dark:bg-accent-white duration-1000' />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-5 w-[2px] animate-caret-blink bg-gray-900 dark:bg-accent-white duration-1000" />
         </div>
       )}
     </div>
@@ -58,7 +58,7 @@ InputOTPSlot.displayName = "InputOTPSlot";
 // ✅ Separator Between OTP Slots
 const InputOTPSeparator = React.forwardRef<React.ElementRef<"div">, React.ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} role='separator' className={cn("mx-2 text-gray-500", className)} {...props}>
+    <div ref={ref} role="separator" className={cn("mx-2 text-gray-500", className)} {...props}>
       <span className="h-2.5 w-2.5 rounded-full bg-current" />
     </div>
   )

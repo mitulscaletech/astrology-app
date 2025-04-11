@@ -18,18 +18,18 @@ export const DatePicker = ({ label, value, onChange }: DatePickerProps) => (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant='outline'
+          variant="outline"
           className={cn("w-full justify-start text-left font-normal", !value && "text-secondary-300")}
         >
-          <span className='mr-2 h-4 w-4' >
+          <span className="mr-2 h-4 w-4">
             <IconCalender />
           </span>
           {value ? format(value, "PPP") : "Pick a date"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0'>
+      <PopoverContent className="w-auto p-0">
         <Calendar
-          mode='single'
+          mode="single"
           selected={value || undefined}
           onSelect={onChange}
           disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
