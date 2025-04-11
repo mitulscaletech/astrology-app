@@ -13,12 +13,12 @@ const UserMenu = () => {
     <div className="relative">
       <button
         onClick={() => setUserOpen((prev) => !prev)}
-        className="size-8 bg-accent-white flex justify-center items-center gap-2 p-0 rounded-full overflow-hidden border border-primary"
+        className="size-8 bg-accent-white flex justify-center items-center gap-2 p-0 rounded-full overflow-hidden border border-secondary"
       >
         {session?.user?.image ? (
           <Image src={logoIcon} alt="logo" width={24} height={24} className="w-full" />
         ) : (
-          <div className="text-primary font-medium">
+          <div className="text-secondary font-medium">
             {session?.user?.name
               ?.split(" ")
               .map((word) => word.charAt(0).toUpperCase())

@@ -4,26 +4,26 @@
 
 :root {
   /* Primary Shades (in RGB) */
-  --primary-100: 247 233 229;
-  --primary-200: 241 208 200;
-  --primary-300: 242 139 114;
-  --primary-400: 234 86 57;
-  --primary-500: 215 44 13;
-  --primary-600: 176 33 10;
-  --primary-700: 138 25 9;
-  --primary-800: 100 17 6;
-  --primary-900: 62 10 3;
+--primary-100: 249 223 226;
+--primary-200: 240 182 190;
+--primary-300: 222 108 123;
+--primary-400: 203 58 83;
+--primary-500: 177 20 45;   /* #B1142D */
+--primary-600: 142 16 36;
+--primary-700: 108 13 27;
+--primary-800: 73 9 18;
+--primary-900: 39 5 10;
 
-  /* Secondary Shades (in RGB) */
-  --secondary-100: 224 228 231;
-  --secondary-200: 179 190 199;
-  --secondary-300: 129 147 162;
-  --secondary-400: 79 102 124;
-  --secondary-500: 1 22 36;
-  --secondary-600: 1 17 27;
-  --secondary-700: 0 13 20;
-  --secondary-800: 0 9 14;
-  --secondary-900: 0 5 8;
+/* Secondary Shades (in RGB) */
+--secondary-100: 226 226 236;
+--secondary-200: 190 190 216;
+--secondary-300: 144 144 188;
+--secondary-400: 98 98 159;
+--secondary-500: 29 29 60;   /* #1D1D3C */
+--secondary-600: 22 22 47;
+--secondary-700: 17 17 36;
+--secondary-800: 11 11 25;
+--secondary-900: 6 6 13;
 
   /* Accent Colors */
   --accent-white: 255 255 255;

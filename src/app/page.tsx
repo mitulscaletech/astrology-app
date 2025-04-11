@@ -61,7 +61,7 @@ export default function Home() {
         <Button>Start Your Journey</Button>
       </section>
 
-      <section id="services" className="py-20 px-6 text-secondary-900">
+      <section id="services" className="py-20 px-6">
         <h3 className="text-4xl font-bold text-center mb-16">What We Offer</h3>
         <div className="grid gap-12 md:grid-cols-3 max-w-7xl mx-auto">
           <div className="p-8 bg-white shadow-lg rounded-2xl hover:shadow-xl transition">
@@ -106,7 +106,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="testimonials" className="py-20 px-6 bg-white text-accent-black">
+      <section id="testimonials" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <h3 className="text-4xl font-bold text-center mb-12">Voices of Transformation</h3>
           <div className="grid gap-10 md:grid-cols-2">
@@ -140,7 +140,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="py-20 px-6 bg-primary-100 text-secondary-900">
+      <section id="contact" className="py-20 px-6 bg-primary-100">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl font-bold mb-8">Connect With Us</h3>
           <p className="text-lg mb-6">

@@ -4,22 +4,42 @@ import Link from "next/link";
 import Image from "next/image";
 import Notification from "@/components/header/notification";
 import UserMenu from "@/components/header/userMenu";
+import { IconLogOut } from "@/shared/icons/page";
+import IconUser from "@/shared/icons/user";
+import IconCart from "@/shared/icons/cart";
+import IconSearch from "@/shared/icons/search";
 
 const AstrologerHeader = () => {
   return (
-    <header className="w-full bg-primary-100 text-white px-6 py-3 shadow-md flex justify-between items-center">
-      {/* Logo */}
-      <Link href="/astrologer/dashboard" className="w-28">
-        <Image src={logo} alt="logo" width={190} height={58} />
-      </Link>
+    <header className="py-4 px-8">
+      <div className="container">
+        <div className="flex px-6 py-4 border border-secondary-100 items-center justify-between shadow-card-sm rounded-full">
+          {/* Logo */}
+          <Link href="/astrologer/dashboard" className="w-28">
+            <Image src={logo} alt="logo" width={190} height={58} />
+          </Link>
 
-      {/* Right side */}
-      <div className="flex items-center gap-6 relative">
-        {/* Notifications */}
-        <Notification />
-
-        {/* User Menu */}
-        <UserMenu />
+          {/* Right side */}
+          <div className="flex items-center gap-4 text-secondary-500">
+            <Link href="#" className="size-6">
+              <IconSearch />
+            </Link>
+            <Link href="#" className="size-6">
+              <IconLogOut />
+            </Link>
+            <Link href="/astrologer/signup" className="size-6">
+              <IconUser />
+            </Link>
+            <Notification />
+            <div className="h-6 border-l border-primary-100" />
+            {/* User Menu */}
+            <UserMenu />
+            <Link href="#" className="size-6">
+              <IconCart />
+            </Link>
+            {/* Notifications */}
+          </div>
+        </div>
       </div>
     </header>
   );

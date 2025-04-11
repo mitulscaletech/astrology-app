@@ -7,6 +7,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '12px'
+    },
     colors: {
       primary: {
         100: "rgb(var(--primary-100) / <alpha-value>)",
@@ -60,7 +64,13 @@ const config: Config = {
         4: "4",
         5: "5",
         6: "6"
-      }
+      },
+      boxShadow: {
+        box: '0px 22px 44px 0px rgba(var(--secondary-200), 0.24)',
+        'box-sm': '0px 8px 16px 0px rgba(var(--secondary-200), 0.14)',
+        card: '0px 15px 43px 0px rgba(17, 114, 238, 0.2)',
+        'card-sm': '0px 0px 12px 0px rgba(29 29 60 / 0.14)'
+      },
     }
   },
   plugins: []
