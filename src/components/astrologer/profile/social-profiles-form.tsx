@@ -23,8 +23,8 @@ const schema = yup.object().shape({
   twitter: yup.string().url("Enter a valid Twitter URL").notRequired(),
   tiktok: yup.string().url("Enter a valid TikTok URL").notRequired(),
   youtube: yup.string().url("Enter a valid YouTube URL").notRequired(),
-  website: yup.string().url("Enter a valid website URL").notRequired(),
-  otherCompanies: yup.string().notRequired()
+  personal_website: yup.string().url("Enter a valid website URL").notRequired(),
+  associated_companies: yup.string().notRequired()
 });
 
 interface SocialProfilesFormProps {
@@ -49,7 +49,7 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
         .then((response) => {
           if (!response.is_error) {
             toast.success(response.message);
-            update(data);
+            update({ ...session?.user, intake_form: { ...session?.user.intake_form, ...data } });
             onComplete();
           } else {
             toast.error(response.message);
@@ -65,15 +65,17 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
 
   useEffect(() => {
     if (session?.user) {
+      const { instagram, facebook, twitter, tiktok, youtube, personal_website, linkedin, associated_companies } =
+        session.user.intake_form;
       reset({
-        instagram: session.user.instagram,
-        facebook: session.user.facebook,
-        twitter: session.user.twitter,
-        tiktok: session.user.tiktok,
-        youtube: session.user.youtube,
-        website: session.user.website,
-        linkedin: session.user.linkedin,
-        otherCompanies: session.user.otherCompanies
+        instagram: instagram,
+        facebook: facebook,
+        twitter: twitter,
+        tiktok: tiktok,
+        youtube: youtube,
+        personal_website: personal_website,
+        linkedin: linkedin,
+        associated_companies: associated_companies
       });
     }
   }, [session, reset]);
@@ -86,11 +88,17 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
       <FormInput label="Twitter Profile" id="twitter" register={register} error={errors.twitter?.message} />
       <FormInput label="TikTok Profile" id="tiktok" register={register} error={errors.tiktok?.message} />
       <FormInput label="YouTube Channel" id="youtube" register={register} error={errors.youtube?.message} />
-      <FormInput label="Personal Website" id="website" type="url" register={register} error={errors.website?.message} />
+      <FormInput
+        label="Personal Website"
+        id="personal_website"
+        type="url"
+        register={register}
+        error={errors.personal_website?.message}
+      />
 
       <div>
         <label className="block text-sm font-medium">Other Astrology Companies Associated With</label>
-        <Select onValueChange={(value: yup.Maybe<string | undefined>) => setValue("otherCompanies", value)}>
+        <Select onValueChange={(value: yup.Maybe<string | undefined>) => setValue("associated_companies", value)}>
           <SelectTrigger>
             <SelectValue placeholder="Select number of companies" />
           </SelectTrigger>

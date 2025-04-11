@@ -1,16 +1,23 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 import * as yup from "yup";
-import { FormInput } from "@/components/ui/forminput";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import toast from "react-hot-toast";
+
+import { Button } from "@/components/ui/button";
+import { FormInput } from "@/components/ui/forminput";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+import { getMediaFile } from "@/lib/utils";
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 
 const schema = yup.object().shape({
   years_of_experience: yup
@@ -37,12 +44,14 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
     resolver: yupResolver(schema)
   });
+  const currentValues = getValues();
 
   const onSubmit = async (data: any) => {
     try {
@@ -73,9 +82,8 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       ]);
 
       update({
-        ...tempData,
-        certificate: certificateRes.data,
-        resume: resumeRes.data
+        ...session?.user,
+        intake_form: { ...tempData, certification: certificateRes.data, resume: resumeRes.data }
       });
       toast.success(response.message);
       onComplete();
@@ -86,12 +94,16 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
 
   useEffect(() => {
     if (session?.user) {
+      const { years_of_experience, highest_qualification, institute_university_name, specialization } =
+        session.user.intake_form;
+
       reset({
-        years_of_experience: session.user.years_of_experience,
-        highest_qualification: session.user.highest_qualification || "",
-        institute_university_name: session.user.institute_university_name || "",
-        specialization: session.user.specialization || "",
-        resume: session.user.resume || ""
+        years_of_experience: years_of_experience,
+        highest_qualification: highest_qualification || "",
+        institute_university_name: institute_university_name || "",
+        specialization: specialization || "",
+        resume: getMediaFile(session.user.media_files, "resume"),
+        certification: getMediaFile(session.user.media_files, "certification")
       });
     }
   }, [session, reset]);
@@ -148,18 +160,36 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       />
 
       <div>
-        <label className="block text-sm font-medium">Astrology Certification</label>
-        <input
-          type="file"
-          accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-          {...register("certification")}
-          className="mt-1 block w-full"
-        />
+        {typeof currentValues.certification === "string" ? (
+          <Image
+            src={currentValues.certification}
+            alt="Certification"
+            width={100}
+            height={100}
+            className="rounded-md mb-2"
+          />
+        ) : (
+          <>
+            <label className="block text-sm font-medium">Astrology Certification</label>
+            <input
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+              {...register("certification")}
+              className="mt-1 block w-full"
+            />
+          </>
+        )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Resume (Optional)</label>
-        <input type="file" accept=".pdf,.doc,.docx" {...register("resume")} className="mt-1 block w-full" />
+        {typeof currentValues.resume === "string" ? (
+          <Image src={currentValues.resume} alt="Resume" width={100} height={100} className="rounded-md mb-2" />
+        ) : (
+          <>
+            <label className="block text-sm font-medium">Resume (Optional)</label>
+            <input type="file" accept=".pdf,.doc,.docx" {...register("resume")} className="mt-1 block w-full" />
+          </>
+        )}
       </div>
 
       <div className="flex justify-end">

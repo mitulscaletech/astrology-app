@@ -82,7 +82,7 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
         if (!response.is_error) {
           toast.success(response.message);
           onComplete();
-          update(data);
+          update({ ...session?.user, ...data });
         } else {
           toast.error(response.message);
         }

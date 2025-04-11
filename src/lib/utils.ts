@@ -5,6 +5,7 @@ import { USER_PROFILE_STATUS } from "@/shared/constants";
 import HttpService from "@/shared/services/http.service";
 import { twMerge } from "tailwind-merge";
 import toast from "react-hot-toast";
+import { IMediaFile } from "next-auth";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -44,4 +45,8 @@ export const handleUserStatusRedirect = (status: string): string | undefined => 
       toast.error("Your account is not activated yet. Please contact to Admin");
       break;
   }
+};
+export const getMediaFile = (mediaFiles: IMediaFile[], type: string) => {
+  const mediaFile = mediaFiles.find((file: any) => file.media_type === type);
+  return mediaFile ? mediaFile.s3_path : "";
 };

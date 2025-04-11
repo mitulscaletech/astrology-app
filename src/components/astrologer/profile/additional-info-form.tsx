@@ -1,20 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useSession } from "next-auth/react";
 
 import * as yup from "yup";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { yupResolver } from "@hookform/resolvers/yup";
+
+import { getMediaFile } from "@/lib/utils";
 import IconInfo from "@/shared/icons/info";
-import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import HttpService from "@/shared/services/http.service";
 
 const validationSchema = yup.object().shape({
   video: yup.mixed().required("Introduction video is required"),
@@ -22,12 +26,13 @@ const validationSchema = yup.object().shape({
 });
 
 export function AdditionalInfoForm() {
-  const { update } = useSession();
+  const { update, data: session } = useSession();
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm({
     resolver: yupResolver(validationSchema)
   });
@@ -37,14 +42,18 @@ export function AdditionalInfoForm() {
       HttpService.post(`${API_CONFIG.intakeForm}/final`, { short_bio: additionalData.short_bio, completed_steps: 4 })
         .then(async (response) => {
           if (!response.is_error) {
-            const formData = new FormData();
-            formData.append("media_file", additionalData.video[0]);
-            formData.append("media_type", "video");
-            const data = await HttpService.post(API_CONFIG.uploadMedia, formData, {
-              contentType: "multipart/form-data"
-            });
+            if (typeof additionalData.video !== "string") {
+              const formData = new FormData();
+              formData.append("media_file", additionalData.video[0]);
+              formData.append("media_type", "video");
+              const data = await HttpService.post(API_CONFIG.uploadMedia, formData, {
+                contentType: "multipart/form-data"
+              });
+              update({ ...session?.user, intake_form: { ...additionalData, video: data.data } });
+            } else {
+              update({ ...session?.user, intake_form: { ...additionalData } });
+            }
             toast.success(response.message);
-            update({ ...additionalData, video: data.data });
           }
         })
         .catch((error) => {
@@ -54,6 +63,17 @@ export function AdditionalInfoForm() {
       toast.error("Failed to submit profile");
     }
   };
+
+  useEffect(() => {
+    if (session?.user) {
+      const { short_bio } = session.user.intake_form;
+
+      reset({
+        short_bio: short_bio,
+        video: getMediaFile(session.user.media_files, "video")
+      });
+    }
+  }, [session, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

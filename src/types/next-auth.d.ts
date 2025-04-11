@@ -31,24 +31,47 @@ declare module "next-auth" {
       country_code?: string;
       gender: string;
       profilePhoto: File | undefined;
-      years_of_experience: number;
-      highest_qualification: string;
-      certificate: string;
-      specialization: string;
       resume: string;
       institute_university_name: string;
       otherCompanies: string;
-      instagram: string;
-      facebook: string;
-      twitter: string;
-      tiktok: string;
-      youtube: string;
-      website: string;
-      linkedin: string;
-      otherCompanies: string;
+      intake_form: {
+        id: string;
+        additional_emails: any;
+        place_of_birth: string;
+        time_of_birth: string;
+        languages_spoken: string;
+        current_address: string;
+        permanent_address: string;
+        years_of_experience: number;
+        highest_qualification: string;
+        institute_university_name: string;
+        instagram: string;
+        facebook: string;
+        linkedin: string;
+        twitter: string;
+        tiktok: string;
+        youtube: string;
+        personal_website: string;
+        associated_companies: string;
+        short_bio: string;
+        reason_for_joining: any;
+        completed_steps: number;
+        created_at: string;
+        updated_at: string;
+        specialization: string;
+      };
+      media_files: IMediaFile[];
     };
   }
 
+  interface IMediaFile {
+    media_id: string;
+    media_type: string;
+    s3_path: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+  }
   interface User {
     id: string;
     name: string;
