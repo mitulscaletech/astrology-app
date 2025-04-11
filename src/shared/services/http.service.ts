@@ -63,15 +63,7 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
  * @param object containing method, url, data, access token, content-type, isLogin
  */
 const commonAxios = async (config: IAxiosParams): Promise<any> => {
-  const {
-    method,
-    url,
-    data,
-    contentType = "application/json",
-    isPublic = false,
-    responseType,
-    fullResponse = false
-  } = config;
+  const { method, url, data, contentType = "application/json", isPublic = false, responseType } = config;
   const headers: any = {
     "Content-Type": contentType
   };

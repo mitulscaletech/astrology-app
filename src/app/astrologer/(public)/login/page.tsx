@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import Link from "next/link";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +19,6 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import IconFacebook from "@/shared/icons/facebook";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import AuthService from "@/shared/services/auth.service";
 import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
 
 import { handleUserStatusRedirect } from "@/lib/utils";
@@ -87,7 +87,7 @@ export default function AstrologerLogin() {
   const handleResendOtp = () => {
     if (resendCount >= 3) {
       // Show captcha
-      if (captchaToken) {
+      if (captchaToken && mobileNumber) {
         handleSendOtp();
       }
       toast.error("Please solve the captcha");
@@ -109,13 +109,12 @@ export default function AstrologerLogin() {
     }
     HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
       .then(async (response) => {
-        const { status, token } = response.data;
-        await signIn("credentials", {
-          redirect: false,
-          token: JSON.stringify({ status, access_token: token })
-        });
-        await AuthService.setAuthData(response.data);
         if (!response.is_error) {
+          const { status, token } = response.data;
+          await signIn("credentials", {
+            redirect: false,
+            token: JSON.stringify({ status, access_token: token })
+          });
           HttpService.get(API_CONFIG.me).then(async (userResponse) => {
             if (!userResponse.is_error) {
               await signIn("credentials", {
@@ -183,8 +182,7 @@ export default function AstrologerLogin() {
     try {
       signInWithPopup(auth, facebookProvider)
         .then((result) => {
-          console.log("User:", result.user);
-          // handleSocialSignup(result, "facebook");
+          handleSocialSignup(result, "facebook");
         })
         .catch(async (error) => {
           if (error.code === "auth/account-exists-with-different-credential") {
@@ -192,7 +190,6 @@ export default function AstrologerLogin() {
             const email = error.customData?.email;
             if (email) {
               const methods = await fetchSignInMethodsForEmail(auth, email);
-              console.log(" methods:", methods);
               if (methods.includes("google.com")) {
                 // Prompt user to sign in with Google first
                 const googleProvider = new GoogleAuthProvider();
@@ -200,7 +197,6 @@ export default function AstrologerLogin() {
 
                 // After successful login, link Facebook to the same account
                 await linkWithCredential(googleResult.user, pendingCred!);
-                console.log("Facebook linked to Google account!");
               } else {
                 toast.error("Account already exists with a different provider");
               }
@@ -291,7 +287,7 @@ export default function AstrologerLogin() {
 
         <div className="grid grid-cols-2 gap-2">
           <Button variant="outline" onClick={() => handleGoogleLogin()}>
-            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+            <Image src="https://www.google.com/favicon.ico" alt="Google" width={20} height={20} className="w-5 h-5" />
           </Button>
           <Button variant="outline" onClick={() => handleFacebookLogin()}>
             <span className="w-5 h-5">

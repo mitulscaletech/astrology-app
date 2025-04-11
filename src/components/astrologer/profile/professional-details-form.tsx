@@ -46,8 +46,6 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
 
   const onSubmit = async (data: any) => {
     try {
-      console.log("Professional details data:", data);
-
       const tempData = {
         years_of_experience: data.years_of_experience,
         specialization: data.specialization,

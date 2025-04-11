@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
 import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
@@ -12,7 +11,7 @@ import { SocialProfilesForm } from "@/components/astrologer/profile/social-profi
 import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-info-form";
 
 export default function AstrologerProfile() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("basic-info");
 

@@ -49,10 +49,6 @@ export default function AstrologerSignup() {
     setCaptchaToken(token);
   };
   const handleSendOtp = () => {
-    if (!mobileNumber) {
-      toast.error("Please enter your phone number");
-      return;
-    }
     HttpService.post(API_CONFIG.sendOtp, {
       country_code: countryCode,
       mobile_number: mobileNumber,
@@ -71,6 +67,13 @@ export default function AstrologerSignup() {
         console.error("Error sending OTP:", error);
       });
   };
+  const manageSendOtp = () => {
+    if (!mobileNumber) {
+      toast.error("Please enter your phone number");
+      return;
+    }
+    handleSendOtp();
+  };
   const startTimer = () => {
     setTimer(60);
     const interval = setInterval(() => {
@@ -84,10 +87,15 @@ export default function AstrologerSignup() {
     }, 1000);
   };
   const handleResendOtp = () => {
-    if (resendCount >= 2) {
+    if (resendCount >= 3) {
+      // Show captcha
+      if (captchaToken && mobileNumber) {
+        handleSendOtp();
+      }
       toast.error("Please solve the captcha");
       return;
     }
+    // handleSendOtp();
     setResendCount((prev) => prev + 1);
     startTimer();
     toast.success("OTP resent successfully!");
@@ -97,36 +105,40 @@ export default function AstrologerSignup() {
       toast.error("Please enter OTP");
       return;
     }
-    if (!captchaToken) {
+    if (resendCount >= 3 && !captchaToken) {
       toast.error("Please solve the captcha");
       return;
     }
-    try {
-      HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: otp })
-        .then(async (response) => {
-          if (!response.is_error) {
-            const mockUser = {
-              mobile_number: mobileNumber,
-              access_token: response.data,
-              country_code: countryCode
-            };
-            await signIn("credentials", {
-              redirect: false,
-              token: JSON.stringify(mockUser)
-            });
-            const status = response.data.status;
-            const path = handleUserStatusRedirect(status);
-            if (path) router.push(path);
-          } else {
-            toast.error(response.message);
-          }
-        })
-        .catch((error) => {
-          console.error("Error sending OTP:", error);
-        });
-    } catch (error) {
-      console.error("Error", error);
-    }
+    HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
+      .then(async (response) => {
+        if (!response.is_error) {
+          const { status, token } = response.data;
+          await signIn("credentials", {
+            redirect: false,
+            token: JSON.stringify({ status, access_token: token })
+          });
+          HttpService.get(API_CONFIG.me).then(async (userResponse) => {
+            if (!userResponse.is_error) {
+              await signIn("credentials", {
+                redirect: false,
+                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
+              });
+              const status = userResponse.data.status;
+              const path = handleUserStatusRedirect(status);
+              if (path) router.push(path);
+            } else {
+              toast.error(response.message);
+            }
+          });
+        } else {
+          toast.error(response.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending OTP:", error);
+      });
+
+    // Verify OTP logic here
   };
   const handleSocialSignup = async (result: UserCredential, provider: string) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -172,7 +184,6 @@ export default function AstrologerSignup() {
     try {
       signInWithPopup(auth, facebookProvider)
         .then((result) => {
-          console.log("User:", result.user);
           handleSocialSignup(result, "facebook");
         })
         .catch(async (error) => {
@@ -182,16 +193,11 @@ export default function AstrologerSignup() {
 
             if (email) {
               const methods = await fetchSignInMethodsForEmail(auth, email);
-              console.log(" methods:", methods);
-
               if (methods.includes("google.com")) {
-                // Prompt user to sign in with Google first
                 const googleProvider = new GoogleAuthProvider();
                 const googleResult = await signInWithPopup(auth, googleProvider);
-
                 // After successful login, link Facebook to the same account
                 await linkWithCredential(googleResult.user, pendingCred!);
-                console.log("Facebook linked to Google account!");
               } else {
                 toast.error("Account already exists with a different provider");
               }
@@ -230,7 +236,7 @@ export default function AstrologerSignup() {
           />
 
           {!showOtp ? (
-            <Button className="w-full" onClick={handleSendOtp}>
+            <Button className="w-full" onClick={manageSendOtp}>
               Send OTP
             </Button>
           ) : (

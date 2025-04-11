@@ -1,4 +1,4 @@
-// src/hooks/useSocket.ts
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 import { getSocket } from "@/lib/socket";
 
@@ -9,12 +9,12 @@ export const useSocket = (onConnect?: () => void, onDisconnect?: () => void) => 
     const s = socket.current;
 
     const handleConnect = () => {
-      console.log("✅ Socket connected");
+      // console.log("✅ Socket connected");
       onConnect?.();
     };
 
     const handleDisconnect = () => {
-      console.log("❌ Socket disconnected");
+      // console.log("❌ Socket disconnected");
       onDisconnect?.();
     };
 

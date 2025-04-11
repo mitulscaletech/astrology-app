@@ -2,7 +2,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { initSocket, getSocket, disconnectSocket } from "@/lib/socket";
+import { initSocket, disconnectSocket } from "@/lib/socket";
 import type { Socket } from "socket.io-client";
 
 interface SocketContextType {
@@ -23,7 +23,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     s.connect();
 
     s.on("connect", () => {
-      console.log("✅ Connected to socket server");
+      // console.log("✅ Connected to socket server");
     });
 
     setSocket(s);

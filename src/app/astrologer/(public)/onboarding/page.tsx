@@ -96,7 +96,7 @@ export default function AstrologerOnboarding() {
           toast.error(error);
         });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }

@@ -9,6 +9,7 @@ import IconCalender from "@/shared/icons/calender";
 interface DatePickerProps {
   label: string;
   value: Date | null;
+  // eslint-disable-next-line no-unused-vars
   onChange: (date: Date | undefined) => void;
 }
 

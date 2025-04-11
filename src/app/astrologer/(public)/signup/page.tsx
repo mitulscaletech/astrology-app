@@ -32,7 +32,6 @@ import {
   UserCredential
 } from "firebase/auth";
 import { auth, facebookProvider, googleProvider } from "@/firebaseConfig";
-// import AuthService from "@/shared/services/auth.service";
 
 export default function AstrologerSignup() {
   const router = useRouter();
@@ -102,7 +101,7 @@ export default function AstrologerSignup() {
       return;
     }
     try {
-      HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: otp })
+      HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
         .then(async (response) => {
           if (!response.is_error) {
             const mockUser = {
@@ -172,26 +171,19 @@ export default function AstrologerSignup() {
     try {
       signInWithPopup(auth, facebookProvider)
         .then((result) => {
-          console.log("User:", result.user);
           handleSocialSignup(result, "facebook");
         })
-        .catch(async (error) => {
+        .catch(async (error: any) => {
           if (error.code === "auth/account-exists-with-different-credential") {
             const pendingCred = FacebookAuthProvider.credentialFromError(error);
             const email = error.customData?.email;
 
             if (email) {
               const methods = await fetchSignInMethodsForEmail(auth, email);
-              console.log(" methods:", methods);
-
               if (methods.includes("google.com")) {
-                // Prompt user to sign in with Google first
                 const googleProvider = new GoogleAuthProvider();
                 const googleResult = await signInWithPopup(auth, googleProvider);
-
-                // After successful login, link Facebook to the same account
                 await linkWithCredential(googleResult.user, pendingCred!);
-                console.log("Facebook linked to Google account!");
               } else {
                 toast.error("Account already exists with a different provider");
               }

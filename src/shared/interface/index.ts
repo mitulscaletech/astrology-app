@@ -9,9 +9,9 @@ export interface ISortData {
   orderType?: OrderType;
 }
 
-export enum OrderType {
-  ASC = "ASC",
-  DESC = "DESC"
+export interface OrderType {
+  ASC: "ASC";
+  DESC: "DESC";
 }
 
 export interface IPage {
