@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function BookingHistory() {
   return (
@@ -83,7 +83,10 @@ export default function BookingHistory() {
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   </svg>
-                  <input className="w-full rounded-md border border-secondary-200 px-3 py-2 pl-8" placeholder="Search by name or email" />
+                  <input
+                    className="w-full rounded-md border border-secondary-200 px-3 py-2 pl-8"
+                    placeholder="Search by name or email"
+                  />
                 </div>
               </div>
             </div>
@@ -177,7 +180,7 @@ export default function BookingHistory() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function BookingHistoryItem({
@@ -185,13 +188,13 @@ function BookingHistoryItem({
   email,
   date,
   time,
-  status,
+  status
 }: {
-  name: string
-  email: string
-  date: string
-  time: string
-  status: "pending" | "confirmed" | "completed" | "cancelled"
+  name: string;
+  email: string;
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
 }) {
   return (
     <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-6 border-t border-secondary-200">
@@ -203,14 +206,15 @@ function BookingHistoryItem({
       <div>{time}</div>
       <div>
         <div
-          className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${status === "pending"
-            ? "bg-yellow-100 text-yellow-800"
-            : status === "confirmed"
-              ? "bg-green-100 text-green-800"
-              : status === "completed"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-red-100 text-red-800"
-            }`}
+          className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${
+            status === "pending"
+              ? "bg-yellow-100 text-yellow-800"
+              : status === "confirmed"
+                ? "bg-green-100 text-green-800"
+                : status === "completed"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-red-100 text-red-800"
+          }`}
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </div>
@@ -226,5 +230,5 @@ function BookingHistoryItem({
         </button>
       </div>
     </div>
-  )
+  );
 }

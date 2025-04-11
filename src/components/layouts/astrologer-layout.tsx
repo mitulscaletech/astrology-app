@@ -2,9 +2,9 @@ import AstrologerHeader from "@/components/astrologer/astrologerHeader";
 
 export default function AstrologerLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className=''>
+    <div className="">
       <AstrologerHeader />
-      <main className='flex-1 p-6'>{children}</main>
+      <main className="flex-1 p-6">{children}</main>
     </div>
   );
 }

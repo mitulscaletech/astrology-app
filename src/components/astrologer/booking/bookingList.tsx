@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function BookingsList() {
   return (
@@ -40,19 +40,19 @@ export default function BookingsList() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function BookingItem({
   name,
   date,
   time,
-  status,
+  status
 }: {
-  name: string
-  date: string
-  time: string
-  status: "pending" | "confirmed" | "completed" | "cancelled"
+  name: string;
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
 }) {
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-secondary-200 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -64,14 +64,15 @@ function BookingItem({
       </div>
       <div className="flex items-center gap-2">
         <div
-          className={`rounded-full px-2 py-1 text-xs ${status === "pending"
-            ? "bg-yellow-100 text-yellow-800"
-            : status === "confirmed"
-              ? "bg-green-100 text-green-800"
-              : status === "completed"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-red-100 text-red-800"
-            }`}
+          className={`rounded-full px-2 py-1 text-xs ${
+            status === "pending"
+              ? "bg-yellow-100 text-yellow-800"
+              : status === "confirmed"
+                ? "bg-green-100 text-green-800"
+                : status === "completed"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-red-100 text-red-800"
+          }`}
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </div>
@@ -92,5 +93,5 @@ function BookingItem({
         )}
       </div>
     </div>
-  )
+  );
 }

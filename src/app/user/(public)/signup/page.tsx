@@ -1,159 +1,298 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+import toast from "react-hot-toast";
+import PhoneInput from "react-phone-input-2";
+import ReCAPTCHA from "react-google-recaptcha";
+
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import IconPhone from "@/shared/icons/check";
-import IconMoonStar from "@/shared/icons/moonStar";
-import IconMail from "@/shared/icons/mail";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
-const signupSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  dob: z.string().min(1, "Date of birth is required"),
-  birthTime: z.string().min(1, "Birth time is required"),
-  birthPlace: z.string().min(1, "Birth place is required")
-});
+import IconFacebook from "@/shared/icons/facebook";
+import { API_CONFIG } from "@/shared/constants/api";
+import HttpService from "@/shared/services/http.service";
+import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
 
-export default function UserSignup() {
-  const [activeTab, setActiveTab] = useState("email");
+import { handleUserStatusRedirect } from "@/lib/utils";
+
+import {
+  FacebookAuthProvider,
+  fetchSignInMethodsForEmail,
+  GoogleAuthProvider,
+  linkWithCredential,
+  signInWithPopup,
+  UserCredential
+} from "firebase/auth";
+import { auth, facebookProvider, googleProvider } from "@/firebaseConfig";
+// import AuthService from "@/shared/services/auth.service";
+
+export default function AstrologerSignup() {
   const router = useRouter();
-  const form = useForm({
-    resolver: zodResolver(signupSchema)
-  });
 
-  const handleEmailSignup = (data: any) => {
-    console.log("Email signup:", data);
+  const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(60);
+  const [showOtp, setShowOtp] = useState(false);
+  const [resendCount, setResendCount] = useState(0);
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
   };
-
-  const handleSocialLogin = (provider: string) => {
-    console.log("Social login:", provider);
+  const handleSendOtp = () => {
+    if (!mobileNumber) {
+      toast.error("Please enter your phone number");
+      return;
+    }
+    HttpService.post(API_CONFIG.sendOtp, {
+      country_code: countryCode,
+      mobile_number: mobileNumber,
+      captcha_token: captchaToken
+    })
+      .then((response) => {
+        if (!response.is_error) {
+          setShowOtp(true);
+          startTimer();
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending OTP:", error);
+      });
   };
-
-  const handleOTPSignup = (phone: string) => {
-    console.log("OTP signup:", phone);
+  const startTimer = () => {
+    setTimer(60);
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
+  const handleResendOtp = () => {
+    if (resendCount >= 2) {
+      toast.error("Please solve the captcha");
+      return;
+    }
+    setResendCount((prev) => prev + 1);
+    startTimer();
+    toast.success("OTP resent successfully!");
+  };
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      toast.error("Please enter OTP");
+      return;
+    }
+    if (!captchaToken) {
+      toast.error("Please solve the captcha");
+      return;
+    }
+    try {
+      HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: otp })
+        .then(async (response) => {
+          if (!response.is_error) {
+            const mockUser = {
+              mobile_number: mobileNumber,
+              access_token: response.data,
+              country_code: countryCode
+            };
+            await signIn("credentials", {
+              redirect: false,
+              token: JSON.stringify(mockUser)
+            });
+            const status = response.data.status;
+            const path = handleUserStatusRedirect(status);
+            if (path) router.push(path);
+          } else {
+            toast.error(response.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending OTP:", error);
+        });
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+  const handleSocialSignup = async (result: UserCredential, provider: string) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const user: any = result.user;
+    const params = {
+      access_token: credential?.accessToken,
+      name: result.user.displayName,
+      provider_name: provider,
+      provider_user_id: result.user.providerData[0].uid,
+      refresh_token: user?.stsTokenManager.refreshToken,
+      expires_at: user?.stsTokenManager.expirationTime,
+      social_photo: user.photoURL,
+      contry_code: DEFAULT_COUNTRY_CODE
+    };
+    HttpService.post(API_CONFIG.socialLogin, params)
+      .then(async (response) => {
+        if (!response.is_error) {
+          await signIn("credentials", {
+            redirect: false,
+            token: JSON.stringify(params)
+          });
+          const status = response.data.status;
+          const path = handleUserStatusRedirect(status);
+          if (path) router.push(path);
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      handleSocialSignup(result, "google");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleFacebookLogin = async () => {
+    try {
+      signInWithPopup(auth, facebookProvider)
+        .then((result) => {
+          console.log("User:", result.user);
+          handleSocialSignup(result, "facebook");
+        })
+        .catch(async (error) => {
+          if (error.code === "auth/account-exists-with-different-credential") {
+            const pendingCred = FacebookAuthProvider.credentialFromError(error);
+            const email = error.customData?.email;
 
+            if (email) {
+              const methods = await fetchSignInMethodsForEmail(auth, email);
+              console.log(" methods:", methods);
+
+              if (methods.includes("google.com")) {
+                // Prompt user to sign in with Google first
+                const googleProvider = new GoogleAuthProvider();
+                const googleResult = await signInWithPopup(auth, googleProvider);
+
+                // After successful login, link Facebook to the same account
+                await linkWithCredential(googleResult.user, pendingCred!);
+                console.log("Facebook linked to Google account!");
+              } else {
+                toast.error("Account already exists with a different provider");
+              }
+            }
+          } else {
+            console.error(error);
+          }
+        });
+    } catch (error) {
+      console.error("Facebook Login Error:", error);
+    }
+  };
+  const handleChangeMobile = (value: string, country: any) => {
+    const dialCode = country?.dialCode || "";
+    const number = value.replace(`${dialCode}`, "");
+    setMobileNumber(number);
+    setCountryCode(`+${dialCode}`);
+  };
   return (
-    <div className='container flex flex-col items-center justify-center min-h-screen p-4'>
-      <Link href='/' className='flex items-center space-x-2 mb-8'>
-        <span className='h-6 w-6' >
-          <IconMoonStar />
-        </span>
-        <span className='text-xl font-bold'>WeWake</span>
-      </Link>
-      <Card className='w-full max-w-md'>
-        <CardHeader>
-          <CardTitle>Create User Account</CardTitle>
-          <CardDescription>Choose your preferred signup method</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className='grid w-full grid-cols-2'>
-              <TabsTrigger value='email' className='flex items-center'>
-                <span className='w-4 h-4 mr-2' >
-                  <IconMail />
-                </span>
-                Email
-              </TabsTrigger>
-              <TabsTrigger value='phone' className='flex items-center'>
-                <span className='w-4 h-4 mr-2'>
-                  <IconPhone />
-                </span>
-                Phone
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value='email' className='space-y-4'>
-              <form onSubmit={form.handleSubmit(handleEmailSignup)} className='space-y-4'>
-                <div className='space-y-2'>
-                  <label htmlFor='name' className='text-sm font-medium'>
-                    Full Name
-                  </label>
-                  <Input {...form.register("name")} id='name' placeholder='Enter your full name' />
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='email' className='text-sm font-medium'>
-                    Email
-                  </label>
-                  <Input {...form.register("email")} id='email' type='email' placeholder='Enter your email' />
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='password' className='text-sm font-medium'>
-                    Password
-                  </label>
-                  <Input {...form.register("password")} id='password' type='password' placeholder='Create a password' />
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='dob' className='text-sm font-medium'>
-                    Date of Birth
-                  </label>
-                  <Input {...form.register("dob")} id='dob' type='date' />
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='birthTime' className='text-sm font-medium'>
-                    Birth Time
-                  </label>
-                  <Input {...form.register("birthTime")} id='birthTime' type='time' />
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='birthPlace' className='text-sm font-medium'>
-                    Birth Place
-                  </label>
-                  <Input {...form.register("birthPlace")} id='birthPlace' placeholder='Enter your birth place' />
-                </div>
-                <Button type='submit' className='w-full'>
-                  Create Account
-                </Button>
-              </form>
-            </TabsContent>
-            <TabsContent value='phone' className='space-y-4'>
-              <div className='space-y-2'>
-                <label htmlFor='phone' className='text-sm font-medium'>
-                  Phone Number
-                </label>
-                <Input id='phone' type='tel' placeholder='Enter your phone number' />
-                <Button onClick={() => handleOTPSignup("phone")} className='w-full mt-4'>
-                  Send OTP
+    <div className="min-h-screen bg-primary-100 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-6 space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-primary">Join WeWake</h1>
+          <p className="text-gray-600">Create your professional account</p>
+        </div>
+
+        <div className="space-y-4">
+          <Label htmlFor="mobileNumber">Mobile Number</Label>
+          <PhoneInput
+            country="in"
+            value={`${countryCode}${mobileNumber}`}
+            onlyCountries={["us", "in", "gb"]}
+            onChange={(value, country: any) => handleChangeMobile(value, country)}
+            inputProps={{ name: "phone-input" }}
+            inputStyle={{ width: "100%", height: "40px" }}
+          />
+
+          {!showOtp ? (
+            <Button className="w-full" onClick={handleSendOtp}>
+              Send OTP
+            </Button>
+          ) : (
+            <>
+              <div>
+                <Label htmlFor="otp">Enter OTP</Label>
+                <InputOTP
+                  id="otp"
+                  maxLength={6}
+                  value={otp}
+                  onChange={setOtp}
+                  // onComplete={(e: any) => setOtp(e.target.value)}
+                >
+                  <InputOTPGroup>
+                    {[...Array(6)].map((_, index) => (
+                      <InputOTPSlot key={index} index={index} />
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+
+              <div className="flex justify-between items-center text-sm">
+                <Button variant="ghost" disabled={timer > 0} onClick={handleResendOtp}>
+                  Resend OTP {timer > 0 && `(${timer}s)`}
                 </Button>
               </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-        <CardFooter className='flex flex-col space-y-4'>
-          <div className='relative w-full'>
-            <div className='absolute inset-0 flex items-center'>
-              <span className='w-full border-t' />
-            </div>
-            <div className='relative flex justify-center text-xs uppercase'>
-              <span className='bg-accent-white px-2 text-secondary-300'>Or continue with</span>
-            </div>
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
+                onChange={handleCaptchaChange}
+              />
+              <Button className="w-full" onClick={handleVerifyOtp}>
+                Verify & Create Account
+              </Button>
+            </>
+          )}
+        </div>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
           </div>
-          <div className='grid grid-cols-3 gap-4'>
-            <Button variant='outline' onClick={() => handleSocialLogin("google")}>
-              Google
-            </Button>
-            <Button variant='outline' onClick={() => handleSocialLogin("facebook")}>
-              Facebook
-            </Button>
-            <Button variant='outline' onClick={() => handleSocialLogin("apple")}>
-              Apple
-            </Button>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-primary-100 text-gray-500">Or sign up with</span>
           </div>
-          <div className='text-center text-sm text-secondary-300'>
-            Already have an account?{" "}
-            <Link href='/auth/user' className='text-primary hover:underline'>
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline" onClick={() => handleGoogleLogin()}>
+            <Image src="https://www.google.com/favicon.ico" alt="Google" width={20} height={20} className="w-5 h-5" />
+          </Button>
+          <Button variant="outline" onClick={() => handleFacebookLogin()}>
+            <span className="w-5 h-5">
+              <IconFacebook />
+            </span>
+          </Button>
+        </div>
+
+        <div className="text-center text-sm">
+          Already have an account?{" "}
+          <Link href="/astrologer/login" className="text-purple-600 hover:underline">
+            Log in
+          </Link>
+        </div>
       </Card>
     </div>
   );

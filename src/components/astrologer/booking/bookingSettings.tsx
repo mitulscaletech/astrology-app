@@ -103,7 +103,9 @@ const BookingSettings = () => {
             <div className="px-6 pb-6 space-y-6">
               <div className="space-y-2">
                 <h3 className="font-medium">Enable Cooling-Off Period</h3>
-                <p className="text-sm text-secondary-300">Prevent last-minute bookings by setting a cooling-off period</p>
+                <p className="text-sm text-secondary-300">
+                  Prevent last-minute bookings by setting a cooling-off period
+                </p>
                 <div className="flex items-center space-x-2">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" checked />
@@ -259,7 +261,7 @@ const BookingSettings = () => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default BookingSettings
+export default BookingSettings;

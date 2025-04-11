@@ -19,7 +19,7 @@ const UserMenu = () => {
           <Image src={logoIcon} alt="logo" width={24} height={24} className="w-full" />
         ) : (
           <div className="text-secondary font-medium">
-            {session?.user?.name
+            {session?.user?.full_name
               ?.split(" ")
               .map((word) => word.charAt(0).toUpperCase())
               .join("")}

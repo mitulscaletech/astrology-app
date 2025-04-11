@@ -1,4 +1,3 @@
-
 const BookingStats = () => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-3">
@@ -55,7 +54,7 @@ const BookingStats = () => {
       {/* Today's Sessions */}
       <div className="rounded-2xl border border-secondary-200 p-4 shadow-sm bg-white">
         <div className="flex items-center justify-between pb-2">
-          <h3 className="text-sm font-medium text-primary">Today's Sessions</h3>
+          <h3 className="text-sm font-medium text-primary">Today&apos;s Sessions</h3>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -103,8 +102,7 @@ const BookingStats = () => {
         <p className="text-xs text-secondary-400">This month</p>
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default BookingStats
+export default BookingStats;

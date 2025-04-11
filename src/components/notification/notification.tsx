@@ -2,7 +2,7 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const Notification: React.FC = () => {
-  return <Toaster position='bottom-center' reverseOrder={false} />;
+  return <Toaster position="bottom-center" reverseOrder={false} />;
 };
 
 type NotificationType = "success" | "error";

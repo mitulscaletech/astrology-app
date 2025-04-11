@@ -9,8 +9,8 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error]);
 
   return (
-    <div className='error-page'>
-      <div className='text--center'>
+    <div className="error-page">
+      <div className="text--center">
         <h2>Something went wrong!</h2>
         <button onClick={reset}>Try again</button>
       </div>
