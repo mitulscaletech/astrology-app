@@ -217,7 +217,7 @@ export default function AstrologerSignup() {
     setCountryCode(`+${dialCode}`);
   };
   return (
-    <div className="min-h-screen bg-primary-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-6 space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-primary">Join WeWake</h1>

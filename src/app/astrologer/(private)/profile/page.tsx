@@ -21,7 +21,7 @@ export default function AstrologerProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-primary-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <Card className="p-6">
           <div className="text-center mb-6">

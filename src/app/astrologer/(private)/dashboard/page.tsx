@@ -24,13 +24,13 @@ export default function AstrologerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-primary-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         <Card className="p-6">
           <h1 className="text-2xl font-bold text-primary mb-4">Astrologer Dashboard</h1>
           <p className="text-gray-600">Welcome to your dashboard!</p>
           {session?.user && (
-            <div className="mt-4 p-4 bg-primary-200 rounded-lg">
+            <div className="mt-4 p-4 bg-primary-100 rounded-lg">
               <h2 className="font-semibold text-primary">Session Info</h2>
               <pre className="mt-2 p-2 bg-accent-white rounded overflow-auto">{JSON.stringify(session, null, 2)}</pre>
             </div>
