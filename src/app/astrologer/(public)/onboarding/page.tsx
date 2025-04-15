@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
+import Link from "next/link";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
@@ -134,7 +135,7 @@ export default function AstrologerOnboarding() {
             <div>
               <Label htmlFor="full_name">Full Name *</Label>
               <Input id="full_name" {...register("full_name")} placeholder="Enter your full name" />
-              {errors.full_name && <p className="text-red-500 text-sm mt-1">{errors.full_name.message}</p>}
+              {errors.full_name && <p className="text-danger text-sm mt-1">{errors.full_name.message}</p>}
             </div>
             <div>
               <Label htmlFor="mobile">Mobile Number *</Label>
@@ -146,14 +147,14 @@ export default function AstrologerOnboarding() {
                 inputProps={{ name: "phone-input" }}
                 inputStyle={{ width: "100%", height: "40px" }}
               />
-              {errors.mobile_number && <p className="text-red-500 text-sm mt-1">{errors.mobile_number.message}</p>}
+              {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
             </div>
 
             {/* Email */}
             <div>
               <Label htmlFor="email">Email Address *</Label>
               <Input id="email" type="email" {...register("email")} placeholder="your@email.com" />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-danger text-sm mt-1">{errors.email.message}</p>}
             </div>
 
             {/* Date of Birth */}
@@ -162,10 +163,10 @@ export default function AstrologerOnboarding() {
                 label="Date of Birth *"
                 value={getValues("date_of_birth")}
                 onChange={(date) => {
-                  setValue("date_of_birth", date as Date);
+                  setValue("date_of_birth", date as Date, { shouldValidate: true });
                 }}
               />
-              {errors.date_of_birth && <p className="text-red-500 text-sm mt-1">{errors.date_of_birth.message}</p>}
+              {errors.date_of_birth && <p className="text-danger text-sm mt-1">{errors.date_of_birth.message}</p>}
             </div>
 
             {/* Gender */}
@@ -181,7 +182,7 @@ export default function AstrologerOnboarding() {
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender.message}</p>}
+              {errors.gender && <p className="text-danger text-sm mt-1">{errors.gender.message}</p>}
             </div>
 
             {/* Profile Photo */}

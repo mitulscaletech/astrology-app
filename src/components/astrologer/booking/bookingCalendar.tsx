@@ -15,6 +15,7 @@ import HttpService from "@/shared/services/http.service";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/assets/scss/calendar.scss";
+import CustomDateHeader from "./CustomDateHeader";
 
 export const TIME_SLOTS = {
   hourly: [
@@ -200,6 +201,9 @@ export default function BookingCalendar() {
           return {
             className: isBlocked ? "rbc-event-blocked" : "rbc-event-available"
           };
+        }}
+        components={{
+          header: CustomDateHeader
         }}
       />
 

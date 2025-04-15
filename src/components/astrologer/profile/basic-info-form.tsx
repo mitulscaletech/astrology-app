@@ -10,14 +10,13 @@ import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Label } from "@radix-ui/react-label";
-
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/forminput";
 import { DatePicker } from "@/components/ui/datepicker";
 
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import { Label } from "@/components/ui/label";
 
 // Validation Schema using Yup
 const schema = yup.object().shape({
@@ -138,7 +137,7 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
             inputProps={{ name: "phone-input" }}
             inputStyle={{ width: "100%", height: "40px" }}
           />
-          {errors.mobile_number && <p className="text-red-500 text-sm mt-1">{errors.mobile_number.message}</p>}
+          {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
         </div>
 
         <FormInput

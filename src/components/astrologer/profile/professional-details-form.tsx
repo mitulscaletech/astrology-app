@@ -132,7 +132,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
             <SelectItem value="kundali">Kundali Matching</SelectItem>
           </SelectContent>
         </Select>
-        {errors.specialization && <p className="text-red-500 text-sm mt-1">{errors.specialization.message}</p>}
+        {errors.specialization && <p className="text-danger text-sm mt-1">{errors.specialization.message}</p>}
       </div>
 
       <div>
@@ -148,7 +148,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
           </SelectContent>
         </Select>
         {errors.highest_qualification && (
-          <p className="text-red-500 text-sm mt-1">{errors.highest_qualification.message}</p>
+          <p className="text-danger text-sm mt-1">{errors.highest_qualification.message}</p>
         )}
       </div>
 

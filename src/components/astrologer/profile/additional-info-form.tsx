@@ -99,7 +99,7 @@ export function AdditionalInfoForm() {
           </TooltipProvider>
         </div>
         <Input id="video" type="file" accept="video/*" {...register("video")} />
-        {errors.video && <p className="text-red-500 text-sm mt-1">{errors.video.message}</p>}
+        {errors.video && <p className="text-danger text-sm mt-1">{errors.video.message}</p>}
       </div>
 
       <div>
@@ -110,7 +110,7 @@ export function AdditionalInfoForm() {
           placeholder="Tell us about yourself and your expertise (max 500 characters)"
           maxLength={500}
         />
-        {errors.short_bio && <p className="text-red-500 text-sm mt-1">{errors.short_bio.message}</p>}
+        {errors.short_bio && <p className="text-danger text-sm mt-1">{errors.short_bio.message}</p>}
       </div>
 
       <div className="flex justify-end">

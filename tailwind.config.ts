@@ -7,9 +7,16 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
+    screens: {
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
+      xxl: "1400px"
+    },
     container: {
       center: true,
-      padding: '12px'
+      padding: "12px"
     },
     colors: {
       primary: {
@@ -66,13 +73,36 @@ const config: Config = {
         6: "6"
       },
       boxShadow: {
-        box: '0px 22px 44px 0px rgba(var(--secondary-200), 0.24)',
-        'box-sm': '0px 8px 16px 0px rgba(var(--secondary-200), 0.14)',
-        card: '0px 15px 43px 0px rgba(17, 114, 238, 0.2)',
-        'card-sm': '0px 0px 12px 0px rgba(29 29 60 / 0.14)'
-      },
+        box: "0px 22px 44px 0px rgba(var(--secondary-200), 0.24)",
+        "box-sm": "0px 8px 16px 0px rgba(var(--secondary-200), 0.14)",
+        card: "0px 15px 43px 0px rgba(17, 114, 238, 0.2)",
+        "card-sm": "0px 0px 12px 0px rgba(29 29 60 / 0.14)"
+      }
     }
   },
-  plugins: []
+  plugins: [
+    function customContainer({ addComponents }: { addComponents: (components: Record<string, any>) => void }) {
+      addComponents({
+        ".container": {
+          maxWidth: "100%",
+          "@screen sm": {
+            maxWidth: "540px"
+          },
+          "@screen md": {
+            maxWidth: "720px"
+          },
+          "@screen lg": {
+            maxWidth: "960px"
+          },
+          "@screen xl": {
+            maxWidth: "1140px"
+          },
+          "@screen xxl": {
+            maxWidth: "1320px"
+          }
+        }
+      });
+    }
+  ]
 };
 export default config;

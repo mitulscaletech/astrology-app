@@ -3,8 +3,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Label } from "@radix-ui/react-label";
 import IconCalender from "@/shared/icons/calender";
+import { Label } from "@/components/ui/label";
 
 interface DatePickerProps {
   label: string;
