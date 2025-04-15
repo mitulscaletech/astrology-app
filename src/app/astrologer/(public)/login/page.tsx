@@ -43,6 +43,8 @@ export default function AstrologerLogin() {
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
+  // console.log("captchaToken", captchaToken);
+
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
@@ -281,7 +283,7 @@ export default function AstrologerLogin() {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-primary-100 text-gray-500">Or continue with</span>
+            <span className="px-2 bg-accent-white text-gray-500">Or continue with</span>
           </div>
         </div>
 
