@@ -57,7 +57,8 @@ const config: Config = {
       },
       warning: {
         DEFAULT: "#EEAF40",
-        100: "#FFEAEE"
+        100: "#EEAF40",
+        800: "#FFEAEE"
       },
       transparent: "transparent",
       current: "currentColor",
