@@ -13,7 +13,8 @@ export const API_CONFIG = {
   intakeForm: "intake-form",
   socialLogin: "user/social-login",
   uploadMedia: "media",
-  setAvailability: "astrologer-schedules"
+  setAvailability: "astrologer-schedules",
+  verifyCaptcha: "user/verify-recaptcha"
 };
 
 export const getUrl = (url: string, params: any = {}): string => {

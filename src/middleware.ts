@@ -17,7 +17,7 @@ interface TokenData {
 const USER_PROFILE_STATUS = {
   APPROVED_ACTIVATED: "Approved & Activated",
   PENDING_PROFILE_COMPLETION: "Pending Basic Information",
-  PROFILE_INCOMPLETE: "Profile Incomplete",
+  PROFILE_INCOMPLETE: "Pending Profile Completion",
   AWAITING_FINAL_REVIEW: "Awaiting Final Review",
   REJECTED: "Rejected"
 } as const;

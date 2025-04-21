@@ -43,9 +43,19 @@ export default function AstrologerSignup() {
   const [mobileNumber, setMobileNumber] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
+    HttpService.post(API_CONFIG.verifyCaptcha, { captchaToken: token }, { isPublic: true }).then((response) => {
+      if (!response.is_error) {
+        setIsCaptchaVerified(true);
+        toast.success(response.message);
+      } else {
+        setIsCaptchaVerified(false);
+        toast.error(response.message);
+      }
+    });
   };
   const handleSendOtp = () => {
     if (!mobileNumber) {
@@ -253,7 +263,7 @@ export default function AstrologerSignup() {
                 sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
                 onChange={handleCaptchaChange}
               />
-              <Button className="w-full" onClick={handleVerifyOtp}>
+              <Button className="w-full" onClick={handleVerifyOtp} disabled={!isCaptchaVerified}>
                 Verify & Create Account
               </Button>
             </>

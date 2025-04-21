@@ -86,8 +86,8 @@ export default function AstrologerOnboarding() {
       HttpService.put(API_CONFIG.updateProfile, formData, { contentType: "multipart/form-data" })
         .then(async (response) => {
           if (!response.is_error) {
+            update({ ...data, status: response.data.status, profilePhoto: response.data.profile_image });
             toast.success(response.message);
-            update({ ...data, profilePhoto: response.data.avatar });
             router.push("/astrologer/profile");
           } else {
             toast.error(response.message);
