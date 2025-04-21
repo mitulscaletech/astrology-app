@@ -7,6 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Modal, ModalContent, ModalTitle } from "@/components/ui/modal";
 import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 type TimeSlot = {
   start_time: string;
@@ -60,15 +61,17 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
   const handleCheckout = () => {
     if (!selectedDate || !selectedTime) return;
 
-    const dateStr = format(selectedDate, "yyyy-MM-dd");
-    const query = new URLSearchParams({
-      astro: selectedAstro,
-      duration: selectedDuration,
-      date: dateStr,
-      time: selectedTime
-    }).toString();
+    // const dateStr = format(selectedDate, "yyyy-MM-dd");
+    // const query = new URLSearchParams({
+    //   astro: selectedAstro,
+    //   duration: selectedDuration,
+    //   date: dateStr,
+    //   time: selectedTime
+    // }).toString();
 
-    router.push(`/checkout?${query}`);
+    // router.push(`/checkout?${query}`);
+    toast.success("Booking completed with astrologer");
+    router.push("/user/service-list");
   };
 
   return (

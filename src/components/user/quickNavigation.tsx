@@ -8,7 +8,8 @@ const tabs = [
   { name: "Profile", href: "/user/profile" },
   { name: "Change Password", href: "/user/change-password" },
   { name: "Sessions", href: "/user/sessions" },
-  { name: "Service", href: "/user/service-list" }
+  { name: "Service", href: "/user/service-list" },
+  { name: "Astrologers", href: "/user/astrologers" }
 ];
 
 const QuickNavigation = () => {

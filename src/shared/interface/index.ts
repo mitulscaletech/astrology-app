@@ -39,3 +39,53 @@ export interface IUserData {
   token: string;
   country_code: string;
 }
+
+export interface Astrologer {
+  id: string;
+  name: string;
+  slug: string;
+  specialization: string;
+  languages: string[];
+  rating: number;
+  experience: number;
+  bio: string;
+  price: number;
+  availability: string;
+  imageUrl?: any;
+}
+
+export interface AstrologerService {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  duration: string;
+  features: string[];
+}
+
+export interface AstrologerReview {
+  id: string;
+  name: string;
+  rating: number;
+  date: string;
+  comment: string;
+  helpfulCount: number;
+}
+
+export interface Education {
+  degree: string;
+  institution: string;
+  year: string;
+}
+
+export interface AstrologerDetail extends Astrologer {
+  detailedBio: string;
+  email: string;
+  phone?: string;
+  location: string;
+  expertise: string[];
+  education: Education[];
+  services: AstrologerService[];
+  reviews: AstrologerReview[];
+  reviewCount: number;
+}

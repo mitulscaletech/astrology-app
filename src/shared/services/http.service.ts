@@ -71,7 +71,7 @@ const commonAxios = async (config: IAxiosParams): Promise<any> => {
   if (!isPublic) {
     const session = await getSession();
     const token = session?.user.access_token;
-    console.log("token", token)
+    console.log("token", token);
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
