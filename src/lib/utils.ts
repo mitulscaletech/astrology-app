@@ -98,3 +98,16 @@ export function formatDistanceToNow(dateString: string): string {
   const diffInYears = Math.floor(diffInDays / 365);
   return `${diffInYears} year${diffInYears !== 1 ? "s" : ""} ago`;
 }
+
+export function astrologerActiveTab(completedSteps: number): string {
+  switch (completedSteps) {
+    case 1:
+      return "professional";
+    case 2:
+      return "social";
+    case 3:
+      return "additional";
+    default:
+      return "basic-info";
+  }
+}

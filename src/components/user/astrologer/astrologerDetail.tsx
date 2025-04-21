@@ -43,7 +43,7 @@ export default function AstrologerDetails() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container">
       <Link href="/user/astrologers" className="inline-flex items-center text-primary-600 mb-6 hover:text-primary-800">
         <span className="h-4 w-4 me-2">
           <IconChevronLeft />

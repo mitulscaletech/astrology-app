@@ -266,7 +266,7 @@ export default function AstrologerLogin() {
                 />
               )}
               <div className="flex justify-between items-center text-sm">
-                <Button variant="ghost" disabled={timer > 0} onClick={handleResendOtp}>
+                <Button variant="outline" size="sm" disabled={timer > 0} onClick={handleResendOtp}>
                   Resend OTP {timer > 0 && `(${timer}s)`}
                 </Button>
               </div>

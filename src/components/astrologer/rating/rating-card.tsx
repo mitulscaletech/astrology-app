@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "@/lib/utils";
 import IconStar from "@/shared/icons/star";
+import { Avatar } from "@/components/ui/avatar";
 
 export default function ReviewCard({ review }: { review: any }) {
   const [isReplying, setIsReplying] = useState(false);
@@ -22,10 +23,12 @@ export default function ReviewCard({ review }: { review: any }) {
   return (
     <div className="border rounded-lg p-4 shadow-sm">
       <div className="flex items-start gap-4">
-        {/* <Avatar className="h-10 w-10">
-          <AvatarImage src={review.user.avatar || "/placeholder.svg"} alt={review.user.name} />
-          <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
-        </Avatar> */}
+        <Avatar
+          src={review.user.avatar || "/placeholder.svg"}
+          alt={review.user.name}
+          fallback={review.user.name.charAt(0)}
+          size="lg"
+        />
 
         <div className="flex-1">
           <div className="flex justify-between items-start">

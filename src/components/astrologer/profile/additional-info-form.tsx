@@ -19,6 +19,7 @@ import { getMediaFile } from "@/lib/utils";
 import IconInfo from "@/shared/icons/info";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
+import { useRouter } from "next/navigation";
 
 const validationSchema = yup.object().shape({
   video: yup.mixed().required("Introduction video is required"),
@@ -27,6 +28,7 @@ const validationSchema = yup.object().shape({
 
 export function AdditionalInfoForm() {
   const { update, data: session } = useSession();
+  const router = useRouter();
 
   const {
     register,
@@ -58,6 +60,7 @@ export function AdditionalInfoForm() {
               });
             }
             toast.success(response.message);
+            router.push("astrologer/awaiting-review");
           }
         })
         .catch((error) => {

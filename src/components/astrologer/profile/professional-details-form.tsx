@@ -103,11 +103,16 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
 
   useEffect(() => {
     if (session?.user) {
-      const { years_of_experience, highest_qualification, institute_university_name, specialization, completed_steps } =
-        session.user.intake_form;
+      const {
+        years_of_experience = 0,
+        highest_qualification = "",
+        institute_university_name = "",
+        specialization = "",
+        completed_steps = 0
+      } = session?.user?.intake_form || {};
 
       reset({
-        years_of_experience: years_of_experience,
+        years_of_experience: years_of_experience || 0,
         highest_qualification: highest_qualification || "",
         institute_university_name: institute_university_name || "",
         specialization: specialization || "",

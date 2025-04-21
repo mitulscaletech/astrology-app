@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -9,16 +9,24 @@ import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
 import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
 import { SocialProfilesForm } from "@/components/astrologer/profile/social-profiles-form";
 import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-info-form";
+import { astrologerActiveTab } from "@/lib/utils";
 
 export default function AstrologerProfile() {
-  const { status } = useSession();
+  const { data, status } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("basic-info");
 
-  if (status === "unauthenticated") {
-    router.push("/astrologer/login");
-    return null;
-  }
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/astrologer/login");
+      return;
+    }
+
+    const completedSteps = data?.user?.intake_form?.completed_steps || 0;
+    setActiveTab(astrologerActiveTab(completedSteps));
+  }, [data, status, router]);
+
+  console.log("session", data?.user);
 
   return (
     <div className="min-h-screen p-6">
