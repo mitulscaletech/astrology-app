@@ -49,7 +49,7 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
         .then((response) => {
           if (!response.is_error) {
             toast.success(response.message);
-            update({ ...session?.user, intake_form: { ...session?.user.intake_form, ...data } });
+            update({ ...session?.user, intake_form: { ...session?.user.intake_form, ...data, completed_steps: 3 } });
             onComplete();
           } else {
             toast.error(response.message);

@@ -49,9 +49,13 @@ export function AdditionalInfoForm() {
               const data = await HttpService.post(API_CONFIG.uploadMedia, formData, {
                 contentType: "multipart/form-data"
               });
-              update({ ...session?.user, intake_form: { ...additionalData, video: data.data } });
+              update({ ...session?.user, intake_form: { ...additionalData, video: data.data, completed_steps: 4 } });
             } else {
-              update({ ...session?.user, intake_form: { ...additionalData } });
+              update({
+                ...session?.user,
+                status: response.data.user?.status,
+                intake_form: { ...additionalData, completed_steps: 4 }
+              });
             }
             toast.success(response.message);
           }

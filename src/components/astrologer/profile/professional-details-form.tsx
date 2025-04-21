@@ -77,13 +77,22 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
         });
       };
       const [certificateRes, resumeRes] = await Promise.all([
-        uploadMedia(data.certification[0], "certification"),
-        uploadMedia(data.resume[0], "resume")
+        typeof data.certification !== "string" && data.certification?.[0]
+          ? uploadMedia(data.certification[0], "certification")
+          : Promise.resolve(null),
+
+        typeof data.resume !== "string" && data.resume?.[0]
+          ? uploadMedia(data.resume[0], "resume")
+          : Promise.resolve(null)
       ]);
 
       update({
         ...session?.user,
-        intake_form: { ...tempData, certification: certificateRes.data, resume: resumeRes.data }
+        intake_form: {
+          ...tempData,
+          certification: certificateRes?.data ?? data.certification,
+          resume: resumeRes?.data ?? data.resume
+        }
       });
       toast.success(response.message);
       onComplete();
@@ -94,7 +103,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
 
   useEffect(() => {
     if (session?.user) {
-      const { years_of_experience, highest_qualification, institute_university_name, specialization } =
+      const { years_of_experience, highest_qualification, institute_university_name, specialization, completed_steps } =
         session.user.intake_form;
 
       reset({

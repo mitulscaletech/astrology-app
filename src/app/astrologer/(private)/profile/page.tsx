@@ -29,22 +29,6 @@ export default function AstrologerProfile() {
             <p className="text-gray-600">Fill in your details to start accepting consultations</p>
           </div>
 
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-            <div
-              className="bg-purple-600 h-2.5 rounded-full transition-all duration-300"
-              style={{
-                width:
-                  activeTab === "basic-info"
-                    ? "25%"
-                    : activeTab === "professional"
-                      ? "50%"
-                      : activeTab === "social"
-                        ? "75%"
-                        : "100%"
-              }}
-            ></div>
-          </div>
-
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>

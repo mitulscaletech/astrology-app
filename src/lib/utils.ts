@@ -64,3 +64,37 @@ export const convertEventsToTimeSlots = (events: any, timeZone = "UTC") => {
     end_time: formatTime(new Date(event.end))
   }));
 };
+
+export function formatDistanceToNow(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (diffInDays === 0) {
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    if (diffInHours === 0) {
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      return `${diffInMinutes} minute${diffInMinutes !== 1 ? "s" : ""} ago`;
+    }
+    return `${diffInHours} hour${diffInHours !== 1 ? "s" : ""} ago`;
+  }
+
+  if (diffInDays < 7) {
+    return `${diffInDays} day${diffInDays !== 1 ? "s" : ""} ago`;
+  }
+
+  if (diffInDays < 30) {
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    return `${diffInWeeks} week${diffInWeeks !== 1 ? "s" : ""} ago`;
+  }
+
+  if (diffInDays < 365) {
+    const diffInMonths = Math.floor(diffInDays / 30);
+    return `${diffInMonths} month${diffInMonths !== 1 ? "s" : ""} ago`;
+  }
+
+  const diffInYears = Math.floor(diffInDays / 365);
+  return `${diffInYears} year${diffInYears !== 1 ? "s" : ""} ago`;
+}
