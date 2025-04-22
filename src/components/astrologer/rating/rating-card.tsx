@@ -15,7 +15,6 @@ export default function ReviewCard({ review }: { review: any }) {
 
   const handleSubmitReply = () => {
     // In a real app, this would send the reply to an API
-    console.log(`Submitting reply for review ${review.id}: ${replyText}`);
     setIsReplying(false);
     setShowReply(true);
   };
