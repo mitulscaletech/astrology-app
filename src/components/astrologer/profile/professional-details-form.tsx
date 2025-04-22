@@ -18,6 +18,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getMediaFile } from "@/lib/utils";
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import IconFile from "@/shared/icons/file";
+import IconEdit from "@/shared/icons/edit";
 
 const schema = yup.object().shape({
   years_of_experience: yup
@@ -174,17 +176,28 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       />
 
       <div>
+        <label className="block text-sm font-medium mb-2">Astrology Certification</label>
         {currentValues.certification && typeof currentValues.certification === "string" ? (
-          <Image
-            src={currentValues.certification}
-            alt="Certification"
-            width={100}
-            height={100}
-            className="rounded-md mb-2"
-          />
+          <div className="w-48 relative">
+            <Image
+              src={currentValues.certification}
+              alt="Certification"
+              width={100}
+              height={100}
+              className="w-full rounded-md mb-2"
+            />
+            <div className="bg-secondary z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+                {...register("certification")}
+                className="size-full absolute opacity-0"
+              />
+              <IconEdit />
+            </div>
+          </div>
         ) : (
           <>
-            <label className="block text-sm font-medium">Astrology Certification</label>
             <input
               type="file"
               accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
@@ -196,17 +209,25 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       </div>
 
       <div>
+        <label className="block text-sm font-medium mb-2">Resume (Optional)</label>
         {currentValues.resume && typeof currentValues.resume === "string" ? (
-          <Image
-            src={currentValues.resume}
-            alt={currentValues.resume}
-            width={100}
-            height={100}
-            className="rounded-md mb-2"
-          />
+          <div className="flex p-3 justify-center gap-2 border border-secondary-200 rounded-md shadow-sm relative">
+            <span className="w-6">
+              <IconFile />
+            </span>
+            <p>{currentValues.resume.split("/").pop()}</p>
+            <div className="bg-secondary z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                {...register("resume")}
+                className="mt-1 block w-full absolute size-full opacity-0"
+              />
+              <IconEdit />
+            </div>
+          </div>
         ) : (
           <>
-            <label className="block text-sm font-medium">Resume (Optional)</label>
             <input type="file" accept=".pdf,.doc,.docx" {...register("resume")} className="mt-1 block w-full" />
           </>
         )}
