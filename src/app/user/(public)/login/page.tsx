@@ -8,8 +8,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import toast from "react-hot-toast";
-import PhoneInput from "react-phone-input-2";
 import ReCAPTCHA from "react-google-recaptcha";
+import PhoneInput from "react-phone-input-2";
 
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -32,11 +32,9 @@ import {
   UserCredential
 } from "firebase/auth";
 import { auth, facebookProvider, googleProvider } from "@/firebaseConfig";
-// import AuthService from "@/shared/services/auth.service";
 
-export default function UserSignup() {
+export default function UserLogin() {
   const router = useRouter();
-
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(60);
   const [showOtp, setShowOtp] = useState(false);
@@ -44,9 +42,20 @@ export default function UserSignup() {
   const [mobileNumber, setMobileNumber] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
+    setIsCaptchaVerified(false);
+    HttpService.post(API_CONFIG.verifyCaptcha, { captchaToken: token }, { isPublic: true }).then((response) => {
+      if (!response.is_error) {
+        setIsCaptchaVerified(true);
+        toast.success(response.message);
+      } else {
+        setIsCaptchaVerified(false);
+        toast.error(response.message);
+      }
+    });
   };
   const handleSendOtp = () => {
     HttpService.post(API_CONFIG.sendOtp, {
@@ -146,12 +155,12 @@ export default function UserSignup() {
     const params = {
       access_token: credential?.accessToken,
       name: result.user.displayName,
+      email: result.user.email,
       provider_name: provider,
       provider_user_id: result.user.providerData[0].uid,
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
-      social_photo: user.photoURL,
-      contry_code: DEFAULT_COUNTRY_CODE
+      social_photo: user.photoURL
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {
@@ -190,12 +199,13 @@ export default function UserSignup() {
           if (error.code === "auth/account-exists-with-different-credential") {
             const pendingCred = FacebookAuthProvider.credentialFromError(error);
             const email = error.customData?.email;
-
             if (email) {
               const methods = await fetchSignInMethodsForEmail(auth, email);
               if (methods.includes("google.com")) {
+                // Prompt user to sign in with Google first
                 const googleProvider = new GoogleAuthProvider();
                 const googleResult = await signInWithPopup(auth, googleProvider);
+
                 // After successful login, link Facebook to the same account
                 await linkWithCredential(googleResult.user, pendingCred!);
               } else {
@@ -216,16 +226,17 @@ export default function UserSignup() {
     setMobileNumber(number);
     setCountryCode(`+${dialCode}`);
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-6 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary">Join WeWake</h1>
-          <p className="text-gray-600">Create your professional account</p>
+          <h1 className="text-2xl font-bold text-primary">User Login</h1>
+          <p className="text-gray-600">Welcome back! Please login to continue.</p>
         </div>
 
         <div className="space-y-4">
-          <Label htmlFor="mobileNumber">Mobile Number</Label>
+          <Label htmlFor="mobileNumber">Phone Number</Label>
           <PhoneInput
             country="in"
             value={`${countryCode}${mobileNumber}`}
@@ -257,28 +268,31 @@ export default function UserSignup() {
                   </InputOTPGroup>
                 </InputOTP>
               </div>
-
+              {resendCount >= 3 && (
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
+                  onChange={handleCaptchaChange}
+                />
+              )}
               <div className="flex justify-between items-center text-sm">
-                <Button variant="outline" disabled={timer > 0} onClick={handleResendOtp}>
+                <Button variant="outline" size="sm" disabled={timer > 0} onClick={handleResendOtp}>
                   Resend OTP {timer > 0 && `(${timer}s)`}
                 </Button>
               </div>
-              <ReCAPTCHA
-                sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
-                onChange={handleCaptchaChange}
-              />
-              <Button className="w-full" onClick={handleVerifyOtp}>
-                Verify & Create Account
+
+              <Button className="w-full" onClick={handleVerifyOtp} disabled={!isCaptchaVerified}>
+                Verify OTP
               </Button>
             </>
           )}
         </div>
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-accent-white text-gray-500">Or sign up with</span>
+            <span className="px-2 bg-accent-white text-gray-500">Or continue with</span>
           </div>
         </div>
 
@@ -294,9 +308,9 @@ export default function UserSignup() {
         </div>
 
         <div className="text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/user/login" className="text-purple-600 hover:underline">
-            Log in
+          Don&apos;t have an account?{" "}
+          <Link href="/user/signup" className="text-purple-600 hover:underline">
+            Sign up
           </Link>
         </div>
       </Card>

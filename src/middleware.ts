@@ -51,7 +51,6 @@ export async function middleware(req: NextRequest) {
   // Get the session token
   const token = (await getToken({ req, secret: process.env.NEXTAUTH_SECRET })) as TokenData | null;
   console.log("Middleware - Token exists:", !!token);
-  console.log("Token data:", token);
 
   // Check if the current path is a public route
   const isPublicRoute = PUBLIC_ROUTES.has(pathname);
