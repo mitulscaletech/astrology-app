@@ -1,7 +1,7 @@
-/* eslint-disable indent */
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { USER_PROFILE_STATUS } from "./shared/constants";
 
 interface UserData {
   status: string;
@@ -13,14 +13,14 @@ interface TokenData {
   [key: string]: any;
 }
 
-// Define user status constants
-const USER_PROFILE_STATUS = {
-  APPROVED_ACTIVATED: "Approved & Activated",
-  PENDING_PROFILE_COMPLETION: "Pending Basic Information",
-  PROFILE_INCOMPLETE: "Pending Profile Completion",
-  AWAITING_FINAL_REVIEW: "Awaiting Final Review",
-  REJECTED: "Rejected"
-} as const;
+// // Define user status constants
+// const USER_PROFILE_STATUS = {
+//   APPROVED_ACTIVATED: "Approved & Activated",
+//   PENDING_PROFILE_COMPLETION: "Pending Basic Information",
+//   PROFILE_INCOMPLETE: "Pending Profile Completion",
+//   AWAITING_FINAL_REVIEW: "Awaiting Final Review",
+//   REJECTED: "Rejected"
+// } as const;
 
 // Handle user status redirect
 const handleUserStatusRedirect = (status: string): string | undefined => {
