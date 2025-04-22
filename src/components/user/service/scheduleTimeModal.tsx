@@ -21,6 +21,12 @@ type Props = {
   selectedDuration: string;
 };
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const TIME_SLOTS: TimeSlot[] = [
   { start_time: "09:00", end_time: "10:00" },
   { start_time: "14:00", end_time: "15:00" }
@@ -29,6 +35,8 @@ const TIME_SLOTS: TimeSlot[] = [
 export default function ScheduleTimeModal({ open, onClose, selectedAstro, selectedDuration }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const durationInMin = parseInt(selectedDuration);
@@ -58,20 +66,58 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
     setSelectedTime((prev) => (prev === time ? null : time));
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!selectedDate || !selectedTime) return;
+    try {
+      setLoading(true);
+      const response = await fetch("/api/razorpay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 100 }) // Corrected: Pass object, not raw number
+      });
 
-    // const dateStr = format(selectedDate, "yyyy-MM-dd");
-    // const query = new URLSearchParams({
-    //   astro: selectedAstro,
-    //   duration: selectedDuration,
-    //   date: dateStr,
-    //   time: selectedTime
-    // }).toString();
+      if (!response.ok) throw new Error("Failed to create order");
 
-    // router.push(`/checkout?${query}`);
-    toast.success("Booking completed with astrologer");
-    router.push("/user/service-list");
+      const data = await response.json();
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: data.amount,
+        currency: data.currency,
+        name: "WeWake",
+        description: "Payment for your order",
+        order_id: data.orderId,
+        handler: function (response: any) {
+          setLoading(false);
+          toast.success(`✅ Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+          router.push("/user/service-list");
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+            toast.error(" Payment cancelled by user.");
+          }
+        },
+        theme: {
+          color: "#B1142D"
+        }
+      };
+
+      const paymentObject = new window.Razorpay(options);
+
+      // 🔥 Listen to payment failure
+      paymentObject.on("payment.failed", function (response: any) {
+        setLoading(false);
+        toast.error(`Payment Failed! Reason: ${response.error.description || "Unknown error"}`);
+      });
+
+      paymentObject.open();
+    } catch (error) {
+      setLoading(false);
+      const message = error instanceof Error ? error.message : "Payment failed";
+      toast.error(message);
+      console.error("Razorpay Init Error", error);
+    }
   };
 
   return (
@@ -139,6 +185,9 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
             </ul>
 
             <Button className="mt-4" onClick={handleCheckout}>
+              {loading && (
+                <span className="mr-2 h-4 w-4 animate-spin border-2 border-t-transparent border-accent-white rounded-full" />
+              )}
               Book Now
             </Button>
           </div>
