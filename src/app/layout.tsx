@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import AuthProvider from "@/components/auth-provider";
 import "react-phone-input-2/lib/style.css";
+import { LoaderProvider } from "@/context/LoaderContext";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -27,10 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        <AuthProvider>
-          {children}
-          <Toaster position="bottom-center" reverseOrder={false} />
-        </AuthProvider>
+        <LoaderProvider>
+          <AuthProvider>
+            {children}
+            <Toaster position="bottom-center" reverseOrder={false} />
+          </AuthProvider>
+        </LoaderProvider>
       </body>
     </html>
   );
