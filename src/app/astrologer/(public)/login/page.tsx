@@ -42,11 +42,20 @@ export default function AstrologerLogin() {
   const [mobileNumber, setMobileNumber] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-
-  // console.log("captchaToken", captchaToken);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
+    setIsCaptchaVerified(false);
+    HttpService.post(API_CONFIG.verifyCaptcha, { captchaToken: token }, { isPublic: true }).then((response) => {
+      if (!response.is_error) {
+        setIsCaptchaVerified(true);
+        toast.success(response.message);
+      } else {
+        setIsCaptchaVerified(false);
+        toast.error(response.message);
+      }
+    });
   };
   const handleSendOtp = () => {
     HttpService.post(API_CONFIG.sendOtp, {
@@ -271,7 +280,7 @@ export default function AstrologerLogin() {
                 </Button>
               </div>
 
-              <Button className="w-full" onClick={handleVerifyOtp}>
+              <Button className="w-full" onClick={handleVerifyOtp} disabled={!isCaptchaVerified}>
                 Verify OTP
               </Button>
             </>
