@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 type ModalProps = {
   children: ReactNode;
   open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (_open: boolean) => void;
 };
 
 export const Modal = ({ children, open, onOpenChange }: ModalProps) => {

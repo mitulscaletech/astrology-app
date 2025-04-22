@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FaqAccordion } from "./faqAccordion";
+import { FaqAccordion } from "./faq-accordion";
 
 type FaqItem = {
   question: string;

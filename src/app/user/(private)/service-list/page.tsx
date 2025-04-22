@@ -1,4 +1,4 @@
-import ServiceList from "@/components/user/service/serviceList";
+import ServiceList from "@/components/user/service/service-list";
 
 const ServiceListPage = () => {
   return <ServiceList />;

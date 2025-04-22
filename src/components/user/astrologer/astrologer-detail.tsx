@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { AstrologerServices } from "@/components/user/astrologer/astrologer-services";
 import { AstrologerReviews } from "@/components/user/astrologer/astrologer-reviews";
-import { astrologersDetails } from "./astrologers-details";
 import type { AstrologerDetail } from "@/shared/interface/index.ts";
 import IconChevronLeft from "@/shared/icons/chevronLeft";
 import IconStar from "@/shared/icons/star";
@@ -20,6 +19,7 @@ import IconMail from "@/shared/icons/mail";
 import IconPhone from "@/shared/icons/phone";
 import IconMapPin from "@/shared/icons/mapPin";
 import Loader from "@/components/loader";
+import { astrologersDetails } from "@/lib/data";
 
 export default function AstrologerDetails() {
   const { slug } = useParams() as { slug: string };

@@ -22,7 +22,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
-import Link from "next/link";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {

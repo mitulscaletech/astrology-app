@@ -1,4 +1,4 @@
-import AstrologerDetails from "@/components/user/astrologer/astrologerDetail";
+import AstrologerDetails from "@/components/user/astrologer/astrologer-detail";
 
 const AstrologerDetailPage = () => {
   return <AstrologerDetails />;

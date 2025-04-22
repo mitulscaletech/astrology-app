@@ -30,8 +30,7 @@ export default function AdminLogin() {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Login Data:", data);
+  const onSubmit = (_data: FormData) => {
     router.push("/admin/dashboard");
 
     // Add login logic here

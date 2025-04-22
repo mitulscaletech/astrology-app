@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -8,8 +7,8 @@ interface FiltersProps {
   languages: string[];
   selectedRating: number | null;
   selectedLanguage: string | null;
-  onRatingChange: (rating: number | null) => void;
-  onLanguageChange: (language: string | null) => void;
+  onRatingChange: (_rating: number | null) => void;
+  onLanguageChange: (_language: string | null) => void;
 }
 
 export function Filters({
@@ -19,12 +18,9 @@ export function Filters({
   onRatingChange,
   onLanguageChange
 }: FiltersProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
   const handleReset = () => {
     onRatingChange(null);
     onLanguageChange(null);
-    setIsOpen(false);
   };
 
   return (

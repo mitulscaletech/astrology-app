@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import AstrologerHeader from "@/components/astrologer/astrologerHeader";
+import AstrologerHeader from "@/components/astrologer/astrologer-header";
 
 export default function AstrologerLayout({ children }: { children: React.ReactNode }) {
   const { update } = useSession();

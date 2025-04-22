@@ -5,7 +5,7 @@ import IconSearch from "@/shared/icons/search";
 
 interface SearchProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (_value: string) => void;
 }
 
 export function Search({ value, onChange }: SearchProps) {

@@ -1,7 +1,7 @@
 "use client";
 
-import { FaqSearch } from "@/components/faqs/faqSearch";
-import { FaqTabs } from "@/components/faqs/faqTabs";
+import { FaqSearch } from "@/components/faqs/faq-search";
+import { FaqTabs } from "@/components/faqs/faq-tabs";
 import { useState } from "react";
 
 const faqData = {

@@ -1,5 +1,5 @@
-import AstrologerHeader from "@/components/astrologer/astrologerHeader";
-import QuickNavigation from "@/components/user/quickNavigation";
+import AstrologerHeader from "@/components/astrologer/astrologer-header";
+import QuickNavigation from "@/components/user/quick-navigation";
 import Script from "next/script";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {

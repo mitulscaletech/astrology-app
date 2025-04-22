@@ -3,7 +3,7 @@ import logo from "@/assets/images/logo.png";
 import Link from "next/link";
 import Image from "next/image";
 import Notification from "@/components/header/notification";
-import UserMenu from "@/components/header/userMenu";
+import UserMenu from "@/components/header/user-menu";
 import { IconLogOut } from "@/shared/icons/page";
 import IconUser from "@/shared/icons/user";
 import IconCart from "@/shared/icons/cart";

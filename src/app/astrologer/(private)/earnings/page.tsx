@@ -6,12 +6,12 @@ import { EarningsHistory } from "@/components/astrologer/earnings/earnings-histo
 import type { EarningData } from "@/shared/interface";
 import IconChevronDown from "@/shared/icons/chevronDown";
 import IconChevronUp from "@/shared/icons/chevronUp";
-import { SAMPLE_EARNINGS_DATA } from "@/shared/constants/dummy-data";
 import { DashboardCard } from "@/components/ui/dashboard-card";
 import IconRupee from "@/shared/icons/rupee";
+import { SAMPLE_EARNINGS_DATA } from "@/lib/data";
 
 export default function EarningsPage() {
-  const [earningHistory, setEarningHistory] = useState<EarningData[]>([
+  const [earningHistory] = useState<EarningData[]>([
     {
       amount: 150,
       date: "2023-12-15",

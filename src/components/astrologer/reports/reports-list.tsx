@@ -1,8 +1,6 @@
-/* eslint-disable indent */
 "use client";
 
 import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { formatDate, formatDateTime, isReportDelayed } from "@/lib/date";
-import { REPORT_STATUS } from "@/shared/constants/dummy-data";
 import IconCalender from "@/shared/icons/calender";
 import IconFilter from "@/shared/icons/filter";
 import IconAlertTriangle from "@/shared/icons/alertTriangle";
@@ -19,13 +16,13 @@ import IconSend from "@/shared/icons/send";
 import IconFile from "@/shared/icons/file";
 import { Report } from "@/shared/interface";
 import Link from "next/link";
+import { REPORT_STATUS } from "@/lib/data";
 
 interface ReportsListProps {
   reports: Report[] | any;
 }
 
 export function ReportsList({ reports }: ReportsListProps) {
-  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
 

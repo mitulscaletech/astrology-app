@@ -22,7 +22,7 @@ import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
 import Grid from "@/components/ui/grid";
-import FamilyInvitations from "@/components/user/profile/FamilyInvitations";
+import FamilyInvitations from "@/components/user/profile/family-invitations";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {

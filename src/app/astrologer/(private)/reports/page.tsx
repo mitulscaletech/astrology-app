@@ -1,7 +1,7 @@
 "use client";
 
 import { ReportsList } from "@/components/astrologer/reports/reports-list";
-import { SAMPLE_REPORTS } from "@/shared/constants/dummy-data";
+import { SAMPLE_REPORTS } from "@/lib/data";
 
 export default function ReportsPage() {
   return (

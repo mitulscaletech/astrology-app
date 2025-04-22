@@ -10,7 +10,7 @@ type Props = {
     type: "Video" | "Audio" | "Chat";
     status: "Confirmed" | "Pending" | "Canceled";
   };
-  onCancel: (id: string) => void;
+  onCancel: (_id: string) => void;
 };
 
 export const SessionCard = ({ session, onCancel }: Props) => {

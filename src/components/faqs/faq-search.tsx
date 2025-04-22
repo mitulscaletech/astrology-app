@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 
-export function FaqSearch({ search, setSearch }: { search: string; setSearch: (val: string) => void }) {
+export function FaqSearch({ search, setSearch }: { search: string; setSearch: (_val: string) => void }) {
   return (
     <div className="mb-6">
       <Input

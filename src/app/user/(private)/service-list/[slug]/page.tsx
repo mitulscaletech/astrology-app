@@ -1,4 +1,4 @@
-import ServiceDetail from "@/components/user/service/serviceDetail";
+import ServiceDetail from "@/components/user/service/service-detail";
 
 const ServiceListPage = () => {
   return <ServiceDetail />;

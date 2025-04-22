@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import service1 from "@/assets/images/astrology-service-1.webp";
 import service2 from "@/assets/images/astrology-service-2.webp";
 import service3 from "@/assets/images/astrology-service-3.webp";
-import ScheduleTimeModal from "@/components/user/service/scheduleTimeModal";
+import ScheduleTimeModal from "@/components/user/service/schedule-time-modal";
 
 const service = {
   title: "Janma Kundali: Holistic Life Blueprint",

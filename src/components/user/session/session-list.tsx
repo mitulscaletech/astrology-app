@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SessionCard } from "@/components/user/session/sessionCard";
-import { CancelModal } from "@/components/user/session/cancelModal";
+import { SessionCard } from "@/components/user/session/session-card";
+import { CancelModal } from "@/components/user/session/cancel-modal";
 import Loader from "@/components/ui/loader";
 import { Modal, ModalTrigger, ModalTitle, ModalDescription, ModalClose, ModalContent } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";

@@ -1,5 +1,5 @@
-import BookingStats from "@/components/astrologer/booking/bookingStats";
-import BookingTab from "@/components/astrologer/booking/bookingTab";
+import BookingStats from "@/components/astrologer/booking/booking-stats";
+import BookingTab from "@/components/astrologer/booking/booking-tab";
 import React, { ReactNode } from "react";
 
 interface LayoutProps {

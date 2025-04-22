@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { Search } from "@/components/user/astrologer/search-bar";
 import { Filters } from "@/components/user/astrologer/filters";
 import { AstrologerCard } from "@/components/user/astrologer/astrologer-card";
-import { astrologers } from "./astrologers";
 import type { Astrologer } from "@/shared/interface/index.ts";
+import { astrologers } from "@/lib/data";
 
 export default function AstrologersList() {
   const [filteredAstrologers, setFilteredAstrologers] = useState<Astrologer[]>(astrologers);

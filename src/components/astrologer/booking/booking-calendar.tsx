@@ -3,19 +3,15 @@
 import { useState } from "react";
 
 import moment from "moment";
-import toast from "react-hot-toast";
 import { Calendar, Views, SlotInfo, View } from "react-big-calendar";
 
 import { localizer } from "@/lib/calendar";
 import { Button } from "@/components/ui/button";
-import { convertEventsToTimeSlots } from "@/lib/utils";
-
-import { API_CONFIG } from "@/shared/constants/api";
-import HttpService from "@/shared/services/http.service";
+// import { convertEventsToTimeSlots } from "@/lib/utils";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/assets/scss/calendar.scss";
-import CustomDateHeader from "./CustomDateHeader";
+import CustomDateHeader from "./custom-date-header";
 
 export const TIME_SLOTS = {
   hourly: [
