@@ -65,8 +65,16 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
 
   useEffect(() => {
     if (session?.user) {
-      const { instagram, facebook, twitter, tiktok, youtube, personal_website, linkedin, associated_companies } =
-        session.user.intake_form;
+      const {
+        instagram = "",
+        facebook = "",
+        twitter = "",
+        tiktok = "",
+        youtube = "",
+        personal_website = "",
+        linkedin = "",
+        associated_companies = ""
+      } = session.user.intake_form;
       reset({
         instagram: instagram,
         facebook: facebook,

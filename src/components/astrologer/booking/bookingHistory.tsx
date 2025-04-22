@@ -102,7 +102,7 @@ export default function BookingHistory() {
               <div className="font-medium">Date</div>
               <div className="font-medium">Time</div>
               <div className="font-medium">Status</div>
-              <div className="font-medium text-right">Actions</div>
+              <div className="font-medium text-end">Actions</div>
             </div>
             <div className="">
               <BookingHistoryItem

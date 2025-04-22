@@ -21,7 +21,7 @@ export default function AstrologerLayout({ children }: { children: React.ReactNo
   return (
     <div className="">
       <AstrologerHeader />
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1">{children}</main>
     </div>
   );
 }

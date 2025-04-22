@@ -20,7 +20,7 @@ export const DatePicker = ({ label, value, onChange }: DatePickerProps) => (
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn("w-full justify-start text-left font-normal", !value && "text-secondary-300")}
+          className={cn("w-full justify-start text-start font-normal", !value && "text-secondary-300")}
         >
           <span className="mr-2 h-4 w-4">
             <IconCalender />

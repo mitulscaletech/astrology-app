@@ -49,7 +49,7 @@ export default function ReviewStats() {
                 </span>
               </div>
               <Progress value={(ratingCounts[rating] / totalReviews) * 100} className="h-2 flex-1" />
-              <div className="w-10 text-right text-sm text-muted-foreground">{ratingCounts[rating]}</div>
+              <div className="w-10 text-end text-sm text-muted-foreground">{ratingCounts[rating]}</div>
             </div>
           ))}
         </div>

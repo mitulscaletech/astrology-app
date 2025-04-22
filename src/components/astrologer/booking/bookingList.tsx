@@ -11,16 +11,16 @@ export default function BookingsList() {
             <div className="space-y-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-2">
-                  <button className="inline-flex items-center justify-center rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50">
+                  <button className="inline-flex items-center justify-center rounded-md border border-secondary-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary-100">
                     All
                   </button>
-                  <button className="inline-flex items-center justify-center rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50">
+                  <button className="inline-flex items-center justify-center rounded-md border border-secondary-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary-100">
                     Pending
                   </button>
-                  <button className="inline-flex items-center justify-center rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50">
+                  <button className="inline-flex items-center justify-center rounded-md border border-secondary-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary-100">
                     Confirmed
                   </button>
-                  <button className="inline-flex items-center justify-center rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50">
+                  <button className="inline-flex items-center justify-center rounded-md border border-secondary-200 px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary-100">
                     Completed
                   </button>
                 </div>

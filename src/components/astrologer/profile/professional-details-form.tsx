@@ -174,7 +174,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       />
 
       <div>
-        {typeof currentValues.certification === "string" ? (
+        {currentValues.certification && typeof currentValues.certification === "string" ? (
           <Image
             src={currentValues.certification}
             alt="Certification"
@@ -196,8 +196,14 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
       </div>
 
       <div>
-        {typeof currentValues.resume === "string" ? (
-          <Image src={currentValues.resume} alt="Resume" width={100} height={100} className="rounded-md mb-2" />
+        {currentValues.resume && typeof currentValues.resume === "string" ? (
+          <Image
+            src={currentValues.resume}
+            alt={currentValues.resume}
+            width={100}
+            height={100}
+            className="rounded-md mb-2"
+          />
         ) : (
           <>
             <label className="block text-sm font-medium">Resume (Optional)</label>

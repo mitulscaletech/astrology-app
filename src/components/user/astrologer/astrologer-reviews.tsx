@@ -58,7 +58,7 @@ export function AstrologerReviews({ reviews }: AstrologerReviewsProps) {
                     className="h-2 bg-primary-100"
                   />
                 </div>
-                <div className="w-12 text-sm text-right">{ratingCounts[rating as keyof typeof ratingCounts]}</div>
+                <div className="w-12 text-sm text-end">{ratingCounts[rating as keyof typeof ratingCounts]}</div>
               </div>
             ))}
           </div>

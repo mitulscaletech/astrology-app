@@ -89,3 +89,43 @@ export interface AstrologerDetail extends Astrologer {
   reviews: AstrologerReview[];
   reviewCount: number;
 }
+
+export interface EarningData {
+  amount: number;
+  date: string;
+  clientName?: string;
+  consultationType?: string;
+  reportId?: string;
+}
+
+export interface EarningsSummary {
+  total: number;
+  thisMonth: number;
+  lastMonth: number;
+  history: EarningData[];
+}
+
+export interface Report {
+  id: string;
+  clientName: string;
+  bookingDate: string;
+  consultationType: string;
+  status: "sent" | "pending" | "flagged" | "draft" | any;
+  identityType: "original" | "new";
+  identityMismatch: boolean;
+  sentDate: string | null;
+}
+
+export interface ReportDetail extends Report {
+  clientEmail: string;
+  clientPhone: string;
+  consultationFee: number;
+  birthDate: string;
+  birthTime: string;
+  birthPlace: string;
+  questions: string[];
+  astrologerNotes: string;
+  mainReading: string;
+  recommendations: string;
+  astrologerName: string;
+}

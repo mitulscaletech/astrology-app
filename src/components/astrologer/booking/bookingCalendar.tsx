@@ -244,7 +244,7 @@ export default function BookingCalendar() {
                 <button
                   key={idx}
                   onClick={() => toggleSlot(idx)}
-                  className={`text-left px-4 py-2 rounded border ${selectedSlots.includes(idx) ? "bg-primary text-accent-white" : "bg-primary-200 text-secondary"}`}
+                  className={`text-start px-4 py-2 rounded border ${selectedSlots.includes(idx) ? "bg-primary text-accent-white" : "bg-primary-200 text-secondary"}`}
                 >
                   {slot.label}
                 </button>
