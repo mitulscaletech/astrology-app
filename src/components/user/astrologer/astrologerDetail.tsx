@@ -22,7 +22,7 @@ import IconMapPin from "@/shared/icons/mapPin";
 import Loader from "@/components/loader";
 
 export default function AstrologerDetails() {
-  const { slug } = useParams();
+  const { slug } = useParams() as { slug: string };
   const [astrologer, setAstrologer] = useState<AstrologerDetail | null>(null);
   const [loading, setLoading] = useState(true);
 

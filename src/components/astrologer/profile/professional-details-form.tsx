@@ -109,8 +109,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
         years_of_experience = 0,
         highest_qualification = "",
         institute_university_name = "",
-        specialization = "",
-        completed_steps = 0
+        specialization = ""
       } = session?.user?.intake_form || {};
 
       reset({
