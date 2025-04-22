@@ -1,0 +1,13 @@
+# Ignore node_modules, as they will be installed in the Docker image
+node_modules
+npm-debug.log
+package-lock.json
+.git
+.DS_Store
+.env
+# Ignore build artifacts and development-specific files
+.build
+.next
+.dockerignore
+Dockerfile
+*.log
