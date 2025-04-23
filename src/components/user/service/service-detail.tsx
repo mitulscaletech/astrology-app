@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 
 import Grid from "@/components/ui/grid";
@@ -9,6 +8,9 @@ import service1 from "@/assets/images/astrology-service-1.webp";
 import service2 from "@/assets/images/astrology-service-2.webp";
 import service3 from "@/assets/images/astrology-service-3.webp";
 import ScheduleTimeModal from "@/components/user/service/schedule-time-modal";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ServiceCarousel from "./service-carouse";
 
 const service = {
   title: "Janma Kundali: Holistic Life Blueprint",
@@ -46,21 +48,7 @@ export default function ServiceDetail() {
     <Grid>
       {/* Left: Image carousel */}
       <Grid.Col className="md:w-5/12">
-        <div className="rounded-xl overflow-hidden">
-          <Image src={service.images[0]} alt="Main" width={600} height={400} className="w-full h-auto object-cover" />
-        </div>
-        <div className="flex gap-4 mt-4">
-          {service.images.map((img, idx) => (
-            <Image
-              key={idx}
-              src={img}
-              alt={`Thumbnail ${idx}`}
-              width={80}
-              height={80}
-              className="rounded-lg object-cover cursor-pointer border border-gray-200"
-            />
-          ))}
-        </div>
+        <ServiceCarousel images={service.images} />
       </Grid.Col>
 
       {/* Right: Details */}

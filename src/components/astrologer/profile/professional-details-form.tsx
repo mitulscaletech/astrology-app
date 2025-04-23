@@ -185,7 +185,7 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
               height={100}
               className="w-full rounded-md mb-2"
             />
-            <div className="bg-secondary z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
+            <div className="bg-secondary cursor-pointer z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
               <input
                 type="file"
                 accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"

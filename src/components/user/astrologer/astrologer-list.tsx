@@ -6,18 +6,34 @@ import { Filters } from "@/components/user/astrologer/filters";
 import { AstrologerCard } from "@/components/user/astrologer/astrologer-card";
 import type { Astrologer } from "@/shared/interface/index.ts";
 import { astrologers } from "@/lib/data";
+import HttpService from "@/shared/services/http.service";
+import { API_CONFIG } from "@/shared/constants/api";
 
 export default function AstrologersList() {
-  const [filteredAstrologers, setFilteredAstrologers] = useState<Astrologer[]>(astrologers);
+  const [allAstrologers, setAllAstrologers] = useState<Astrologer[]>(astrologers);
+  const [filteredAstrologers, setFilteredAstrologers] = useState<Astrologer[]>(allAstrologers);
   const [searchQuery, setSearchQuery] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [languageFilter, setLanguageFilter] = useState<string | null>(null);
 
+  const getAstoList = async () => {
+    const res = await HttpService.get(API_CONFIG.astrologerList);
+    console.log("res", res.data);
+    if (res.data.length > 0) {
+      setAllAstrologers([res.data, ...astrologers]);
+    }
+  };
+  useEffect(() => {
+    getAstoList();
+  }, []);
+
+  console.log("allAstrologers", allAstrologers);
+
   // Get unique languages for filter options
-  const languages = Array.from(new Set(astrologers.flatMap((astrologer) => astrologer.languages)));
+  const languages = Array.from(new Set(allAstrologers.flatMap((astrologer) => astrologer.languages)));
 
   useEffect(() => {
-    let result = [...astrologers];
+    let result = [...allAstrologers];
 
     // Apply search filter
     if (searchQuery) {

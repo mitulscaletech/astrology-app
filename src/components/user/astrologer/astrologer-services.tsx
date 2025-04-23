@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import type { AstrologerService } from "@/shared/interface";
 import IconClock from "@/shared/icons/clock";
 import IconCheck from "@/shared/icons/check";
+import Link from "next/link";
 
 interface AstrologerServicesProps {
   services: AstrologerService[];
@@ -46,7 +47,9 @@ export function AstrologerServices({ services }: AstrologerServicesProps) {
               </CardContent>
 
               <CardFooter className="border-t border-primary-100 pt-4 mt-auto">
-                <Button className="w-full bg-primary hover:bg-primary-600">Book Now</Button>
+                <Button className="w-full" asChild>
+                  <Link href="/user/service-list/janma-kundali-holistic-life-blueprint">Book Now</Link>
+                </Button>
               </CardFooter>
             </Card>
           ))}
