@@ -41,6 +41,16 @@ const menuItems = [
     href: "/admin/dashboard"
   },
   {
+    title: "Astrologer Management",
+    icon: Home,
+    href: "/admin/astrologer-management"
+  },
+  {
+    title: "Booking Management",
+    icon: Home,
+    href: "/admin/booking-management"
+  },
+  {
     title: "Analytics",
     icon: BarChart3,
     href: "/admin/analytics"
