@@ -45,13 +45,38 @@ export async function middleware(req: NextRequest) {
     const { status, role } = token.user;
 
     // Route Access Restriction by Role
-    console.log(" role:", role);
+
+    if (!role) {
+      // Clear the next-auth session cookie (adjust domain/path if needed)
+      const response = NextResponse.redirect(new URL("/", req.url)); // or general login page
+      response.cookies.set("next-auth.session-token", "", {
+        path: "/",
+        maxAge: 0
+      });
+
+      // For production, use "__Secure-next-auth.session-token" if using secure cookies
+      response.cookies.set("__Secure-next-auth.session-token", "", {
+        path: "/",
+        maxAge: 0
+      });
+      return response;
+    }
+    // Handle role mismatch: Redirect to correct route instead of home
     if (
       (isAstrologerRoute && role !== "astrologer") ||
       (isUserRoute && role !== "user") ||
       (isAdminRoute && role !== "admin")
     ) {
-      return NextResponse.redirect(new URL("/", req.url)); // Redirect to home or error page
+      let redirectPath = "/";
+
+      if (role === "astrologer") {
+        redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
+      } else if (role === "user") {
+        redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
+      } else if (role === "admin") {
+        redirectPath = "/admin/dashboard";
+      }
+      return NextResponse.redirect(new URL(redirectPath, req.url));
     }
 
     // Role-Based Redirection Logic

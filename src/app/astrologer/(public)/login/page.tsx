@@ -160,7 +160,8 @@ export default function AstrologerLogin() {
       provider_user_id: result.user.providerData[0].uid,
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
-      social_photo: user.photoURL
+      social_photo: user.photoURL,
+      role: "astrologer"
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {

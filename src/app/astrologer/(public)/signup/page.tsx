@@ -117,7 +117,8 @@ export default function AstrologerSignup() {
             const mockUser = {
               mobile_number: mobileNumber,
               access_token: response.data,
-              country_code: countryCode
+              country_code: countryCode,
+              role: "astrologer"
             };
             await signIn("credentials", {
               redirect: false,
@@ -148,7 +149,8 @@ export default function AstrologerSignup() {
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
       social_photo: user.photoURL,
-      contry_code: DEFAULT_COUNTRY_CODE
+      contry_code: DEFAULT_COUNTRY_CODE,
+      role: "astrologer"
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {
