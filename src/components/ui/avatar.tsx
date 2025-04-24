@@ -8,17 +8,18 @@ type AvatarProps = {
   src?: string;
   alt?: string;
   fallback?: string; // typically initials like "AB"
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "default";
   className?: string;
 };
 
 const sizeClasses = {
   sm: "h-8 w-8 text-xs",
-  md: "h-10 w-10 text-sm",
+  default: "h-10 w-10 text-sm",
+  md: "h-12 w-12 text-sm",
   lg: "h-16 w-16 text-base"
 };
 
-export function Avatar({ src, alt, fallback = "??", size = "md", className }: AvatarProps) {
+export function Avatar({ src, alt, fallback = "??", size = "default", className }: AvatarProps) {
   const [isError, setIsError] = React.useState(false);
 
   const showFallback = !src || isError;
@@ -26,7 +27,7 @@ export function Avatar({ src, alt, fallback = "??", size = "md", className }: Av
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center rounded-full bg-muted text-muted-foreground font-medium overflow-hidden select-none",
+        "inline-flex items-center justify-center rounded-full bg-secondary-200 text-muted-foreground font-medium overflow-hidden select-none",
         sizeClasses[size],
         className
       )}
