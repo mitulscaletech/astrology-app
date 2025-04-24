@@ -130,7 +130,7 @@ export default function AstrologerLogin() {
             if (!userResponse.is_error) {
               await signIn("credentials", {
                 redirect: false,
-                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
+                token: JSON.stringify({ ...userResponse.data, role: "astrologer", access_token: response.data.token })
               });
               const status = userResponse.data.status;
               const path = handleUserStatusRedirect(status);
