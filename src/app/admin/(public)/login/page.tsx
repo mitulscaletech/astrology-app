@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { signIn } from "next-auth/react";
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -30,7 +31,15 @@ export default function AdminLogin() {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (_data: FormData) => {
+  const onSubmit = async (_data: FormData) => {
+    await signIn("credentials", {
+      redirect: false,
+      token: JSON.stringify({
+        status: "Approved & Activated",
+        access_token: "sc34g334sc45609q4566asc92ef34t4534g45g54g45gg45grg34234",
+        role: "admin"
+      })
+    });
     router.push("/admin/dashboard");
 
     // Add login logic here

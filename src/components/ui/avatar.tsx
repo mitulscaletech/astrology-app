@@ -41,6 +41,8 @@ export function Avatar({ src, alt, fallback = "??", size = "md", className }: Av
           alt={alt || fallback}
           onError={() => setIsError(true)}
           className="h-full w-full object-cover"
+          width={48}
+          height={48}
         />
       )}
     </div>
