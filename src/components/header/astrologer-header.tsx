@@ -3,11 +3,8 @@ import logo from "@/assets/images/logo.png";
 import Link from "next/link";
 import Image from "next/image";
 import Notification from "@/components/header/notification";
-import UserMenu from "@/components/header/user-menu";
-import { IconLogOut } from "@/shared/icons/page";
-import IconUser from "@/shared/icons/user";
 import IconCart from "@/shared/icons/cart";
-import IconSearch from "@/shared/icons/search";
+import UserMenu from "./user-menu";
 
 const AstrologerHeader = () => {
   return (
@@ -20,20 +17,11 @@ const AstrologerHeader = () => {
           </Link>
 
           {/* Right side */}
-          <div className="flex items-center gap-4 text-secondary-500">
-            <Link href="#" className="size-6">
-              <IconSearch />
-            </Link>
-            <Link href="#" className="size-6">
-              <IconLogOut />
-            </Link>
-            <Link href="/astrologer/signup" className="size-6">
-              <IconUser />
-            </Link>
+          <div className="flex items-center gap-3 text-secondary-500">
             <Notification />
-            <div className="h-6 border-l border-primary-100" />
             {/* User Menu */}
-            <UserMenu />
+            <UserMenu type="astrologer" />
+            <div className="h-6 border-l border-primary-100" />
             <Link href="#" className="size-6">
               <IconCart />
             </Link>
