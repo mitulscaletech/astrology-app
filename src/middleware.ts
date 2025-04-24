@@ -44,31 +44,9 @@ export async function middleware(req: NextRequest) {
   if (token?.user) {
     const { status, role } = token.user;
 
-    // Route Access Restriction by Role
-
-    if (!role) {
-      // Clear the next-auth session cookie (adjust domain/path if needed)
-      const response = NextResponse.redirect(new URL("/", req.url)); // or general login page
-      response.cookies.set("next-auth.session-token", "", {
-        path: "/",
-        maxAge: 0
-      });
-
-      // For production, use "__Secure-next-auth.session-token" if using secure cookies
-      response.cookies.set("__Secure-next-auth.session-token", "", {
-        path: "/",
-        maxAge: 0
-      });
-      return response;
-    }
-    // Handle role mismatch: Redirect to correct route instead of home
-    if (
-      (isAstrologerRoute && role !== "astrologer") ||
-      (isUserRoute && role !== "user") ||
-      (isAdminRoute && role !== "admin")
-    ) {
+    // 1. Block authenticated users from accessing login/signup
+    if (isPublicRoute) {
       let redirectPath = "/";
-
       if (role === "astrologer") {
         redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
       } else if (role === "user") {
@@ -76,26 +54,35 @@ export async function middleware(req: NextRequest) {
       } else if (role === "admin") {
         redirectPath = "/admin/dashboard";
       }
-      return NextResponse.redirect(new URL(redirectPath, req.url));
+
+      // Forcefully block access to login/signup
+      if (pathname !== redirectPath) {
+        return NextResponse.redirect(new URL(redirectPath, req.url));
+      }
     }
 
-    // Role-Based Redirection Logic
-    let redirectPath;
-    if (role === "astrologer") {
-      redirectPath = handleAstrologerRedirect(status);
-    } else if (role === "user") {
-      redirectPath = handleUserStatusRedirect(status);
-    } else if (role === "admin") {
-      redirectPath = "/admin/dashboard"; // Always redirect admin to dashboard
+    // 2. If role is missing (extra safety)
+    if (!role) {
+      const response = NextResponse.redirect(new URL("/", req.url));
+      response.cookies.set("next-auth.session-token", "", { path: "/", maxAge: 0 });
+      response.cookies.set("__Secure-next-auth.session-token", "", { path: "/", maxAge: 0 });
+      return response;
     }
 
-    // Already logged in but accessing a login/signup route
-    if (isPublicRoute && redirectPath && pathname !== redirectPath) {
-      return NextResponse.redirect(new URL(redirectPath, req.url));
-    }
-
-    // Redirect if user is logged in but status requires redirection
-    if ((isAstrologerRoute || isUserRoute) && redirectPath && pathname !== redirectPath) {
+    // 3. Role mismatch? Redirect to appropriate route
+    if (
+      (isAstrologerRoute && role !== "astrologer") ||
+      (isUserRoute && role !== "user") ||
+      (isAdminRoute && role !== "admin")
+    ) {
+      let redirectPath = "/";
+      if (role === "astrologer") {
+        redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
+      } else if (role === "user") {
+        redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
+      } else if (role === "admin") {
+        redirectPath = "/admin/dashboard";
+      }
       return NextResponse.redirect(new URL(redirectPath, req.url));
     }
   }

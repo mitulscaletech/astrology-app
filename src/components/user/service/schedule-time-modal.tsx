@@ -8,6 +8,9 @@ import { Modal, ModalContent, ModalTitle } from "@/components/ui/modal";
 import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import HttpService from "@/shared/services/http.service";
+import { API_CONFIG } from "@/shared/constants/api";
+import { DateTime } from "luxon";
 
 type TimeSlot = {
   start_time: string;
@@ -67,7 +70,7 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
   };
 
   const handleCheckout = async () => {
-    if (!selectedDate || !selectedTime) return;
+    if (!selectedDate || !selectedTime || !durationInMin) return;
     try {
       setLoading(true);
       const response = await fetch("/api/razorpay", {
@@ -89,8 +92,41 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
         order_id: data.orderId,
         handler: function (response: any) {
           setLoading(false);
+          const [hour, minute] = selectedTime.split(":").map(Number);
+          const durationInMinutes = parseInt(selectedDuration); // e.g. "30", "60"
+          const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // e.g., Asia/Calcutta
+          // Combine date and time in user's local timezone
+          const startDateTime = DateTime.fromJSDate(selectedDate, { zone: timeZone }).set({
+            hour,
+            minute,
+            second: 0,
+            millisecond: 0
+          });
+
+          const endDateTime = startDateTime.plus({ minutes: durationInMinutes });
+          const payload = {
+            booking_date: startDateTime.toUTC().toISO(), // Or startDateTime.toISO() if your backend handles timezone
+            startAt: startDateTime.toUTC().toISO(),
+            endAt: endDateTime.toUTC().toISO(),
+            start_time: startDateTime.toFormat("HH:mm"), // 24-hr format
+            end_time: endDateTime.toFormat("HH:mm"),
+            timeZone,
+            payment_id: response.razorpay_payment_id
+          };
           toast.success(`✅ Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-          router.push("/user/service-list");
+          HttpService.post(API_CONFIG.booking, payload)
+            .then((res) => {
+              if (res.is_error) {
+                toast.error("Booking failed");
+              } else {
+                toast.success("Booking successful");
+                router.push("/user/service-list");
+              }
+            })
+            .catch((err) => {
+              toast.error("Booking failed");
+              console.error("Booking Error", err);
+            });
         },
         modal: {
           ondismiss: function () {

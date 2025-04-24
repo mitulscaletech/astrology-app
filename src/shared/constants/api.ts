@@ -15,7 +15,8 @@ export const API_CONFIG = {
   uploadMedia: "media",
   setAvailability: "astrologer-schedules",
   verifyCaptcha: "user/verify-recaptcha",
-  astrologerList: "astrologer"
+  astrologerList: "astrologer",
+  booking: "booking"
 };
 
 export const getUrl = (url: string, params: any = {}): string => {
