@@ -4,10 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import IconSetting from "@/shared/icons/setting";
 import IconCheck from "@/shared/icons/check";
+import IconInfo from "@/shared/icons/info";
 
 export function Sidebar() {
   const menuItems = [
-    { icon: IconSetting, label: "Dashboard", href: "/admin" },
+    { icon: IconInfo, label: "Dashboard", href: "/admin" },
+    { icon: IconSetting, label: "Astrologers", href: "/admin/astrologer-management" },
     { icon: IconSetting, label: "Users", href: "/admin/users" },
     { icon: IconCheck, label: "Appointments", href: "/admin/appointments" },
     { icon: IconSetting, label: "Settings", href: "/admin/settings" }

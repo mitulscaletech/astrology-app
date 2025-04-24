@@ -23,7 +23,7 @@ export const DropdownMenuContent = ({ className, ...props }: DropdownMenuPrimiti
 export const DropdownMenuItem = ({ className, ...props }: DropdownMenuPrimitive.DropdownMenuItemProps) => (
   <DropdownMenuPrimitive.Item
     className={cn(
-      "cursor-pointer px-4 py-2 text-start text-black hover:bg-primary-100 hover:text-white rounded-md outline-none",
+      "cursor-pointer px-4 py-2 text-start text-black hover:bg-primary-100 hover:text-white rounded-md outline-none flex",
       className
     )}
     {...props}

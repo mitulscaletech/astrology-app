@@ -9,7 +9,8 @@ const badgeVariants = cva("inline-flex items-center rounded-full font-medium tra
       success: "bg-success-800 text-success",
       danger: "bg-danger-800 text-danger",
       warning: "bg-warning-800 text-warning",
-      pending: "bg-warning-800 text-warning"
+      pending: "bg-warning-800 text-warning",
+      outline: "text-foreground"
     },
     size: {
       sm: "text-xs px-1.5 py-0.5",
