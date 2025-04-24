@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -16,16 +16,12 @@ interface UserMenuProp {
 }
 
 const UserMenu: FC<UserMenuProp> = ({ type }) => {
-  const [userOpen, setUserOpen] = useState(false);
   const { data: session } = useSession();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          onClick={() => setUserOpen((prev) => !prev)}
-          className="size-8 bg-accent-white flex justify-center items-center gap-2 p-0 rounded-full overflow-hidden border border-secondary"
-        >
+        <button className="size-8 bg-accent-white flex justify-center items-center gap-2 p-0 rounded-full overflow-hidden border border-secondary">
           {session?.user?.image ? (
             <Image src={logoIcon} alt="logo" width={24} height={24} className="w-full" />
           ) : (
