@@ -85,7 +85,6 @@ export async function middleware(req: NextRequest) {
       redirectPath = handleAstrologerRedirect(status);
     } else if (role === "user") {
       redirectPath = handleUserStatusRedirect(status);
-      console.log(" redirectPath:", redirectPath);
     } else if (role === "admin") {
       redirectPath = "/admin/dashboard"; // Always redirect admin to dashboard
     }

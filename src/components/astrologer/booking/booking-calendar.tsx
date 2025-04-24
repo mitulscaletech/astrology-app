@@ -143,12 +143,10 @@ export default function BookingCalendar() {
     //   block_dates: [],
     //   time_slots: convertEventsToTimeSlots(newEvents, "UTC")
     // };
-    // console.log(" params:", params);
 
     // HttpService.post(API_CONFIG.setAvailability, params)
     //   .then((res) => {
     //     if (!res.is_error) {
-    //       console.log("res:", res); // Handle success response
     //       toast.success(res.message);
     //     } else {
     //       toast.error(res.message);

@@ -18,7 +18,6 @@ export default function AstrologersList() {
 
   const getAstoList = async () => {
     const res = await HttpService.get(API_CONFIG.astrologerList);
-    console.log("res", res.data);
     if (res.data.length > 0) {
       setAllAstrologers([res.data, ...astrologers]);
     }
@@ -26,8 +25,6 @@ export default function AstrologersList() {
   useEffect(() => {
     getAstoList();
   }, []);
-
-  console.log("allAstrologers", allAstrologers);
 
   // Get unique languages for filter options
   const languages = Array.from(new Set(allAstrologers.flatMap((astrologer) => astrologer.languages)));
