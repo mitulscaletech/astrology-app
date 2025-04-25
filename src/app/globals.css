@@ -4,31 +4,36 @@
 
 :root {
   /* Primary Shades (in RGB) */
---primary-100: 249 223 226;
---primary-200: 240 182 190;
---primary-300: 222 108 123;
---primary-400: 203 58 83;
---primary-500: 177 20 45;   /* #B1142D */
---primary-600: 142 16 36;
---primary-700: 108 13 27;
---primary-800: 73 9 18;
---primary-900: 39 5 10;
+  --primary-100: 249 223 226;
+  --primary-200: 240 182 190;
+  --primary-300: 222 108 123;
+  --primary-400: 203 58 83;
+  --primary-500: 189 39 43;   /* #BD272B */
+  --primary-600: 142 16 36;
+  --primary-700: 108 13 27;
+  --primary-800: 73 9 18;
+  --primary-900: 39 5 10;
 
-/* Secondary Shades (in RGB) */
---secondary-100: 226 226 236;
---secondary-200: 190 190 216;
---secondary-300: 144 144 188;
---secondary-400: 98 98 159;
---secondary-500: 29 29 60;   /* #1D1D3C */
---secondary-600: 22 22 47;
---secondary-700: 17 17 36;
---secondary-800: 11 11 25;
---secondary-900: 6 6 13;
+  /* Secondary Shades (in RGB) */
+  --secondary-100: 226 226 236;
+  --secondary-200: 190 190 216;
+  --secondary-300: 144 144 188;
+  --secondary-400: 98 98 159;
+  --secondary-500: 28 31 58;   /* #1C1F3A */
+  --secondary-600: 22 22 47;
+  --secondary-700: 17 17 36;
+  --secondary-800: 11 11 25;
+  --secondary-900: 6 6 13;
+
+  --highlight-500: 244 149 36;   /* #F49524 */
+  --muted-500: 194 163 133;   /* #C2A385 */
+  --info-500: 173 138 86;   /* #AD8A55 */
 
   /* Accent Colors */
   --accent-white: 255 255 255;
   --accent-black: 0 0 0;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -48,5 +53,8 @@
 }
 
 a,button {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.24s ease-in-out;
+}
+.common-section {
+  @apply py-10 md:py-12 lg:py-14 xl:py-20 
 }

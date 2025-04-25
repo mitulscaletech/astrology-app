@@ -1,29 +1,16 @@
 import Image from "next/image";
 import PublicLayout from "@/components/layouts/public-layout";
+import HomeBanner from "@/components/home/home-banner";
+import Astrology from "@/components/home/astrology";
 import { Button } from "@/components/ui/button";
+import AboutUs from "@/components/home/about-us";
 
 export default function Home() {
   return (
     <PublicLayout>
-      <section className="relative">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1519681393784-d120267933ba"
-            alt="Hero background"
-            fill
-            className="object-cover brightness-50"
-            priority
-          />
-        </div>
-        <div className="relative container mx-auto px-4 py-32 text-center text-accent-white">
-          <h1 className="text-5xl font-bold mb-6">Discover Your Path Through the Stars</h1>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Connect with experienced astrologers for personalized guidance and insights into your life&apos;s journey.
-          </p>
-          <button className="text-lg px-8">Get Started</button>
-        </div>
-      </section>
-
+      <HomeBanner />
+      <Astrology />
+      <AboutUs />
       <section className="py-20 bg-accent-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>

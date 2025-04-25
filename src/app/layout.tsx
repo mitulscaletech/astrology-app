@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import AuthProvider from "@/components/auth-provider";
 import "react-phone-input-2/lib/style.css";
 import { LoaderProvider } from "@/context/LoaderContext";
 
-const poppins = Poppins({
+const inter = Inter({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap"
+});
+
+const playfairDisplay = Playfair_Display({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--playfair_display"
 });
 
 export const metadata: Metadata = {
@@ -27,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
+      <body className={`${inter.className} ${playfairDisplay.variable} antialiased`}>
         <LoaderProvider>
           <AuthProvider>
             {children}

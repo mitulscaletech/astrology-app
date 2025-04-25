@@ -7,12 +7,16 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
+    fontFamily: {
+      head: "var(--playfair_display)"
+    },
     screens: {
       sm: "576px",
       md: "768px",
       lg: "992px",
       xl: "1200px",
-      xxl: "1400px"
+      xxl: "1400px",
+      xxxl: "1800px"
     },
     container: {
       center: true,
@@ -41,6 +45,15 @@ const config: Config = {
         800: "rgb(var(--secondary-800) / <alpha-value>)",
         900: "rgb(var(--secondary-900) / <alpha-value>)"
       },
+      highlight: {
+        DEFAULT: "rgb(var(--highlight-500) / <alpha-value>)"
+      },
+      muted: {
+        DEFAULT: "rgb(var(--muted-500) / <alpha-value>)"
+      },
+      info: {
+        DEFAULT: "rgb(var(--info-500) / <alpha-value>)"
+      },
       accent: {
         white: "rgb(var(--accent-white) / <alpha-value>)",
         black: "rgb(var(--accent-black) / <alpha-value>)"
@@ -65,6 +78,10 @@ const config: Config = {
       inherit: "inherit"
     },
     extend: {
+      fontSize: {
+        "7.5xl": "84px",
+        "3.5xl": "32px"
+      },
       zIndex: {
         1: "1",
         2: "2",
@@ -76,7 +93,7 @@ const config: Config = {
       boxShadow: {
         box: "0px 22px 44px 0px rgba(var(--secondary-200), 0.24)",
         "box-sm": "0px 8px 16px 0px rgba(var(--secondary-200), 0.14)",
-        card: "0px 15px 43px 0px rgba(17, 114, 238, 0.2)",
+        card: "-2px -2px 4px 0px rgba(28, 31, 58, 0.05), 2px 2px 12px 0px rgba(28, 31, 58, 0.1)",
         "card-sm": "0px 0px 12px 0px rgba(29 29 60 / 0.14)"
       },
       keyframes: {
@@ -154,6 +171,9 @@ const config: Config = {
           },
           "@screen xxl": {
             maxWidth: "1320px"
+          },
+          "@screen xxxl": {
+            maxWidth: "1752px"
           }
         }
       });

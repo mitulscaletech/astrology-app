@@ -10,9 +10,9 @@ export function Header() {
   return (
     <header className="py-4 px-8">
       <div className="container">
-        <div className="flex px-6 py-4 border border-secondary-100 items-center justify-between shadow-card-sm rounded-full">
+        <div className="flex px-4 md:px-20 lg:px-20 xl:px-20 py-8 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
           <div className="flex items-center gap-6">
-            <Link href="/" className="w-28">
+            <Link href="/" className="w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
             <nav className="space-x-8 text-secondary-500 font-medium text-sm">
