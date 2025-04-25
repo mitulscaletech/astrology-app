@@ -211,7 +211,7 @@ export default function AstrologerDetailsPage({ params }: { params: { id: string
               </TabsContent>
 
               <TabsContent value="documents">
-                <div className="rounded-md border">
+                <div className="rounded-md border border-secondary-100">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -273,7 +273,7 @@ export default function AstrologerDetailsPage({ params }: { params: { id: string
                   <p className="text-sm text-muted-foreground">
                     Manage the astrologer&apos;s specializations. Activate specializations that have been verified.
                   </p>
-                  <div className="rounded-md border">
+                  <div className="rounded-md border border-secondary-100">
                     <Table>
                       <TableHeader>
                         <TableRow>
@@ -319,7 +319,7 @@ export default function AstrologerDetailsPage({ params }: { params: { id: string
                       Edit Pricing
                     </Button>
                   </div>
-                  <div className="rounded-md border">
+                  <div className="rounded-md border border-secondary-100">
                     <Table>
                       <TableHeader>
                         <TableRow>
@@ -355,7 +355,7 @@ export default function AstrologerDetailsPage({ params }: { params: { id: string
               </TabsContent>
 
               <TabsContent value="sessions">
-                <div className="rounded-md border">
+                <div className="rounded-md border border-secondary-100">
                   <Table>
                     <TableHeader>
                       <TableRow>

@@ -164,9 +164,9 @@ export function AdminSidebar() {
 
   return (
     <>
-      <Sidebar className="border-r border-secondary-200">
-        <SidebarHeader className="border-b border-secondary-200 h-16">
-          <div className="flex items-center gap-2 px-4 py-3">
+      <Sidebar className="border-r border-secondary-100">
+        <SidebarHeader className="border-b border-secondary-100 h-16">
+          <div className="flex items-center gap-2 px-4 py-3 my-auto">
             <div className="flex h-8 w-8">
               <Image src={logoIcon} alt="icon" />
             </div>

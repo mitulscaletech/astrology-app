@@ -112,7 +112,7 @@ export default function AstrologersPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="rounded-md border">
+          <div className="rounded-md border border-secondary-100">
             <Table>
               <TableHeader>
                 <TableRow>

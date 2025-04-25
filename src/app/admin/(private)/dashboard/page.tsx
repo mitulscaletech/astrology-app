@@ -26,7 +26,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">24</div>
-                <p className="text-xs text-muted-foreground">+15% from yesterday</p>
+                <p className="text-xs text-success">+15% from yesterday</p>
               </CardContent>
             </Card>
             <Card>
@@ -36,7 +36,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$1,245.89</div>
-                <p className="text-xs text-muted-foreground">+10% from yesterday</p>
+                <p className="text-xs text-success">+10% from yesterday</p>
               </CardContent>
             </Card>
             <Card>
@@ -46,7 +46,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
-                <p className="text-xs text-muted-foreground">+8% from yesterday</p>
+                <p className="text-xs text-success">+8% from yesterday</p>
               </CardContent>
             </Card>
             <Card>
@@ -70,7 +70,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">142</div>
-                <p className="text-xs text-muted-foreground">+18% from last week</p>
+                <p className="text-xs text-success">+18% from last week</p>
               </CardContent>
             </Card>
             <Card>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$8,942.50</div>
-                <p className="text-xs text-muted-foreground">+12% from last week</p>
+                <p className="text-xs text-success">+12% from last week</p>
               </CardContent>
             </Card>
             <Card>
@@ -90,7 +90,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">78</div>
-                <p className="text-xs text-muted-foreground">+15% from last week</p>
+                <p className="text-xs text-success">+15% from last week</p>
               </CardContent>
             </Card>
             <Card>
@@ -114,7 +114,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">587</div>
-                <p className="text-xs text-muted-foreground">+22% from last month</p>
+                <p className="text-xs text-success">+22% from last month</p>
               </CardContent>
             </Card>
             <Card>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$32,845.75</div>
-                <p className="text-xs text-muted-foreground">+18% from last month</p>
+                <p className="text-xs text-success">+18% from last month</p>
               </CardContent>
             </Card>
             <Card>
@@ -134,7 +134,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">324</div>
-                <p className="text-xs text-muted-foreground">+25% from last month</p>
+                <p className="text-xs text-success">+25% from last month</p>
               </CardContent>
             </Card>
             <Card>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                   <TableCell>$49.99</TableCell>
                   <TableCell>Apr 23, 2025</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-warning">
                       <RefreshCcw className="h-4 w-4 text-yellow-500" />
                       <span>Pending</span>
                     </div>
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                   <TableCell>$29.99</TableCell>
                   <TableCell>Apr 22, 2025</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-warning">
                       <RefreshCcw className="h-4 w-4 text-yellow-500" />
                       <span>Pending</span>
                     </div>
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                   <TableCell>Connection issues</TableCell>
                   <TableCell>Apr 24, 2025</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-danger">
                       <HelpCircle className="h-4 w-4 text-yellow-500" />
                       <span>Open</span>
                     </div>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                   <TableCell>Payment failed</TableCell>
                   <TableCell>Apr 23, 2025</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-danger">
                       <HelpCircle className="h-4 w-4 text-yellow-500" />
                       <span>Open</span>
                     </div>
@@ -238,7 +238,7 @@ export default function DashboardPage() {
                   <TableCell>Astrologer no-show</TableCell>
                   <TableCell>Apr 23, 2025</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-danger">
                       <HelpCircle className="h-4 w-4 text-yellow-500" />
                       <span>Open</span>
                     </div>

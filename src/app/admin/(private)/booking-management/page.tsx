@@ -140,7 +140,7 @@ export default function BookingsPage() {
               </Select>
             </div>
           </div>
-          <div className="rounded-md border">
+          <div className="rounded-md border border-secondary-100">
             <Table>
               <TableHeader>
                 <TableRow>
