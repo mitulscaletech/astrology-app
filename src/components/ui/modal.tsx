@@ -7,6 +7,7 @@ type ModalProps = {
   children: ReactNode;
   open?: boolean;
   onOpenChange?: (_open: boolean) => void;
+  size?: "sm" | "md" | "lg" | "xl";
 };
 
 export const Modal = ({ children, open, onOpenChange }: ModalProps) => {
@@ -17,12 +18,23 @@ export const Modal = ({ children, open, onOpenChange }: ModalProps) => {
   );
 };
 
-export const ModalContent = ({ children }: { children: ReactNode }) => {
+export const ModalContent = ({ children, size = "md" }: { children: ReactNode; size: "sm" | "md" | "lg" | "xl" }) => {
+  const sizeClasses = {
+    sm: "w-[540px]",
+    md: "w-[720px]",
+    lg: "w-[920px]",
+    xl: "w-[1140px]"
+  };
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-secondary-800/40 z-10" />
       <Dialog.Content className="fixed inset-0 flex p-4 z-20 h-screen overflow-auto !pointer-events-none">
-        <div className="p-6 bg-accent-white rounded-md shadow-lg max-w-full w-[480px] m-auto pointer-events-auto">
+        <div
+          className={`p-6 bg-accent-white rounded-md shadow-lg max-w-full ${
+            sizeClasses[size] || "w-auto"
+          } m-auto pointer-events-auto`}
+        >
           {children}
         </div>
       </Dialog.Content>

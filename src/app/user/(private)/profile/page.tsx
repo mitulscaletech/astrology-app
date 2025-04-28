@@ -12,17 +12,17 @@ import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import Grid from "@/components/ui/grid";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/datepicker";
+import DatePickerComponent from "@/components/ui/date-picker";
+import FamilyInvitations from "@/components/user/profile/family-invitations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
-import Grid from "@/components/ui/grid";
-import FamilyInvitations from "@/components/user/profile/family-invitations";
 
 // Define TypeScript Type for the form data
 type OnboardingFormData = {
@@ -157,13 +157,10 @@ export default function AstrologerOnboarding() {
           </div>
 
           {/* Date of Birth */}
-          <div>
-            <DatePicker
-              label="Date of Birth *"
-              value={getValues("date_of_birth")}
-              onChange={(date) => {
-                setValue("date_of_birth", date as Date, { shouldValidate: true });
-              }}
+          <div className="w-100%">
+            <DatePickerComponent
+              selectedDate={getValues("date_of_birth")}
+              onChange={(date) => setValue("date_of_birth", date as Date, { shouldValidate: true })}
             />
             {errors.date_of_birth && <p className="text-danger text-sm mt-1">{errors.date_of_birth.message}</p>}
           </div>
