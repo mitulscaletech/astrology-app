@@ -23,7 +23,8 @@ const Grid: GridComponent = ({ children, className = "", size }) => {
   ${size === "lg" ? "-mx-1.5 md:-mx-2.5 xl:-mx-4 [&>*]:px-1.5 [&>*]:md:px-2.5 [&>*]:xl:px-4" : ""}
   ${size === "md" ? "-mx-1.5 [&>*]:px-1.5 md:-mx-2 md:[&>*]:px-2" : ""}
   ${size === "sm" ? "-mx-1.5 [&>*]:px-1.5" : ""}
-  ${size === "xs" ? "-mx-1 [&>*]:px-1" : ""} `}
+  ${size === "xs" ? "-mx-1 [&>*]:px-1" : ""}
+  ${size === "zero" ? "mx-0 [&>*]:px-0" : ""} `}
     >
       {children}
     </div>

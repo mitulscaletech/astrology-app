@@ -13,12 +13,16 @@ const AboutUs = () => {
     <section className="common-section sm:pt-2 md:pt-4">
       <div className="container">
         <div className="rounded-lg xl:rounded-2xl 2xl:rounded-3xl overflow-hidden border border-secondary/20 shadow-card">
-          <Grid className="justify-between items-center">
-            <Grid.Col className="md:w-5/12">
-              <Image src={aboutImg} alt="About Us" className="w-full aspect-square object-contain" />
+          <Grid className="justify-between items-center" size="zero">
+            <Grid.Col className="xl:w-5/12">
+              <Image
+                src={aboutImg}
+                alt="About Us"
+                className="w-full object-top aspect-video xl:aspect-square object-cover"
+              />
             </Grid.Col>
-            <Grid.Col className="md:w-7/12">
-              <div className="py-6 px-4 md:px-6 xl:px-6 2xl:px-10 3xl:px-20 4xl:px-24">
+            <Grid.Col className="xl:w-7/12">
+              <div className="py-6 px-4 lg:px-4 xl:px-6 2xl:px-10 3xl:px-20 4xl:px-24">
                 <Typography variant="h2" size="p" className="mb-3" isTitle>
                   AboutUs
                 </Typography>

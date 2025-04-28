@@ -66,7 +66,7 @@ const Testimonials = () => {
               Bring the Cosmos Into Your Daily Rituals
             </Typography>
           </Grid.Col>
-          <Grid.Col className="md:w-5/12">
+          <Grid.Col className="md:w-6/12 xl:w-5/12">
             <Typography variant="p" size="h6" className="mb-0 text-accent-white/70">
               Explore testimonial-inspired products designed to deepen your self-awareness, align with the universe, and
               elevate your everyday rituals.

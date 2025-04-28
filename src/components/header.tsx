@@ -7,17 +7,15 @@ import IconUser from "@/shared/icons/user";
 import IconSearch from "@/shared/icons/search";
 
 export function Header() {
-  // const { setTheme, theme } = useTheme();
-
   return (
     <header className="py-2 md:py-3 3xl:py-4">
       <div className="container">
-        <div className="flex px-4 md:px-20 lg:px-12 3xl:px-20 py-7 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
+        <div className="flex px-4 lg:px-8 xl:px-12 3xl:px-20 py-2 md:py-4 lg:py-5 xl:py-6 2xl:py-7 border border-secondary-100 items-center justify-between shadow-card rounded-lg lg:rounded-2xl 2xl:rounded-3xl">
           <div className="flex items-center gap-6 md:gap-7 xl:gap-8">
-            <Link href="/" className="w-44">
+            <Link href="/" className="w-32 md:w-36 lg:w-40 xl:w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
-            <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden md:flex">
+            <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden xl:flex">
               <Link
                 href="#"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-primary text-primary"

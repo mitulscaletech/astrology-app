@@ -47,7 +47,7 @@ const Learn = () => {
         <Typography variant="h2" size="p" className="mb-3" isTitle>
           Learn
         </Typography>
-        <Grid className="justify-between items-center">
+        <Grid className="justify-between">
           <Grid.Col className="md:w-6/12">
             <Typography variant="h3" size="h3" className="mb-0 font-semibold">
               Wisdom for Your Journey
@@ -59,7 +59,7 @@ const Learn = () => {
             </Typography>
           </Grid.Col>
         </Grid>
-        <Grid className="py-8 md:py-10 xl:py-12">
+        <Grid className="py-8 md:py-10 xl:py-12" size="md">
           {LEARN_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.date} className="md:w-4/12">
@@ -73,13 +73,13 @@ const Learn = () => {
                       className="w-full aspect-[572/382] object-cover"
                     />
                   </div>
-                  <div className="p-4 lg:p-6 xl:p-8">
+                  <div className="p-4 lg:p-5 xl:p-7 2xl:p-8">
                     <div className="text-highlight flex justify-between font-medium">
-                      <Typography variant="p" size="p" className="mb-2 lg:mb-3">
+                      <Typography variant="p" size="p" className="mb-2 xl:mb-3">
                         {astrology?.date}
                       </Typography>
                       <Typography variant="p" size="p" className="mb-2">
-                        {astrology?.date}
+                        {astrology?.readTime}
                       </Typography>
                     </div>
                     <Typography variant="h4" size="h5" className="mb-4 font-bold capitalize">
