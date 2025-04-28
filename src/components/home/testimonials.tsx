@@ -49,7 +49,7 @@ const Testimonials = () => {
     arrows: false,
     // autoplay: true,
     infinite: false,
-    slidesToShow: 3,
+    slidesToShow: 2,
     variableWidth: true
     // speed: 1000,
     // autoplaySpeed: 4000
@@ -75,14 +75,14 @@ const Testimonials = () => {
         </Grid>
         <SlickSlider settings={settings} className="testimonial-slider py-8 lg:py-10 xl:py-12">
           {testimonial_DATA.map((testimonial) => (
-            <div key={testimonial.title} className="px-3">
-              <div className="w-[532px] flex flex-col border border-secondary/20 rounded-3xl shadow-card min-h-full relative overflow-hidden">
+            <div key={testimonial.title} className="px-2 md:px-2 2xl:px-2.5 3xl:px-3">
+              <div className="w-72 lg:w-80 xl:w-88 2xl:w-96 3xl:w-112 4xl:w-128 flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full relative overflow-hidden">
                 <Image
                   src={testimonial?.image}
                   alt={testimonial?.name}
                   className="w-full aspect-[563/801] object-cover"
                 />
-                <div className="absolute size-full flex flex-col justify-end p-4 md:p-4 lg:p-6 xl:p-8 grow top-0 bg-gradient-to-b from-secondary/20 to-secondary/70 z-2">
+                <div className="absolute size-full flex flex-col justify-end p-4 md:p-4 lg:p-6 2xl:p-8 grow top-0 bg-gradient-to-b from-secondary/20 to-secondary/70 z-2">
                   <Typography variant="h4" size="h5" className="mb-4 xl:mb-5 italic">
                     {testimonial?.title}
                   </Typography>

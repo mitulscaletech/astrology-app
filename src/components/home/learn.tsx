@@ -63,7 +63,7 @@ const Learn = () => {
           {LEARN_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.date} className="md:w-4/12">
-                <div className="flex flex-col border border-secondary/20 rounded-3xl shadow-card min-h-full overflow-hidden">
+                <div className="flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full overflow-hidden">
                   <div>
                     <Image
                       src={astrology?.image}

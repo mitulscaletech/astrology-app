@@ -61,19 +61,19 @@ const Astrology = () => {
             </Typography>
           </Grid.Col>
         </Grid>
-        <Grid className="mt-12">
+        <Grid className="mt-12" size="md">
           {ASTROLOGY_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.tag} className="md:w-3/12">
-                <div className="flex flex-col p-6 border border-secondary/20 rounded-3xl shadow-card min-h-full">
-                  <div className="mb-6">
+                <div className="flex flex-col p-2 md:p-2 lg:p-2 xl:p-2.5 2xl:p-3 4xl:p-6 border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full">
+                  <div className="mb-3 md:mb-3.5 xl:mb-4 3xl:mb-6">
                     <Image
                       src={astrology?.image}
                       alt={astrology?.tag}
                       className="w-full aspect-square object-contain"
                     />
                   </div>
-                  <div className="px-4 pb-4 grow flex flex-col">
+                  <div className="px-1.5 3xl:px-3 4xl:px-4 pb-2 4xl:pb-4 grow flex flex-col">
                     <Typography variant="p" size="p" className="mb-2">
                       {astrology?.tag}
                     </Typography>
@@ -84,7 +84,7 @@ const Astrology = () => {
                       {astrology?.description}
                     </Typography>
                     <div className="text-end mt-auto">
-                      <Button asChild variant="highlight" className="mt-4 md:mt-5 lg:mt-6 xl:mt-8">
+                      <Button asChild variant="highlight" className="mt-4 md:mt-5 xl:mt-5 2xl:mt-6 3xl:mt-8">
                         <Link href="/">BOOK NOW</Link>
                       </Button>
                     </div>

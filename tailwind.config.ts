@@ -15,8 +15,9 @@ const config: Config = {
       md: "768px",
       lg: "992px",
       xl: "1200px",
-      xxl: "1400px",
-      xxxl: "1800px"
+      "2xl": "1440px",
+      "3xl": "1620px",
+      "4xl": "1800px"
     },
     container: {
       center: true,
@@ -79,8 +80,22 @@ const config: Config = {
     },
     extend: {
       fontSize: {
+        xSmall: "13px",
+        small: "15px",
+        md: "17px",
+        "1.5xl": "22px",
+        "2.5xl": "28px",
         "7.5xl": "84px",
         "3.5xl": "32px"
+      },
+      spacing: {
+        13: '3.25rem', // 52px
+        15: '3.75rem', // 60px
+        18: '4.5rem', // 72px
+        88: '22rem', // 352px
+        112: '28rem', // 448px
+        128: '32rem', // 512px
+        144: '36rem' // 576px
       },
       zIndex: {
         1: "1",
@@ -167,12 +182,15 @@ const config: Config = {
             maxWidth: "960px"
           },
           "@screen xl": {
-            maxWidth: "1140px"
+            maxWidth: "1170px"
           },
-          "@screen xxl": {
+          "@screen 2xl": {
             maxWidth: "1320px"
           },
-          "@screen xxxl": {
+          "@screen 3xl": {
+            maxWidth: "1580px"
+          },
+          "@screen 4xl": {
             maxWidth: "1752px"
           }
         }

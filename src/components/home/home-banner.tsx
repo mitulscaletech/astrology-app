@@ -11,7 +11,7 @@ const HomeBanner = () => {
   return (
     <section>
       <div className="container">
-        <div className="flex items-center relative rounded-3xl min-h-[626px] p-20 overflow-hidden text-accent-white">
+        <div className="flex items-center relative px-4 md:px-20 lg:px-12 3xl:px-20 rounded-3xl min-h-112 xl:min-h-128 2xl:min-h-144 3xl:min-h-[626px] overflow-hidden text-accent-white">
           <Image src={banner} alt="home-banner" className="absolute size-full inset-0 object-cover" />
           <Grid>
             <Grid.Col className="md:w-7/12">

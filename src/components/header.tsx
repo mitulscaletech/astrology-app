@@ -10,14 +10,14 @@ export function Header() {
   // const { setTheme, theme } = useTheme();
 
   return (
-    <header className="py-4 px-8">
+    <header className="py-2 md:py-3 3xl:py-4">
       <div className="container">
-        <div className="flex px-4 md:px-20 lg:px-20 xl:px-20 py-7 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
+        <div className="flex px-4 md:px-20 lg:px-12 3xl:px-20 py-7 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
           <div className="flex items-center gap-6 md:gap-7 xl:gap-8">
             <Link href="/" className="w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
-            <nav className="flex gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold">
+            <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden md:flex">
               <Link
                 href="#"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-primary text-primary"
@@ -45,17 +45,20 @@ export function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-3 text-secondary-500">
-            <Button asChild size="sm" variant="secondary">
+            <Button asChild size="sm" variant="secondary" className="hidden md:flex">
               <Link href="/user/astrologer">Astrologer Login</Link>
             </Button>
-            <Link href="/user/login" className="size-9 p-1.5 hover:text-primary">
+            <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
               <IconSearch />
             </Link>
-            <Link href="/user/login" className="size-9 p-1.5 hover:text-primary">
+            <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
               <IconUser />
             </Link>
             <div className="h-9 border-l border-primary/30" />
-            <Link href="#" className="size-12 p-3 bg-primary text-accent-white rounded-full">
+            <Link
+              href="#"
+              className="size-8 md:size-10 2xl:size-12 p-1 md:p-2 2xl:p-3 bg-primary text-accent-white rounded-full"
+            >
               <IconCart />
             </Link>
           </div>

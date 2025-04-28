@@ -26,7 +26,7 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "group flex w-full items-center justify-between py-3 md:py-4 lg:py-4 xl:py-6 font-semibold transition-all text-start data-[state=open]:text-primary",
+        "group flex gap-2 w-full items-center justify-between py-3 md:py-4 lg:py-4 2xl:py-5 3xl:py-6 font-semibold transition-all text-start data-[state=open]:text-primary",
         className
       )}
       {...props}
@@ -34,7 +34,7 @@ const AccordionTrigger = React.forwardRef<
       <Typography variant="span" size="h5">
         {children}
       </Typography>
-      <span className="ml-2 size-4 md:size-6 xl:size-10 transition-transform duration-200 group-data-[state=open]:rotate-180">
+      <span className="size-5 md:size-6 xl:size-8 2xl:size-10 transition-transform duration-200 group-data-[state=open]:rotate-180">
         <IconArrowDownward />
       </span>
     </AccordionPrimitive.Trigger>
