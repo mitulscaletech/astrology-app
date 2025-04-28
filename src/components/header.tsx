@@ -3,6 +3,8 @@ import Image from "next/image";
 import logo from "@/assets/images/logo.png";
 import IconCart from "@/shared/icons/cart";
 import { Button } from "@/components/ui/button";
+import IconUser from "@/shared/icons/user";
+import IconSearch from "@/shared/icons/search";
 
 export function Header() {
   // const { setTheme, theme } = useTheme();
@@ -10,27 +12,50 @@ export function Header() {
   return (
     <header className="py-4 px-8">
       <div className="container">
-        <div className="flex px-4 md:px-20 lg:px-20 xl:px-20 py-8 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
-          <div className="flex items-center gap-6">
+        <div className="flex px-4 md:px-20 lg:px-20 xl:px-20 py-7 border border-secondary-100 items-center justify-between shadow-card rounded-3xl">
+          <div className="flex items-center gap-6 md:gap-7 xl:gap-8">
             <Link href="/" className="w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
-            <nav className="space-x-8 text-secondary-500 font-medium text-sm">
-              <Link href="#">Home</Link>
-              <Link href="#">Astrology</Link>
-              <Link href="#">Blog</Link>
-              <Link href="#">About</Link>
+            <nav className="flex gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold">
+              <Link
+                href="#"
+                className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-primary text-primary"
+              >
+                Home
+              </Link>
+              <Link
+                href="#"
+                className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
+              >
+                Astrology
+              </Link>
+              <Link
+                href="#"
+                className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
+              >
+                Pooja
+              </Link>
+              <Link
+                href="#"
+                className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
+              >
+                Learn
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-3 text-secondary-500">
-            <Button asChild size="sm">
-              <Link href="/user/login">User Login</Link>
-            </Button>
             <Button asChild size="sm" variant="secondary">
-              <Link href="/user/login">Astrologer Login</Link>
+              <Link href="/user/astrologer">Astrologer Login</Link>
             </Button>
-            <div className="h-6 border-l border-primary-100" />
-            <Link href="#" className="size-6">
+            <Link href="/user/login" className="size-9 p-1.5 hover:text-primary">
+              <IconSearch />
+            </Link>
+            <Link href="/user/login" className="size-9 p-1.5 hover:text-primary">
+              <IconUser />
+            </Link>
+            <div className="h-9 border-l border-primary/30" />
+            <Link href="#" className="size-12 p-3 bg-primary text-accent-white rounded-full">
               <IconCart />
             </Link>
           </div>
