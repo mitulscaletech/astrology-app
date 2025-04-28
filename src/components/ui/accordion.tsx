@@ -1,7 +1,8 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 import React from "react";
-import IconChevronDown from "@/shared/icons/chevronDown";
+import Typography from "@/components/ui/typography";
+import IconArrowDownward from "@/shared/icons/arrow-downward";
 
 const Accordion = AccordionPrimitive.Root;
 
@@ -9,7 +10,11 @@ const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item ref={ref} className={cn("border-b border-secondary-100 py-2", className)} {...props} />
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={cn("border-b-2 border-secondary/20 mb-3 md:mb-4 xl:mb-5", className)}
+    {...props}
+  />
 ));
 AccordionItem.displayName = "AccordionItem";
 
@@ -17,18 +22,20 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex" asChild>
+  <AccordionPrimitive.Header asChild>
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex w-full text-base md:text-lg items-center justify-between py-2 font-semibold transition-all text-start data-[state=open]:text-primary",
+        "group flex w-full items-center justify-between py-3 md:py-4 lg:py-4 xl:py-6 font-semibold transition-all text-start data-[state=open]:text-primary",
         className
       )}
       {...props}
     >
-      <span>{children}</span>
-      <span className="ml-2 size-4 md:size-6 transition-transform duration-200 data-[state=open]:rotate-180">
-        <IconChevronDown />
+      <Typography variant="span" size="h5">
+        {children}
+      </Typography>
+      <span className="ml-2 size-4 md:size-6 xl:size-10 transition-transform duration-200 group-data-[state=open]:rotate-180">
+        <IconArrowDownward />
       </span>
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
@@ -39,7 +46,11 @@ const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Content ref={ref} className={cn("text-secondary-400 px-1 pb-2 pt-1", className)} {...props} />
+  <AccordionPrimitive.Content
+    ref={ref}
+    className={cn("text-secondary/70 text-base md:text-lg lg:text-xl xl:text-2xl pb-6", className)}
+    {...props}
+  />
 ));
 AccordionContent.displayName = "AccordionContent";
 
