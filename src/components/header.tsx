@@ -23,7 +23,7 @@ export function Header() {
                 Home
               </Link>
               <Link
-                href="#"
+                href="/astrology"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
               >
                 Astrology

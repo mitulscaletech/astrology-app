@@ -83,6 +83,7 @@ const config: Config = {
         xSmall: "13px",
         small: "15px",
         md: "17px",
+        large: "19px",
         "1.5xl": "22px",
         "2.5xl": "28px",
         "7.5xl": "84px",

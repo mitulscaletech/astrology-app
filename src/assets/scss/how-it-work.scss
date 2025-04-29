@@ -1,0 +1,52 @@
+.how-it-work {
+  .item::after {
+    top: 74px;
+    left: 42px;
+    width: 2px;
+    height: calc(100% - 44px);
+  }
+  > :last-child .item::after {
+    display: none;
+  }
+  @screen md {
+    .item::after {
+      top: 48px;
+      left: 78px;
+      width: calc(100% - 44px);
+      height: 2px;
+    }
+  }
+  @screen lg {
+    .item::after {
+      top: 70px;
+      left: 114px;
+      width: calc(100% - 68px);
+    }
+  }
+  @screen xl {
+    .item::after {
+      top: 72px;
+      left: 122px;
+      width: calc(100% - 76px);
+    }
+  }
+  @screen 2xl {
+    .item::after {
+      top: 96px;
+      left: 150px;
+      width: calc(100% - 84px);
+    }
+  }
+  // @screen 3xl {
+  //   .item::after {
+  //     left: 150px;
+  //     top: 96px;
+  //   }
+  // }
+  @screen 4xl {
+    .item::after {
+      top: 96px;
+      left: 154px;
+    }
+  }
+}
