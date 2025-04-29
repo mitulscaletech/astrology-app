@@ -39,7 +39,11 @@ export const ModalContent = ({
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-secondary-800/40 z-10" />
-      <Dialog.Content className="fixed inset-0 flex p-4 z-20 h-screen overflow-auto !pointer-events-none">
+      <Dialog.Content
+        className="fixed inset-0 flex p-4 z-20 h-screen overflow-auto !pointer-events-none"
+        aria-describedby=""
+      >
+        <Dialog.DialogTitle className="sr-only">Authentication Dialog</Dialog.DialogTitle>
         <div
           className={`p-6 bg-accent-white rounded-md shadow-lg max-w-full relative ${
             sizeClasses[size] || "w-auto"
