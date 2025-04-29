@@ -130,7 +130,7 @@ export default function UserLogin() {
             if (!userResponse.is_error) {
               await signIn("credentials", {
                 redirect: false,
-                token: JSON.stringify({ ...userResponse.data, role: "user", access_token: response.data.token })
+                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
               });
               const status = userResponse.data.status;
               const path = handleUserStatusRedirect(status);
@@ -160,8 +160,7 @@ export default function UserLogin() {
       provider_user_id: result.user.providerData[0].uid,
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
-      social_photo: user.photoURL,
-      role: "user"
+      social_photo: user.photoURL
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {

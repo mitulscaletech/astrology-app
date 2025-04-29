@@ -10,7 +10,7 @@ import Auth from "./component/auth-component";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: "user" | "astrologer";
+  type: "USER" | "ASTROLOGER";
 }
 
 const AuthModal = ({ isOpen, onClose, type }: AuthModalProps) => {
@@ -24,14 +24,14 @@ const AuthModal = ({ isOpen, onClose, type }: AuthModalProps) => {
         <CommonTabs value={activeTab} onValueChange={setActiveTab}>
           <div className="w-112 mx-auto">
             <CommonTabsList>
-              <CommonTabsTrigger value="user">USER</CommonTabsTrigger>
-              <CommonTabsTrigger value="astrologer">ASTROLOGER</CommonTabsTrigger>
+              <CommonTabsTrigger value="USER">USER</CommonTabsTrigger>
+              <CommonTabsTrigger value="ASTROLOGER">ASTROLOGER</CommonTabsTrigger>
             </CommonTabsList>
           </div>
-          <CommonTabsContent value="user" className="space-y-6">
+          <CommonTabsContent value="USER" className="space-y-6">
             <Auth phone={phoneNumber} code={countryCode} currentTab={activeTab} />
           </CommonTabsContent>
-          <CommonTabsContent value="astrologer" className="space-y-6">
+          <CommonTabsContent value="ASTROLOGER" className="space-y-6">
             <Auth phone={phoneNumber} code={countryCode} currentTab={activeTab} />
           </CommonTabsContent>
           <div className="flex justify-between mt-8">

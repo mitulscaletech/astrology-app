@@ -121,7 +121,7 @@ export default function UserSignup() {
             if (!userResponse.is_error) {
               await signIn("credentials", {
                 redirect: false,
-                token: JSON.stringify({ ...userResponse.data, role: "user", access_token: response.data.token })
+                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
               });
               const status = userResponse.data.status;
               const path = handleUserStatusRedirect(status);
@@ -151,8 +151,7 @@ export default function UserSignup() {
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
       social_photo: user.photoURL,
-      contry_code: DEFAULT_COUNTRY_CODE,
-      role: "user"
+      country_code: DEFAULT_COUNTRY_CODE
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {

@@ -5,7 +5,7 @@ import { handleAstrologerRedirect, handleUserStatusRedirect } from "./lib/utils-
 
 interface UserData {
   status: string;
-  role: "user" | "astrologer" | "admin";
+  role: "USER" | "ASTROLOGER" | "ADMIN";
   [key: string]: any;
 }
 
@@ -47,11 +47,11 @@ export async function middleware(req: NextRequest) {
     // 1. Block authenticated users from accessing login/signup
     if (isPublicRoute) {
       let redirectPath = "/";
-      if (role === "astrologer") {
+      if (role === "ASTROLOGER") {
         redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
-      } else if (role === "user") {
+      } else if (role === "USER") {
         redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
-      } else if (role === "admin") {
+      } else if (role === "ADMIN") {
         redirectPath = "/admin/dashboard";
       }
 
@@ -71,16 +71,16 @@ export async function middleware(req: NextRequest) {
 
     // 3. Role mismatch? Redirect to appropriate route
     if (
-      (isAstrologerRoute && role !== "astrologer") ||
-      (isUserRoute && role !== "user") ||
-      (isAdminRoute && role !== "admin")
+      (isAstrologerRoute && role !== "ASTROLOGER") ||
+      (isUserRoute && role !== "USER") ||
+      (isAdminRoute && role !== "ADMIN")
     ) {
       let redirectPath = "/";
-      if (role === "astrologer") {
+      if (role === "ASTROLOGER") {
         redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
-      } else if (role === "user") {
+      } else if (role === "USER") {
         redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
-      } else if (role === "admin") {
+      } else if (role === "ADMIN") {
         redirectPath = "/admin/dashboard";
       }
       return NextResponse.redirect(new URL(redirectPath, req.url));

@@ -36,8 +36,7 @@ export default function AdminLogin() {
       redirect: false,
       token: JSON.stringify({
         status: "Approved & Activated",
-        access_token: "sc34g334sc45609q4566asc92ef34t4534g45g54g45gg45grg34234",
-        role: "admin"
+        access_token: "sc34g334sc45609q4566asc92ef34t4534g45g54g45gg45grg34234"
       })
     });
     router.push("/admin/dashboard");
