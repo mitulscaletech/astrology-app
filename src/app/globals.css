@@ -52,6 +52,11 @@
   }
 }
 
+
+body {
+  @apply text-xSmall md:text-base lg:text-base xl:text-md 2xl:text-md 3xl:text-lg 4xl:text-lg; line-height: 1.4;
+}
+
 a,button {
   transition: all 0.24s ease-in-out;
 }

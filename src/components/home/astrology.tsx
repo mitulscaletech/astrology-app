@@ -48,25 +48,25 @@ const Astrology = () => {
         <Typography variant="h2" size="p" className="mb-3" isTitle>
           Astrology
         </Typography>
-        <Grid className="justify-between items-center">
+        <Grid className="justify-between gap-y-4">
           <Grid.Col className="md:w-5/12">
             <Typography variant="h3" size="h3" className="mb-0 font-semibold">
               Bring the Cosmos Into Your Daily Rituals
             </Typography>
           </Grid.Col>
-          <Grid.Col className="md:w-6/12 xl:w-5/12">
+          <Grid.Col className="md:w-7/12 lg:w-6/12 xl:w-5/12">
             <Typography variant="p" size="h6" className="mb-0 text-secondary/70">
               Explore astrology-inspired products designed to deepen your self-awareness, align with the universe, and
               elevate your everyday rituals.
             </Typography>
           </Grid.Col>
         </Grid>
-        <Grid className="mt-12 gap-y-4" size="md">
+        <Grid className="mt-6 md:mt-8 lg:mt-10 2xl:mt-12 gap-y-4" size="md">
           {ASTROLOGY_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.tag} className="md:w-6/12 xl:w-3/12">
                 <div className="flex flex-col hover:bg-highlight/20 p-3.5 md:p-5 lg:p-6 xl:p-2.5 2xl:p-3 4xl:p-6 border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full transition-all ease-out duration-200">
-                  <div className="mb-3 md:mb-3.5 xl:mb-4 3xl:mb-6 w-32 md:w-48 lg:w-56 xl:w-full mx-auto">
+                  <div className="mb-3 md:mb-3.5 xl:mb-4 3xl:mb-6 w-48 sm:w-56 xl:w-full mx-auto">
                     <Image
                       src={astrology?.image}
                       alt={astrology?.tag}
@@ -77,7 +77,7 @@ const Astrology = () => {
                     <Typography variant="p" size="p" className="mb-2">
                       {astrology?.tag}
                     </Typography>
-                    <Typography variant="h4" size="h5" className="font-head mb-4">
+                    <Typography variant="h4" size="h5" className="font-head mb-2.5 md:mb-3 xl:mb-4">
                       {astrology?.title}
                     </Typography>
                     <Typography variant="p" size="p" className="text-secondary/70">

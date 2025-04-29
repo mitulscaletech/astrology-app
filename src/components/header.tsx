@@ -10,9 +10,9 @@ export function Header() {
   return (
     <header className="py-2 md:py-3 3xl:py-4">
       <div className="container">
-        <div className="flex px-4 lg:px-8 xl:px-12 3xl:px-20 py-2 md:py-4 lg:py-5 xl:py-6 2xl:py-7 border border-secondary-100 items-center justify-between shadow-card rounded-lg lg:rounded-2xl 2xl:rounded-3xl">
+        <div className="flex px-3 md:px-4 lg:px-8 xl:px-12 3xl:px-20 py-2 md:py-4 lg:py-5 xl:py-6 2xl:py-7 border border-secondary-100 items-center justify-between shadow-card rounded-lg lg:rounded-2xl 2xl:rounded-3xl">
           <div className="flex items-center gap-6 md:gap-7 xl:gap-8">
-            <Link href="/" className="w-32 md:w-36 lg:w-40 xl:w-44">
+            <Link href="/" className="w-28 md:w-36 lg:w-40 xl:w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
             <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden xl:flex">
@@ -42,7 +42,7 @@ export function Header() {
               </Link>
             </nav>
           </div>
-          <div className="flex items-center gap-3 text-secondary-500">
+          <div className="flex items-center gap-2 lg:gap-3 text-secondary-500">
             <Button asChild size="sm" variant="secondary" className="hidden md:flex">
               <Link href="/user/astrologer">Astrologer Login</Link>
             </Button>
@@ -52,10 +52,10 @@ export function Header() {
             <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
               <IconUser />
             </Link>
-            <div className="h-9 border-l border-primary/30" />
+            <div className="h-7 md:h-8 xl:h-9 border-l border-primary/30" />
             <Link
               href="#"
-              className="size-8 md:size-10 2xl:size-12 p-1 md:p-2 2xl:p-3 bg-primary text-accent-white rounded-full"
+              className="size-8 md:size-10 2xl:size-12 p-1.5 md:p-2 2xl:p-3 bg-primary text-accent-white rounded-full"
             >
               <IconCart />
             </Link>

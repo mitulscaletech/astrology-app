@@ -48,21 +48,21 @@ const Learn = () => {
           Learn
         </Typography>
         <Grid className="justify-between">
-          <Grid.Col className="md:w-6/12">
+          <Grid.Col className="md:w-5/12">
             <Typography variant="h3" size="h3" className="mb-0 font-semibold">
               Wisdom for Your Journey
             </Typography>
           </Grid.Col>
-          <Grid.Col className="md:w-5/12">
+          <Grid.Col className="md:w-7/12 lg:w-6/12 xl:w-5/12">
             <Typography variant="p" size="h6" className="mb-0 text-secondary/70">
               Discover insights, stories, and guidance to help you live with clarity, balance, and purpose.
             </Typography>
           </Grid.Col>
         </Grid>
-        <Grid className="py-8 md:py-10 xl:py-12" size="md">
+        <Grid className="py-6 md:py-9 lg:py-10 xl:py-12 gap-y-4 justify-center" size="md">
           {LEARN_DATA?.map((astrology) => {
             return (
-              <Grid.Col key={astrology?.date} className="md:w-4/12">
+              <Grid.Col key={astrology?.date} className="md:w-6/12 lg:w-4/12">
                 <div className="flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full overflow-hidden">
                   <div>
                     <Image
@@ -98,7 +98,7 @@ const Learn = () => {
           <Button asChild variant="highlight" className="gap-2.5">
             <Link href="/">
               Start Learning with Us
-              <span className="size-6">
+              <span className="size-5 md:size-6">
                 <IconArrowForward />
               </span>
             </Link>

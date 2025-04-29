@@ -10,7 +10,7 @@ import IconArrowForward from "@/shared/icons/arrow-forward";
 
 const AboutUs = () => {
   return (
-    <section className="common-section sm:pt-2 md:pt-4">
+    <section className="common-section !pt-2 md:!pt-4">
       <div className="container">
         <div className="rounded-lg xl:rounded-2xl 2xl:rounded-3xl overflow-hidden border border-secondary/20 shadow-card">
           <Grid className="justify-between items-center" size="zero">
@@ -35,7 +35,7 @@ const AboutUs = () => {
                   connection, our experienced Vedic scholars offer thoughtful, personalised guidance through Astrology
                   and Puja services.
                 </Typography>
-                <div className="flex gap-3 my-4 md:my-5 lg:my-6 xl:my-7 2xl:my-10 3xl:my-12 text-highlight justify-between">
+                <div className="flex flex-wrap gap-y-1 gap-x-3 my-4 md:my-5 lg:my-6 xl:my-7 2xl:my-10 3xl:my-12 text-highlight justify-between">
                   <Typography
                     size="h6"
                     className="flex items-center gap-1.5 2xl:gap-2 before:content-[''] before:size-2 2xl:before:size-3 before:bg-highlight before:rounded-full"
@@ -55,14 +55,14 @@ const AboutUs = () => {
                     Clarity made simple
                   </Typography>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-y-1 gap-x-2 md:gap-x-3">
                   <Button asChild variant="highlight">
                     <Link href="/">Learn with Us</Link>
                   </Button>
                   <Button asChild className="gap-2.5">
                     <Link href="/">
                       Book a Session
-                      <span className="size-6">
+                      <span className="size-5 md:size-6">
                         <IconArrowForward />
                       </span>
                     </Link>

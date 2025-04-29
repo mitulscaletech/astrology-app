@@ -12,7 +12,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn("border-b-2 border-secondary/20 mb-3 md:mb-4 xl:mb-5", className)}
+    className={cn("border-b-2 border-secondary/20 mb-3 md:mb-4 xl:mb-5 last:mb-0", className)}
     {...props}
   />
 ));
@@ -34,7 +34,7 @@ const AccordionTrigger = React.forwardRef<
       <Typography variant="span" size="h5">
         {children}
       </Typography>
-      <span className="size-5 md:size-6 xl:size-8 2xl:size-10 transition-transform duration-200 group-data-[state=open]:rotate-180">
+      <span className="size-5 md:size-6 xl:size-8 2xl:size-10 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180">
         <IconArrowDownward />
       </span>
     </AccordionPrimitive.Trigger>
@@ -48,7 +48,10 @@ const AccordionContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className={cn("text-secondary/70 text-base md:text-lg lg:text-xl xl:text-2xl pb-6", className)}
+    className={cn(
+      "text-secondary/70 text-small md:text-base lg:text-lg xl:text-xl 2xl:text-2xl pb-4 md:pb-5 lg:pb-6",
+      className
+    )}
     {...props}
   />
 ));

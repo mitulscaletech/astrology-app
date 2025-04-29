@@ -50,9 +50,17 @@ const Testimonials = () => {
     // autoplay: true,
     infinite: false,
     slidesToShow: 2,
-    variableWidth: true
+    variableWidth: true,
     // speed: 1000,
     // autoplaySpeed: 4000
+    responsive: [
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
   };
   return (
     <section className="common-section bg-secondary text-accent-white overflow-hidden">
@@ -60,52 +68,54 @@ const Testimonials = () => {
         <Typography variant="h2" size="p" className="mb-3" isTitle>
           testimonial
         </Typography>
-        <Grid className="justify-between items-center ">
+        <Grid className="justify-between">
           <Grid.Col className="md:w-5/12">
             <Typography variant="h3" size="h3" className="mb-0 font-semibold">
               Bring the Cosmos Into Your Daily Rituals
             </Typography>
           </Grid.Col>
-          <Grid.Col className="md:w-6/12 xl:w-5/12">
+          <Grid.Col className="md:w-7/12 lg:w-6/12 xl:w-5/12">
             <Typography variant="p" size="h6" className="mb-0 text-accent-white/70">
               Explore testimonial-inspired products designed to deepen your self-awareness, align with the universe, and
               elevate your everyday rituals.
             </Typography>
           </Grid.Col>
         </Grid>
-        <SlickSlider settings={settings} className="testimonial-slider py-8 lg:py-10 xl:py-12">
-          {testimonial_DATA.map((testimonial) => (
-            <div key={testimonial.title} className="px-2 md:px-2 2xl:px-2.5 3xl:px-3">
-              <div className="w-72 lg:w-80 xl:w-88 2xl:w-96 3xl:w-112 4xl:w-128 flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full relative overflow-hidden">
-                <Image
-                  src={testimonial?.image}
-                  alt={testimonial?.name}
-                  className="w-full aspect-[563/801] object-cover"
-                />
-                <div className="absolute size-full flex flex-col justify-end p-4 md:p-4 lg:p-6 2xl:p-8 grow top-0 bg-gradient-to-b from-secondary/20 to-secondary/70 z-2">
-                  <Typography variant="h4" size="h5" className="mb-4 xl:mb-5 italic">
-                    {testimonial?.title}
-                  </Typography>
-                  <div className="flex gap-2 mb-3">
-                    {Array.from({ length: testimonial?.star }, (_, index) => (
-                      <div key={index} className="size-4">
-                        <IconStarRounded />
-                      </div>
-                    ))}
+        <div className="-mx-1.5 md:-mx-2 2xl:-mx-2.5 3xl:-mx-3">
+          <SlickSlider settings={settings} className="testimonial-slider py-8 lg:py-10 xl:py-12">
+            {testimonial_DATA.map((testimonial) => (
+              <div key={testimonial.title} className="px-1.5 md:px-2 2xl:px-2.5 3xl:px-3">
+                <div className="w-72 lg:w-80 xl:w-88 2xl:w-96 3xl:w-112 4xl:w-128 flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full relative overflow-hidden">
+                  <Image
+                    src={testimonial?.image}
+                    alt={testimonial?.name}
+                    className="w-full aspect-[563/801] object-cover"
+                  />
+                  <div className="absolute size-full flex flex-col justify-end p-4 md:p-4 lg:p-6 2xl:p-8 grow top-0 bg-gradient-to-b from-secondary/20 to-secondary/70 z-2">
+                    <Typography variant="h4" size="h5" className="mb-4 xl:mb-5 italic">
+                      {testimonial?.title}
+                    </Typography>
+                    <div className="flex gap-2 mb-3">
+                      {Array.from({ length: testimonial?.star }, (_, index) => (
+                        <div key={index} className="size-4">
+                          <IconStarRounded />
+                        </div>
+                      ))}
+                    </div>
+                    <Typography variant="p" size="p" className="">
+                      {testimonial?.name}
+                    </Typography>
                   </div>
-                  <Typography variant="p" size="p" className="">
-                    {testimonial?.name}
-                  </Typography>
                 </div>
               </div>
-            </div>
-          ))}
-        </SlickSlider>
+            ))}
+          </SlickSlider>
+        </div>
         <div className="text-center">
           <Button asChild variant="highlight" className="gap-2.5">
             <Link href="/">
               Book a Session
-              <span className="size-6">
+              <span className="size-5 md:size-6">
                 <IconArrowForward />
               </span>
             </Link>
