@@ -91,9 +91,10 @@ export default function UserOnboarding() {
           } else {
             toast.error(response.message);
           }
+          setIsSubmitting(false);
         })
-        .catch((error) => {
-          console.error(error);
+        .catch(() => {
+          setIsSubmitting(false);
         });
     } catch (error) {
       console.error(error);
