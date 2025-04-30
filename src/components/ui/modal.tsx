@@ -33,7 +33,7 @@ export const ModalContent = ({
     sm: "w-[540px]",
     md: "w-[720px]",
     lg: "w-[920px]",
-    xl: "w-[1140px]"
+    xl: "w-[1500px]"
   };
 
   return (
