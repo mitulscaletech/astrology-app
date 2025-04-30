@@ -17,7 +17,7 @@ export function Header() {
             </Link>
             <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden xl:flex">
               <Link
-                href="#"
+                href="/"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-primary text-primary"
               >
                 Home
@@ -29,7 +29,7 @@ export function Header() {
                 Astrology
               </Link>
               <Link
-                href="#"
+                href="/pooja"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
               >
                 Pooja

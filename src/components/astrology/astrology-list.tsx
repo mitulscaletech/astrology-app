@@ -57,7 +57,7 @@ const AstrologyList = () => {
           {ASTROLOGY_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.tag} className="lg:w-6/12">
-                <div className="flex flex-col border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full transition-all ease-out duration-200 overflow-hidden">
+                <div className="group flex flex-col hover:bg-highlight-100 border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full transition-all ease-out duration-200 overflow-hidden">
                   <div className="">
                     <Image
                       src={astrology?.banner}
@@ -66,7 +66,7 @@ const AstrologyList = () => {
                     />
                   </div>
                   <div className="flex grow gap-3 lg:gap-3.5 xl:gap-4 2xl:gap-5 3xl:gap-6 px-3 md:px-3.5 lg:px-4 2xl:px-5 3xl:px-6 py-2 md:py-3 lg:py-4 xl:py-5 2xl:py-6 3xl:py-7 4xl:py-8">
-                    <div className="w-24 sm:w-32 md:w-40 lg:w-40 xl:w-44 2xl:w-52 3xl:60 -mt-2 md:-mt-3 lg:-mt-4 xl:-mt-5 2xl:-mt-6 3xl:-mt-7 4xl:-mt-8 shrink-0 self-start p-1 2xl:p-1.5 rounded-t-full bg-accent-white relative -translate-y-1/2">
+                    <div className="w-24 sm:w-32 md:w-40 lg:w-40 xl:w-44 2xl:w-52 3xl:60 -mt-2 md:-mt-3 lg:-mt-4 xl:-mt-5 2xl:-mt-6 3xl:-mt-7 4xl:-mt-8 shrink-0 self-start p-1 2xl:p-1.5 rounded-t-full bg-accent-white group-hover:bg-highlight-100 transition-all ease-out duration-200 relative -translate-y-1/2">
                       <Image
                         src={astrology?.image}
                         alt={astrology?.tag}
@@ -77,7 +77,7 @@ const AstrologyList = () => {
                       <Typography variant="p" size="h6" className="font-semibold text-highlight">
                         {astrology?.tag}
                       </Typography>
-                      <Typography variant="h4" size="h4" className="font-head mb-2.5 md:mb-2.5 xl:mb-3">
+                      <Typography variant="h4" size="h4-head" className="font-head mb-2.5 md:mb-2.5 xl:mb-3">
                         {astrology?.title}
                       </Typography>
                       <Typography variant="p" size="h6" className="text-secondary/70">

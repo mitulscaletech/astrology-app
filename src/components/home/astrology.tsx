@@ -50,7 +50,7 @@ const Astrology = () => {
         </Typography>
         <Grid className="justify-between gap-y-4">
           <Grid.Col className="md:w-5/12">
-            <Typography variant="h3" size="h3" className="mb-0 font-semibold">
+            <Typography variant="h3" className="mb-0 font-semibold">
               Bring the Cosmos Into Your Daily Rituals
             </Typography>
           </Grid.Col>
@@ -77,7 +77,7 @@ const Astrology = () => {
                     <Typography variant="p" size="p" className="mb-2">
                       {astrology?.tag}
                     </Typography>
-                    <Typography variant="h4" size="h5" className="font-head mb-2.5 md:mb-3 xl:mb-4">
+                    <Typography variant="h4" size="h5-head" className="font-head mb-2.5 md:mb-3 xl:mb-4">
                       {astrology?.title}
                     </Typography>
                     <Typography variant="p" size="p" className="text-secondary/70">

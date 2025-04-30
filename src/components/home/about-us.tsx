@@ -35,7 +35,7 @@ const AboutUs = () => {
                   connection, our experienced Vedic scholars offer thoughtful, personalised guidance through Astrology
                   and Puja services.
                 </Typography>
-                <div className="flex flex-wrap gap-y-1 gap-x-3 my-4 md:my-5 lg:my-6 xl:my-7 2xl:my-10 3xl:my-12 text-highlight justify-between">
+                <div className="flex flex-wrap gap-y-1 gap-x-3 my-4 md:my-5 lg:my-6 xl:my-7 2xl:my-10 3xl:my-12 text-highlight lg:justify-between">
                   <Typography
                     size="h6"
                     className="flex items-center gap-1.5 2xl:gap-2 before:content-[''] before:size-2 2xl:before:size-3 before:bg-highlight before:rounded-full"

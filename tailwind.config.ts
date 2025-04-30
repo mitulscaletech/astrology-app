@@ -47,6 +47,7 @@ const config: Config = {
         900: "rgb(var(--secondary-900) / <alpha-value>)"
       },
       highlight: {
+        100: "#FDEAD3",
         DEFAULT: "rgb(var(--highlight-500) / <alpha-value>)"
       },
       muted: {

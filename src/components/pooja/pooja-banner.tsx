@@ -1,9 +1,9 @@
 import SmallBanner from "../common/small-banner";
 
-const AstrologyBanner = () => {
+const PoojaBanner = () => {
   return (
     <SmallBanner
-      title="Astrology"
+      title="Pooja"
       subTitle="Personalised Astrology, Rooted in Ancient Wisdom"
       desc="Get clarity on life’s challenges, relationships, career, and purpose—guided by trusted Vedic scholars.
               Every consultation is tailored to your unique birth chart and life path."
@@ -13,4 +13,4 @@ const AstrologyBanner = () => {
   );
 };
 
-export default AstrologyBanner;
+export default PoojaBanner;

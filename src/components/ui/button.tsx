@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-100 hover:bg-highlight",
         danger: "bg-danger text-danger-800 hover:bg-danger/90",
-        highlight: "bg-highlight text-accent-white hover:bg-secondary hover:text-accent-white",
+        highlight: "bg-highlight text-accent-white hover:bg-primary hover:text-accent-white",
         white: "bg-accent-white text-secondary hover:bg-secondary hover:text-accent-white",
         outline: "border border-secondary-200 bg-accent-white hover:bg-accent hover:text-secondary",
         secondary: "bg-secondary text-secondary-100 hover:bg-secondary/80",
