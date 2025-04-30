@@ -19,7 +19,7 @@ const ErrorHandler: FC = () => {
       (res: AxiosResponse<IResponseObject<any>>) => {
         const { data } = res;
         if (data && data.message) {
-          if (data.isError) {
+          if (data.is_error) {
             notify(data.message, "error");
             throw new Error(data.message as string);
           } else {

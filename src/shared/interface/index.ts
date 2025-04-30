@@ -1,5 +1,5 @@
 export interface IResponseObject<T> {
-  isError: boolean;
+  is_error: boolean;
   message: string;
   data: T;
 }

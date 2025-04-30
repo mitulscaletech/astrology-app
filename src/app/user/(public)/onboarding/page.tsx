@@ -93,12 +93,10 @@ export default function UserOnboarding() {
           }
         })
         .catch((error) => {
-          toast.error(error);
+          console.error(error);
         });
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -145,6 +143,8 @@ export default function UserOnboarding() {
                 onChange={(value, country: any) => handleChangeMobile(value, country)}
                 inputProps={{ name: "phone-input" }}
                 inputStyle={{ width: "100%", height: "40px" }}
+                disableDropdown={Boolean(getValues("mobile_number"))}
+                disabled={Boolean(getValues("mobile_number"))}
               />
               {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
             </div>
