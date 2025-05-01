@@ -4,7 +4,6 @@ import { USER_PROFILE_STATUS } from "@/shared/constants";
 export const handleAstrologerRedirect = (status: string): string | undefined => {
   switch (status) {
     case USER_PROFILE_STATUS.APPROVED_ACTIVATED:
-      toast.success("Login successfully!");
       return "/astrologer/dashboard";
 
     case USER_PROFILE_STATUS.PENDING_PROFILE_COMPLETION:
@@ -29,14 +28,12 @@ export const handleAstrologerRedirect = (status: string): string | undefined => 
 export const handleUserStatusRedirect = (status: string): string | undefined => {
   switch (status) {
     case USER_PROFILE_STATUS.APPROVED_ACTIVATED:
-      toast.success("Login successfully!");
       return "/user/dashboard";
 
     case USER_PROFILE_STATUS.PENDING_PROFILE_COMPLETION:
       return "/user/onboarding";
 
     default:
-      toast.error("Your account is not activated yet. Please contact to Admin");
       break;
   }
 };

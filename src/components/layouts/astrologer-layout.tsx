@@ -8,12 +8,12 @@ import HttpService from "@/shared/services/http.service";
 import AstrologerHeader from "@/components/header/astrologer-header";
 
 export default function AstrologerLayout({ children }: { children: React.ReactNode }) {
-  const { update } = useSession();
+  const { update, data: session } = useSession();
 
   useEffect(() => {
     HttpService.get(API_CONFIG.me).then((response) => {
       if (!response.is_error) {
-        update(response.data);
+        update({ ...session?.user, ...response.data });
       }
     });
   }, []);

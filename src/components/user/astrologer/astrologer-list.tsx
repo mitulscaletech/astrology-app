@@ -4,48 +4,51 @@ import { useState, useEffect } from "react";
 import { Search } from "@/components/user/astrologer/search-bar";
 import { Filters } from "@/components/user/astrologer/filters";
 import { AstrologerCard } from "@/components/user/astrologer/astrologer-card";
-import type { Astrologer } from "@/shared/interface/index.ts";
-import { astrologers } from "@/lib/data";
+import type { IAstrologer } from "@/shared/interface";
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import { useLoader } from "@/context/LoaderContext";
 
 export default function AstrologersList() {
-  const [allAstrologers, setAllAstrologers] = useState<Astrologer[]>(astrologers);
-  const [filteredAstrologers, setFilteredAstrologers] = useState<Astrologer[]>(allAstrologers);
+  const [allAstrologers, setAllAstrologers] = useState<IAstrologer[]>([]);
+  const [filteredAstrologers, setFilteredAstrologers] = useState<IAstrologer[]>(allAstrologers);
   const [searchQuery, setSearchQuery] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [languageFilter, setLanguageFilter] = useState<string | null>(null);
+  const { loading, setLoading } = useLoader();
 
-  const getAstoList = async () => {
+  const getAstrologerList = async () => {
     const res = await HttpService.get(API_CONFIG.astrologerList);
-    if (res.data.length > 0) {
-      setAllAstrologers([res.data, ...astrologers]);
+    if (!res.is_error) {
+      setAllAstrologers(res.data);
     }
+    setLoading(false);
   };
   useEffect(() => {
-    getAstoList();
+    setLoading(true);
+    getAstrologerList();
   }, []);
 
   // Get unique languages for filter options
-  const languages = Array.from(new Set(allAstrologers.flatMap((astrologer) => astrologer.languages)));
+  // const languages = Array.from(new Set(allAstrologers.flatMap((astrologer) => astrologer?.languages)));
 
   useEffect(() => {
     let result = [...allAstrologers];
 
     // Apply search filter
     if (searchQuery) {
-      result = result.filter((astrologer) => astrologer.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      result = result.filter((astrologer) => astrologer.full_name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
-    // Apply rating filter
-    if (ratingFilter !== null) {
-      result = result.filter((astrologer) => astrologer.rating >= ratingFilter);
-    }
+    // // Apply rating filter
+    // if (ratingFilter !== null) {
+    //   result = result.filter((astrologer) => astrologer.rating >= ratingFilter);
+    // }
 
-    // Apply language filter
-    if (languageFilter && languageFilter !== "all") {
-      result = result.filter((astrologer) => astrologer.languages.includes(languageFilter));
-    }
+    // // Apply language filter
+    // if (languageFilter && languageFilter !== "all") {
+    //   result = result.filter((astrologer) => astrologer.languages.includes(languageFilter));
+    // }
 
     setFilteredAstrologers(result);
   }, [searchQuery, ratingFilter, languageFilter]);
@@ -60,7 +63,7 @@ export default function AstrologersList() {
 
       <div className="mb-8">
         <Filters
-          languages={languages}
+          languages={[]}
           selectedRating={ratingFilter}
           selectedLanguage={languageFilter}
           onRatingChange={setRatingFilter}
@@ -68,13 +71,13 @@ export default function AstrologersList() {
         />
       </div>
 
-      {filteredAstrologers.length === 0 ? (
+      {allAstrologers.length === 0 && !loading ? (
         <div className="text-center py-12 bg-primary-100 rounded-lg">
           <p className="text-lg">No astrologers found matching your criteria.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAstrologers.map((astrologer) => (
+          {allAstrologers.map((astrologer) => (
             <AstrologerCard key={astrologer.id} astrologer={astrologer} />
           ))}
         </div>

@@ -64,7 +64,7 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
   };
 
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user && session?.user?.intake_form) {
       const {
         instagram = "",
         facebook = "",

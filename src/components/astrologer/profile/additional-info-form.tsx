@@ -60,7 +60,7 @@ export function AdditionalInfoForm() {
               });
             }
             toast.success(response.message);
-            router.push("astrologer/awaiting-review");
+            router.push("/astrologer/awaiting-review");
           }
         })
         .catch((error) => {

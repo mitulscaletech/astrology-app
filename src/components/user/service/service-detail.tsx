@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import ScheduleTimeModal from "@/components/user/service/schedule-time-modal";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ServiceCarousel from "./service-carouse";
+import HttpService from "@/shared/services/http.service";
+import { API_CONFIG } from "@/shared/constants/api";
+import { IAstrologer } from "@/shared/interface";
 
 const service = {
   title: "Janma Kundali: Holistic Life Blueprint",
@@ -41,8 +44,20 @@ Created using your birth date, time, and place, Janma Kundali offers a complete 
 
 export default function ServiceDetail() {
   const [selectedDuration, setSelectedDuration] = useState("30 Minutes");
-  const [selectedAstrologer, setSelectedAstrologer] = useState(service.astrologers[0].name);
+  const [selectedAstrologer, setSelectedAstrologer] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [allAstrologers, setAllAstrologers] = useState<IAstrologer[]>([]);
+
+  const getAstrologerList = async () => {
+    const res = await HttpService.get(API_CONFIG.astrologerList);
+    if (!res.is_error) {
+      setAllAstrologers(res.data);
+      setSelectedAstrologer(res.data[0].id);
+    }
+  };
+  useEffect(() => {
+    getAstrologerList();
+  }, []);
 
   return (
     <Grid>
@@ -92,11 +107,11 @@ export default function ServiceDetail() {
         <div className="mt-6">
           <p className="font-semibold mb-2">CHOOSE ASTROLOGER:</p>
           <div className="flex flex-wrap gap-3">
-            {service.astrologers.map((astro) => {
-              const isChecked = selectedAstrologer === astro.name;
+            {allAstrologers.map((astro) => {
+              const isChecked = selectedAstrologer === astro.id;
               return (
                 <label
-                  key={astro.name}
+                  key={astro.id}
                   className={`px-3 py-1.5 border rounded-md cursor-pointer text-sm ${
                     isChecked
                       ? "bg-secondary text-accent-white border-secondary"
@@ -106,13 +121,13 @@ export default function ServiceDetail() {
                   <input
                     type="radio"
                     name="astrologer"
-                    value={astro.name}
+                    value={astro.full_name}
                     checked={isChecked}
-                    onChange={() => setSelectedAstrologer(astro.name)}
+                    onChange={() => setSelectedAstrologer(astro.id)}
                     className="hidden"
                   />
-                  {astro.name}
-                  {astro.language && <span className="text-xs text-gray-300 ml-1">| {astro.language}</span>}
+                  {astro.full_name}
+                  {/* {astro.language && <span className="text-xs text-gray-300 ml-1">| {astro.language}</span>} */}
                 </label>
               );
             })}
@@ -124,12 +139,14 @@ export default function ServiceDetail() {
           Schedule your time
         </Button>
 
-        <ScheduleTimeModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          selectedAstro={selectedAstrologer}
-          selectedDuration={selectedDuration}
-        />
+        {modalOpen && (
+          <ScheduleTimeModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            selectedAstro={selectedAstrologer}
+            selectedDuration={selectedDuration}
+          />
+        )}
       </Grid.Col>
     </Grid>
   );

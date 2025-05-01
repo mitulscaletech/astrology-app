@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format, addMinutes } from "date-fns";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
 import { DateTime } from "luxon";
+import moment from "moment";
 
 type TimeSlot = {
   start_time: string;
@@ -39,7 +40,7 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const [astroTimeSlots, setAstroTimeSlots] = useState([]);
   const router = useRouter();
 
   const durationInMin = parseInt(selectedDuration);
@@ -155,10 +156,20 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
       console.error("Razorpay Init Error", error);
     }
   };
+  const getTimeSlots = async () => {
+    const res = await HttpService.get(
+      `${API_CONFIG.setAvailability}/${selectedAstro}?schedule_type=custom_date&schedule_date=${moment(selectedDate).format("YYYY-MM-DD")}`
+    );
+    setAstroTimeSlots(res.data[0].time_slots);
+  };
+
+  useEffect(() => {
+    getTimeSlots();
+  }, []);
 
   return (
     <Modal open={open} onOpenChange={onClose}>
-      <ModalContent>
+      <ModalContent size="md" showClose={false}>
         <ModalTitle>Schedule Your Time</ModalTitle>
 
         <div className="mb-4">
@@ -183,17 +194,17 @@ export default function ScheduleTimeModal({ open, onClose, selectedAstro, select
               <div className="mt-4">
                 <p className="mb-2 text-sm font-medium text-muted-foreground">Select Time Slot:</p>
                 <div className="flex flex-col gap-2">
-                  {generateTimeSlots().map((time) => (
+                  {astroTimeSlots?.map((time: any) => (
                     <button
                       key={time}
-                      onClick={() => handleTimeToggle(time)}
+                      onClick={() => handleTimeToggle(time?.start_time)}
                       className={`px-3 py-1 rounded-full border border-primary-200 text-sm transition ${
                         selectedTime === time
                           ? "bg-primary text-accent-white border-primary"
                           : "text-primary hover:bg-primary/10"
                       }`}
                     >
-                      {time}
+                      {time.start_time}
                     </button>
                   ))}
                 </div>

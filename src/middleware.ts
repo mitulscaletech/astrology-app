@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { handleAstrologerRedirect, handleUserStatusRedirect } from "./lib/utils-server";
+import { ROLE, USER_PROFILE_STATUS } from "./shared/constants";
 
 interface UserData {
   status: string;
@@ -22,9 +23,6 @@ const PUBLIC_ROUTES = new Set([
   "/user/signup",
   "/admin/login"
 ]);
-
-// Utility: check if path starts with one of the provided base paths
-const startsWithAny = (pathname: string, bases: string[]) => bases.some((base) => pathname.startsWith(base));
 
 // Main Middleware
 export async function middleware(req: NextRequest) {
@@ -47,17 +45,37 @@ export async function middleware(req: NextRequest) {
     // 1. Block authenticated users from accessing login/signup
     if (isPublicRoute) {
       let redirectPath = "/";
-      if (role === "ASTROLOGER") {
+      if (role === ROLE.astrologer) {
         redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
-      } else if (role === "USER") {
+      } else if (role === ROLE.user) {
         redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
-      } else if (role === "ADMIN") {
+      } else if (role === ROLE.admin) {
         redirectPath = "/admin/dashboard";
       }
 
       // Forcefully block access to login/signup
       if (pathname !== redirectPath) {
         return NextResponse.redirect(new URL(redirectPath, req.url));
+      }
+    }
+    if (isPrivateAstrologerRoute) {
+      if (status !== USER_PROFILE_STATUS.APPROVED_ACTIVATED) {
+        const redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
+        if (pathname !== redirectPath) {
+          return NextResponse.redirect(new URL(redirectPath, req.url));
+        }
+      } else if (status === USER_PROFILE_STATUS.APPROVED_ACTIVATED && pathname === "/astrologer/awaiting-review") {
+        return NextResponse.redirect(new URL("/astrologer/dashboard", req.url));
+      }
+    }
+    if (isPrivateUserRoute) {
+      if (status !== USER_PROFILE_STATUS.APPROVED_ACTIVATED) {
+        const redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
+        if (pathname !== redirectPath) {
+          return NextResponse.redirect(new URL(redirectPath, req.url));
+        }
+      } else if (status === USER_PROFILE_STATUS.APPROVED_ACTIVATED && pathname === "/user/onboarding") {
+        return NextResponse.redirect(new URL("/user/dashboard", req.url));
       }
     }
 
@@ -71,16 +89,16 @@ export async function middleware(req: NextRequest) {
 
     // 3. Role mismatch? Redirect to appropriate route
     if (
-      (isAstrologerRoute && role !== "ASTROLOGER") ||
-      (isUserRoute && role !== "USER") ||
-      (isAdminRoute && role !== "ADMIN")
+      (isAstrologerRoute && role !== ROLE.astrologer) ||
+      (isUserRoute && role !== ROLE.user) ||
+      (isAdminRoute && role !== ROLE.admin)
     ) {
       let redirectPath = "/";
-      if (role === "ASTROLOGER") {
+      if (role === ROLE.astrologer) {
         redirectPath = handleAstrologerRedirect(status) || "/astrologer/dashboard";
-      } else if (role === "USER") {
+      } else if (role === ROLE.user) {
         redirectPath = handleUserStatusRedirect(status) || "/user/dashboard";
-      } else if (role === "ADMIN") {
+      } else if (role === ROLE.admin) {
         redirectPath = "/admin/dashboard";
       }
       return NextResponse.redirect(new URL(redirectPath, req.url));

@@ -85,9 +85,9 @@ export default function UserOnboarding() {
       HttpService.put(API_CONFIG.updateProfile, formData, { contentType: "multipart/form-data" })
         .then(async (response) => {
           if (!response.is_error) {
-            update({ ...data, status: response.data.status, profilePhoto: response.data.profile_image });
-            toast.success(response.message);
+            await update({ ...data, status: response.data.status, profilePhoto: response.data?.profile_image });
             router.push("/user/dashboard");
+            toast.success(response.message);
           } else {
             toast.error(response.message);
           }

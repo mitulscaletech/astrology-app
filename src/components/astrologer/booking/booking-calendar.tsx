@@ -3,15 +3,20 @@
 import { useState } from "react";
 
 import moment from "moment";
+import toast from "react-hot-toast";
 import { Calendar, Views, SlotInfo, View } from "react-big-calendar";
 
-import { localizer } from "@/lib/calendar";
 import { Button } from "@/components/ui/button";
-// import { convertEventsToTimeSlots } from "@/lib/utils";
-
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import "@/assets/scss/calendar.scss";
 import CustomDateHeader from "./custom-date-header";
+
+import { localizer } from "@/lib/calendar";
+import { convertEventsToTimeSlots } from "@/lib/utils";
+
+import { API_CONFIG } from "@/shared/constants/api";
+import HttpService from "@/shared/services/http.service";
+
+import "@/assets/scss/calendar.scss";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export const TIME_SLOTS = {
   hourly: [
@@ -135,26 +140,28 @@ export default function BookingCalendar() {
         }
       });
     }
-    // const params = {
-    //   schedule_type: "custom_date",
-    //   schedule_date: selectedDate,
-    //   slot_duration: slotMode === "hourly" ? 60 : 30,
-    //   cooling_period: 16,
-    //   block_dates: [],
-    //   time_slots: convertEventsToTimeSlots(newEvents, "UTC")
-    // };
+    const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
-    // HttpService.post(API_CONFIG.setAvailability, params)
-    //   .then((res) => {
-    //     if (!res.is_error) {
-    //       toast.success(res.message);
-    //     } else {
-    //       toast.error(res.message);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error); // Handle error response
-    //   });
+    const params = {
+      schedule_type: "custom_date",
+      schedule_date: selectedDate,
+      slot_duration: slotMode === "hourly" ? 60 : 30,
+      cooling_period: 16,
+      block_dates: [],
+      time_slots: convertEventsToTimeSlots(newEvents, timeZone)
+    };
+
+    HttpService.post(API_CONFIG.setAvailability, params)
+      .then((res) => {
+        if (!res.is_error) {
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error); // Handle error response
+      });
     setEventList((prev) => [...prev, ...newEvents]);
     setSelectedDate(null);
     setSelectedSlots([]);
