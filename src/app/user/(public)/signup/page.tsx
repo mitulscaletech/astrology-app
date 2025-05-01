@@ -19,7 +19,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import IconFacebook from "@/shared/icons/facebook";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import { DEFAULT_COUNTRY_CODE } from "@/shared/constants";
+import { DEFAULT_COUNTRY_CODE, ROLE } from "@/shared/constants";
 
 import { handleUserStatusRedirect } from "@/lib/utils";
 
@@ -109,7 +109,12 @@ export default function UserSignup() {
       toast.error("Please solve the captcha");
       return;
     }
-    HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
+    HttpService.post(API_CONFIG.verifyOtp, {
+      country_code: countryCode,
+      mobile_number: mobileNumber,
+      otp: +otp,
+      role: ROLE.user
+    })
       .then(async (response) => {
         if (!response.is_error) {
           const { status, token } = response.data;
@@ -151,7 +156,8 @@ export default function UserSignup() {
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
       social_photo: user.photoURL,
-      country_code: DEFAULT_COUNTRY_CODE
+      country_code: DEFAULT_COUNTRY_CODE,
+      role: ROLE.user
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {

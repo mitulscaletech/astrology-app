@@ -7,3 +7,8 @@ export const USER_PROFILE_STATUS = {
   APPROVED_ACTIVATED: "Approved & Activated",
   REJECTED: "Rejected"
 };
+export const ROLE = {
+  user: "USER",
+  admin: "ADMIN",
+  astrologer: "ASTROLOGER"
+};
