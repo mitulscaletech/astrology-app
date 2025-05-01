@@ -19,7 +19,7 @@
   --secondary-200: 190 190 216;
   --secondary-300: 144 144 188;
   --secondary-400: 98 98 159;
-  --secondary-500: 28 31 58;   /* #1C1F3A */
+  --secondary-500: 28 32 59;   /* #1C203B */
   --secondary-600: 22 22 47;
   --secondary-700: 17 17 36;
   --secondary-800: 11 11 25;
@@ -65,4 +65,14 @@ a,button {
 }
 .small-section {
   @apply py-7 sm:py-8 md:py-10 lg:py-12 2xl:py-14 3xl:py-15 
+}
+
+.img-shadow::after {
+  content: "";
+  position: absolute;
+  height: 180%;
+  width: auto;
+  aspect-ratio: 1;
+  filter: blur(300px);
+  @apply bg-highlight rounded-full opacity-60;
 }

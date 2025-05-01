@@ -46,6 +46,7 @@
     "react-hook-form": "^7.55.0",
     "react-hot-toast": "^2.5.2",
     "react-phone-input-2": "^2.15.1",
+    "react-select": "^5.10.1",
     "react-slick": "^0.30.3",
     "recharts": "^2.15.3",
     "slick-carousel": "^1.8.1",

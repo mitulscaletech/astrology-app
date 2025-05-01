@@ -21,7 +21,7 @@ const ASTROLOGY_DATA = [
     tag: "Janma Kundali",
     title: "Holistic Life Blueprint",
     description: "Unlock the secrets of your birth chart and take control of your life's journey with awareness.",
-    slug: "BOOK NOW"
+    slug: "janma-kundali"
   },
   {
     banner: astrologyBanner2,
@@ -29,7 +29,7 @@ const ASTROLOGY_DATA = [
     tag: "Kundali Matching",
     title: "Aligning Destinies For A Harmonious Future",
     description: "A valuable guidance to navigate life with your partner through thick & thin.",
-    slug: "BOOK NOW"
+    slug: "kundali-matching"
   },
   {
     banner: astrologyBanner3,
@@ -37,7 +37,7 @@ const ASTROLOGY_DATA = [
     tag: "Prashna Kundali",
     title: "Practical Life Strategies",
     description: "Gain deeper insights into your life's pressing questions and find clarity.",
-    slug: "BOOK NOW"
+    slug: "prashna-kundali"
   },
   {
     banner: astrologyBanner4,
@@ -45,7 +45,7 @@ const ASTROLOGY_DATA = [
     tag: "Muhurta",
     title: "Best Time For Success",
     description: "Align with the most auspicious time to crease the probabilities of success.",
-    slug: "BOOK NOW"
+    slug: "muhurta"
   }
 ];
 

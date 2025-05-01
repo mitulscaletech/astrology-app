@@ -2,19 +2,15 @@ export default function IconChevronRight() {
   return (
     <svg
       className="block h-full w-full"
-      width="28"
-      height="29"
-      viewBox="0 0 28 29"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M10.5 7.5L17.5 14.5L10.5 21.5"
-        stroke="currentColor"
-        strokeWidth="2.33333"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <g>
+        <path d="M8 2L18 12L8 22L6.225 20.225L14.45 12L6.225 3.775L8 2Z" fill="currentColor" />
+      </g>
     </svg>
   );
 }

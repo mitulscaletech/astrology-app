@@ -1,0 +1,77 @@
+.custom-select-container {
+  .custom-select__control {
+    @apply bg-accent-white border-2 rounded-lg text-lg font-medium border-secondary/10 min-h-12 md:min-h-16;
+    box-shadow: none;
+    &:hover {
+      @apply border-secondary;
+    }
+    &.custom-select__control--is-focused {
+      @apply border-secondary;
+    }
+    &.custom-select__control--menu-is-open {
+      @apply border-secondary bg-accent-white;
+      .custom-select__single-value {
+        @apply text-secondary;
+      }
+    }
+  }
+  .custom-select__value-container {
+    @apply pe-1 ps-3 md:ps-4 py-2.5 md:py-3;
+  }
+  .custom-select__indicator {
+    @apply ps-0 py-1;
+  }
+  .custom-select__menu {
+    @apply m-0 z-10 text-secondary/50 font-medium border-2 border-secondary/20;
+    .custom-select__option {
+      @apply py-4 px-5;
+      &.custom-select__option--is-selected.custom-select__option--is-focused,
+      &.custom-select__option--is-selected {
+        @apply bg-secondary/10 text-secondary;
+      }
+      &.custom-select__option--is-focused {
+        @apply bg-secondary/5 text-secondary/80;
+      }
+    }
+  }
+  .custom-select__single-value,
+  .custom-select__input-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  &.select-light {
+    .custom-select__control {
+      @apply bg-accent-white/20;
+      &.custom-select__control--is-focused {
+        @apply border-transparent;
+      }
+      &.custom-select__control--menu-is-open {
+        @apply border-transparent bg-accent-white;
+      }
+    }
+    .custom-select__single-value {
+      @apply text-accent-white;
+    }
+    .custom-select__indicator > *,
+    .custom-select__placeholder {
+      @apply text-accent-white/70 font-normal;
+    }
+  }
+  &.custom-select--is-disabled {
+    .custom-select__control {
+      @apply cursor-not-allowed pointer-events-auto;
+      @apply text-secondary/50 bg-secondary/50;
+    }
+    &.select-light .custom-select__control {
+      @apply text-secondary/50 bg-accent-white/10 border-0;
+      .custom-select__single-value {
+        @apply text-secondary/50;
+      }
+    }
+  }
+  &.size-sm {
+    .custom-select__value-container {
+      @apply min-h-12 py-1 px-3;
+    }
+  }
+}

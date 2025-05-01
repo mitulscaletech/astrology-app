@@ -50,7 +50,7 @@ const Astrology = () => {
         </Typography>
         <Grid className="justify-between gap-y-4">
           <Grid.Col className="md:w-5/12">
-            <Typography variant="h3" className="mb-0 font-semibold">
+            <Typography variant="h3" size="h3" className="mb-0 font-semibold">
               Bring the Cosmos Into Your Daily Rituals
             </Typography>
           </Grid.Col>

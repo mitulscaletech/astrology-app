@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils"; // or use clsx if you prefer
 
-type Variant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "label";
+type Variant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "label" | "div";
 type Size = "h1" | "h2" | "h3" | "h4" | "h4-head" | "h5" | "h5-head" | "h6" | "p" | "base" | "small" | "xs";
 
 interface TypographyProps<T extends React.ElementType = "p"> {

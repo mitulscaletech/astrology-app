@@ -1,0 +1,12 @@
+.slick-arrow {
+  @apply size-12 p-3 bg-secondary/10 hover:bg-secondary text-secondary hover:text-accent-white rounded-full flex items-center justify-center;
+  &::before {
+    display: none;
+  }
+}
+.slick-prev {
+  left: 0;
+}
+.slick-next {
+  right: 0;
+}
