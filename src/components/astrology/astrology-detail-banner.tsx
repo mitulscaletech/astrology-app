@@ -15,8 +15,8 @@ const AstrologyDetailBanner = () => {
           <div className="bg-secondary img-shadow after:h-[300%] after:top-1/2 after:end-0 after:-translate-y-1/2 after:translate-x-1/2 relative overflow-hidden">
             <Image src={astrologyBanner1} alt="Janma Kundali" className="w-full aspect-[1752/400] object-contain" />
           </div>
-          <div className="flex grow gap-3 lg:gap-3.5 xl:gap-4 2xl:gap-5 3xl:gap-6 px-3 md:px-3.5 lg:px-4 2xl:px-5 3xl:px-6 py-2 md:py-3 lg:py-4 xl:py-5 2xl:py-6 3xl:py-7 4xl:py-8">
-            <div className="w-24 sm:w-32 md:w-40 lg:w-40 xl:w-44 2xl:w-52 3xl:w-64 -mt-2 md:-mt-3 lg:-mt-4 xl:-mt-5 2xl:-mt-6 3xl:-mt-7 4xl:-mt-8 shrink-0 self-start p-1 2xl:p-1.5 rounded-t-full bg-accent-white transition-all ease-out duration-200 relative -translate-y-1/2">
+          <div className="flex grow flex-col md:flex-row md:gap-3 lg:gap-3.5 xl:gap-4 2xl:gap-5 3xl:gap-6 px-3 md:px-3.5 lg:px-4 2xl:px-5 3xl:px-6 py-2 md:py-3 lg:py-4 xl:py-5 2xl:py-6 3xl:py-7 4xl:py-8">
+            <div className="-mb-12 sm:-mb-16 md:mb-0 w-24 sm:w-32 md:w-40 lg:w-40 xl:w-44 2xl:w-52 3xl:w-64 -mt-2 md:-mt-3 lg:-mt-4 xl:-mt-5 2xl:-mt-6 3xl:-mt-7 4xl:-mt-8 shrink-0 self-start p-1 2xl:p-1.5 rounded-t-full bg-accent-white transition-all ease-out duration-200 relative -translate-y-1/2">
               <Image src={astrologyImg1} alt="Janma Kundali" className="w-full aspect-square object-contain" />
             </div>
             <div className="grow flex flex-col py-2 md:py-3 lg:py-4 xl:py-5 2xl:py-6 md:pe-2 xl:pe-4 3xl:pe-6">
@@ -29,7 +29,7 @@ const AstrologyDetailBanner = () => {
               <Typography
                 variant="div"
                 size="h6"
-                className="lg:w-10/12 2xl:w-10/12 text-secondary/70 space-y-2 md:space-y-3 xl:space-y-4 2xl:space-y-5 4xl:space-y-6"
+                className="2xl:w-11/12 3xl:w-10/12 text-secondary/70 space-y-2 md:space-y-3 xl:space-y-4 2xl:space-y-5 4xl:space-y-6"
               >
                 <p>
                   Your life&apos;s blueprint based on birth details Understand your life with an in-depth analysis of
@@ -42,16 +42,16 @@ const AstrologyDetailBanner = () => {
                   aspects of life.
                 </p>
               </Typography>
-              <div className="flex justify-between items-center gap-2 mt-3 md:mt-4 lg:mt-8 2xl:mt-10 3xl:mt-12">
+              <div className="flex justify-between items-center gap-1 md:gap-2 mt-3 md:mt-4 lg:mt-8 2xl:mt-10 3xl:mt-12">
                 <div className="font-semibold">
                   <Typography
                     variant="p"
                     size="h6"
-                    className="inline-flex rounded-full bg-primary text-accent-white py-2.5 px-2 md:px-3 lg:px-4 xl:px-5 3xl:px-6"
+                    className="inline-flex rounded-full bg-primary text-accent-white py-2 px-3 lg:px-4 xl:px-5 3xl:px-6"
                   >
                     Rs. 3,999.00
                   </Typography>
-                  <p className="text-xs uppercase mt-2 lg:mt-2.5">TAXES CALCULATED AT CHECKOUT</p>
+                  <p className="text-2xs md:text-xs uppercase mt-2 lg:mt-2.5">TAXES CALCULATED AT CHECKOUT</p>
                 </div>
                 <Button asChild variant="highlight">
                   <Link href="/">Schedule your time</Link>

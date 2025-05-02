@@ -18,22 +18,24 @@ const HomeBanner = () => {
         >
           <Image src={banner} alt="home-banner" className="absolute size-full inset-0 object-cover z-1" />
           <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/35 to-80% to-secondary/0 opacity-50 after:contents-[''] after:bg-gradient-to-r after:from-bg-secondary after:to-bg-secondary/50 after:absolute after:inset-0 z-2"></div>
-          <Grid className="relative z-3">
-            <Grid.Col className="md:w-8/12 lg:w-7/12">
-              <div className="relative z-2">
-                <Typography variant="h1" size="h1" className="font-head mb-4">
-                  Awaken with Purpose Start Your Day Aligned
-                </Typography>
-                <Typography variant="p" size="h6">
-                  Start each day with a live, soulful wake-up call—guided by your birth chart and delivered by a real
-                  human.
-                </Typography>
-                <Button asChild size="lg" variant="white" className="mt-5 md:mt-7 lg:mt-8 xl:mt-10 2xl:mt-12">
-                  <Link href="/">Choose consultation</Link>
-                </Button>
-              </div>
-            </Grid.Col>
-          </Grid>
+          <div className="w-full">
+            <Grid className="relative z-3">
+              <Grid.Col className="md:w-8/12 lg:w-7/12">
+                <div className="relative z-2">
+                  <Typography variant="h1" size="h1" className="font-head mb-4">
+                    Awaken with Purpose Start Your Day Aligned
+                  </Typography>
+                  <Typography variant="p" size="h6">
+                    Start each day with a live, soulful wake-up call—guided by your birth chart and delivered by a real
+                    human.
+                  </Typography>
+                  <Button asChild size="lg" variant="white" className="mt-5 md:mt-7 lg:mt-8 xl:mt-10 2xl:mt-12">
+                    <Link href="/">Choose consultation</Link>
+                  </Button>
+                </div>
+              </Grid.Col>
+            </Grid>
+          </div>
         </div>
       </div>
     </section>

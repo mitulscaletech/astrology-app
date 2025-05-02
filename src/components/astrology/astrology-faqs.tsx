@@ -3,6 +3,8 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { ReactNode } from "react";
 import clsx from "clsx";
+import IconArrowDownward from "@/shared/icons/arrow-downward";
+import Typography from "../ui/typography";
 
 // Optional: Tailwind animation classes should be configured in tailwind.config.ts
 
@@ -11,7 +13,7 @@ type AccordionItem = {
   content: ReactNode;
 };
 
-export default function AccordionComponent() {
+export default function AstrologyFaqs() {
   const items: AccordionItem[] = [
     {
       title: "Purpose",
@@ -54,25 +56,30 @@ export default function AccordionComponent() {
   ];
 
   return (
-    <Accordion.Root type="single" collapsible className="w-full space-y-4">
+    <Accordion.Root type="single" collapsible className="w-full space-y-2 lg:space-y-3 3xl:space-y-4">
       {items.map((item, index) => (
-        <Accordion.Item key={index} value={item.title} className="bg-orange-50 rounded-xl overflow-hidden">
+        <Accordion.Item
+          key={index}
+          value={item.title}
+          className="group bg-highlight/20 py-3 md:py-3.5 lg:py-4 2xl:py-5 3xl:py-7 4xl:py-8 px-3.5 md:px-5 lg:px-6 2xl:px-7 3xl:px-8 4xl:px-10 rounded-lg xl:rounded-2xl 3xl:rounded-3xl overflow-hidden"
+        >
           <Accordion.Header>
             <Accordion.Trigger
-              className={clsx(
-                "w-full flex justify-between items-center p-4 font-semibold text-left text-gray-900",
-                "hover:bg-orange-100 transition-colors"
-              )}
+              className={clsx("w-full flex justify-between items-center font-semibold text-left text-gray-900")}
             >
-              {item.title}
-              {/* <Accordion.Icon asChild>
-                <ChevronDownIcon className="h-5 w-5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </Accordion.Icon> */}
+              <Typography variant="span" size="h5">
+                {item.title}
+              </Typography>
+              <span className="size-6 md:size-7 lg:size-8 2xl:size-9 3xl:size-10 4xl:size-12 p-1 md:p-1 lg:p-1.5 2xl:p-2 3xl:p-2.5 4xl:p-3 bg-highlight/20 transition-transform duration-200 group-data-[state=open]:rotate-180 rounded-full">
+                <IconArrowDownward />
+              </span>
             </Accordion.Trigger>
           </Accordion.Header>
 
-          <Accordion.Content className="px-4 pb-4 pt-0 text-sm text-gray-700 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
-            {item.content}
+          <Accordion.Content className="pt-2.5 text-sm text-secondary/70 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+            <Typography variant="p" size="h6">
+              {item.content}
+            </Typography>
           </Accordion.Content>
         </Accordion.Item>
       ))}

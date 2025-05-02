@@ -57,7 +57,7 @@ const ASTROLOGY_DATA = [
 
 const Astrologers = () => {
   return (
-    <section className="common-section pb-4 sm:pb-6 md:pb-8 xl:pb-12">
+    <section className="common-section !pb-4 sm:!pb-6 md:!pb-8 xl:!pb-12">
       <div className="container">
         <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 xl:gap-10 2xl:gap-12">
           <div>
@@ -72,10 +72,10 @@ const Astrologers = () => {
             return (
               <div
                 key={astrology.id}
-                className="items-center border-2 border-secondary/20 rounded-xl xl:rounded-3xl py-4 md:py-5 lg:py-6 xl:py-8 2xl:py-10 px-5 md:px-6 lg:px-7 xl:px-9 2xl:px-11 flex flex-col md:flex-row shadow-card"
+                className="items-center border md:border-2 border-secondary/20 rounded-xl xl:rounded-3xl py-3 md:py-5 lg:py-6 xl:py-7 3xl:py-10 px-3.5 md:px-6 lg:px-7 xl:px-8 3xl:px-11 flex flex-col lg:flex-row gap-y-3 md:gap-y-6 shadow-card"
               >
-                <div className="w-6/12 relative">
-                  <div className="pe-5 md:pe-6 lg:pe-7 xl:pe-9 2xl:pe-11">
+                <div className="w-full lg:w-6/12 relative">
+                  <div className="lg:pe-4 xl:pe-6 2xl:pe-8 3xl:pe-10 4xl:pe-11">
                     <Image
                       src={astrology.videoThumbnail}
                       width={770}
@@ -86,13 +86,13 @@ const Astrologers = () => {
                   </div>
                   <button className="absolute inset-0 flex items-center justify-center">▶️</button>
                 </div>
-                <div className="w-6/12 flex flex-col justify-between">
-                  <div className="flex justify-between">
-                    <div className="w-9/12 md:pe-2 lg:pe-3 xl:pe-4 2xl:pe-3 4xl:pe-6">
+                <div className="w-full lg:w-6/12 flex flex-col justify-between">
+                  <div className="flex flex-col-reverse md:flex-row justify-between">
+                    <div className="md:w-9/12 md:pe-2 lg:pe-3 xl:pe-3 3xl:pe-2 4xl:pe-6">
                       <Typography variant="p" size="p" className="text-secondary/50">
                         {astrology.tags.join(" • ")}
                       </Typography>
-                      <Typography variant="h3" size="h4-head" className="font-head font-semibold">
+                      <Typography variant="h3" size="h4-head" className="mt-1 lg:mt-0 font-head font-semibold">
                         {astrology.name}
                       </Typography>
                       <div className="text-secondary/50 font-medium flex flex-col gap-2 md:gap-2.5 lg:gap-3 2xl:gap-4 my-2 md:my-3 lg:my-4 2xl:my-5 4xl:my-6">
@@ -119,15 +119,15 @@ const Astrologers = () => {
                         {astrology.description}
                       </Typography>
                     </div>
-                    <div className="flex text-sm font-semibold">
-                      <div>
+                    <div className="w-full mb-2 md:w-auto flex text-sm font-semibold text-center justify-between md:justify-center">
+                      <div className="flex flex-row md:flex-col gap-2 md:gap-0 items-center">
                         <Typography
                           variant="p"
                           size="h5"
-                          className="flex gap-1 lg:gap-1.5 2xl:gap-2 justify-center items-center text-secondary mb-1 lg:mb-2"
+                          className="flex gap-0.5 md:gap-1 lg:gap-1.5 2xl:gap-2 justify-center items-center text-secondary md:mb-1 lg:mb-2"
                         >
                           {astrology.rating}
-                          <span className="size-5 lg:size-6 2xl:size-8 4xl:size-10">
+                          <span className="size-4 lg:size-6 2xl:size-8 4xl:size-10">
                             <IconStar />
                           </span>
                         </Typography>
@@ -135,7 +135,7 @@ const Astrologers = () => {
                           {astrology.reviews}
                         </Typography>
                       </div>
-                      <button className="size-5 lg:size-6 2xl:size-8 4xl:size-10 mx-2 md:mx-3 xl:md-4 2xl:mx-5 4xl:md-6">
+                      <button className="size-5 lg:size-6 2xl:size-8 4xl:size-10 ms-2 md:ms-3 xl:md-3.5 2xl:ms-3 3xl:mx-4 4xl:md-6">
                         <IconFavorite />
                       </button>
                     </div>

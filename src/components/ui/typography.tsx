@@ -18,7 +18,7 @@ const sizeClasses: Record<Size, string> = {
   h3: "text-xl md:text-2xl lg:text-3xl xl:text-3.5xl 2xl:text-4xl 3xl:text-5xl 4xl:text-6xl !leading-[1.2] lg:!leading-[1.1]", // 60
   h4: "text-large md:text-xl lg:text-2xl xl:text-3xl 2xl:3.5xl 3xl:text-4xl 4xl:text-5xl !leading-[1.2] lg:!leading-[1.1]", // 48
   "h4-head":
-    "text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:3.5xl 3xl:text-4xl 4xl:text-5xl !leading-[1.2] lg:!leading-[1.1]", // 48
+    "text-1.5xl md:text-2xl lg:text-3xl xl:text-3.5xl 2xl:4xl 3xl:text-4.5xl 4xl:text-5xl !leading-[1.2] lg:!leading-[1.1]", // 48
   h5: "text-lg md:text-lg lg:text-xl xl:text-2xl 2xl:text-2.5xl 3xl:text-3xl 4xl:text-3.5xl !leading-[1.2]", // 32
   "h5-head": "text-xl lg:text-xl xl:text-2xl 2xl:text-2.5xl 3xl:text-3xl 4xl:text-3.5xl !leading-[1.2]", // 32
   h6: "text-small md:text-base lg:text-lg xl:text-xl 2xl:text-1.5xl 3xl:text-2xl 4xl:text-2xl !leading-[1.36]", // 24

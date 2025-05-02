@@ -81,14 +81,16 @@ const config: Config = {
     },
     extend: {
       fontSize: {
+        "2xs": "10px",
         xSmall: "13px",
         small: "15px",
         md: "17px",
         large: "19px",
         "1.5xl": "22px",
         "2.5xl": "28px",
-        "7.5xl": "84px",
-        "3.5xl": "32px"
+        "3.5xl": "32px",
+        "4.5xl": "42px",
+        "7.5xl": "84px"
       },
       spacing: {
         13: "3.25rem", // 52px
