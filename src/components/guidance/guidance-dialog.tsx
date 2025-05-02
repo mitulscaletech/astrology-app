@@ -1,22 +1,32 @@
 "use client";
 
-import type React from "react";
+import React, { useState } from "react";
 
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Modal, ModalContent } from "../ui/modal";
 import Typography from "@/components/ui/typography";
-import { ServiceCard } from "../common/service-card";
-import ProfileCard from "../common/profile-card";
-import { FullTimeIcon, HalfTimeIcon } from "@/shared/icons/time-icons";
-import DatePicker from "react-datepicker";
-import { format } from "date-fns";
-import Step6 from "./components/step-6";
+import ProfileCard from "@/components/common/profile-card";
+import { Modal, ModalContent } from "@/components/ui/modal";
+import { ServiceCard } from "@/components/common/service-card";
+import CustomDatePicker from "@/components/common/custom-datepicker";
 
-import "react-datepicker/dist/react-datepicker.css";
-import "@/assets/scss/datepicker.scss";
+import Step6 from "./components/step-6";
+import { FullTimeIcon, HalfTimeIcon } from "@/shared/icons/time-icons";
+import {
+  AnxiousIcon,
+  EducationIcon,
+  FearIcon,
+  FinanceIcon,
+  HealthIcon,
+  HeartIcon,
+  JoyIcon,
+  LegalIcon,
+  PersonalGrowthIcon,
+  RelationShipIcon,
+  SadIcon,
+  SurpriseIcon
+} from "@/shared/icons/guidenceIcon";
 
 const timeSlots = ["08:30 AM", "09:30 AM", "10:30 AM", "11:30 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
 
@@ -36,286 +46,69 @@ const lifeAreas: LifeArea[] = [
   {
     id: "relationships",
     label: "Relationships",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    )
+    icon: <RelationShipIcon />
   },
   {
     id: "finance",
     label: "Finance",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="8" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12.01" y2="16" />
-      </svg>
-    )
+    icon: <FinanceIcon />
   },
   {
     id: "health",
     label: "Health",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </svg>
-    )
+    icon: <HealthIcon />
   },
   {
     id: "education",
     label: "Education",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-      </svg>
-    )
+    icon: <EducationIcon />
   },
   {
     id: "personal-growth",
     label: "Personal Growth",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" />
-        <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-        <path d="M12 2v2" />
-        <path d="M12 22v-2" />
-        <path d="m17 20.66-1-1.73" />
-        <path d="M11 10.27 7 3.34" />
-        <path d="m20.66 17-1.73-1" />
-        <path d="m3.34 7 1.73 1" />
-        <path d="M22 12h-2" />
-        <path d="M2 12h2" />
-        <path d="m20.66 7-1.73 1" />
-        <path d="m3.34 17 1.73-1" />
-        <path d="m17 3.34-1 1.73" />
-        <path d="m7 20.66 1-1.73" />
-      </svg>
-    )
+    icon: <PersonalGrowthIcon />
   },
   {
     id: "legal",
     label: "Legal",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" />
-      </svg>
-    )
+    icon: <LegalIcon />
   }
 ];
 const emotions: LifeArea[] = [
   {
     id: "fear",
     label: "Fear",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-full h-full"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 15h8" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
+    icon: <FearIcon />
   },
   {
     id: "love",
     label: "Love",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-      </svg>
-    )
+    icon: <HeartIcon />
   },
   {
     id: "joy",
     label: "Joy",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
+    icon: <JoyIcon />
   },
   {
     id: "sad",
     label: "Sad",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
+    icon: <SadIcon />
   },
   {
     id: "surprise",
     label: "Surprise",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <circle cx="12" cy="14" r="2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
+    icon: <SurpriseIcon />
   },
   {
     id: "anxious",
     label: "Anxious",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 15h8" />
-        <path d="M8.5 11S9 9 12 9s3.5 2 3.5 2" />
-      </svg>
-    )
+    icon: <AnxiousIcon />
   },
   {
     id: "prefer-not-to-say",
     label: "Prefer not to say",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <line x1="8" y1="12" x2="16" y2="12" />
-      </svg>
-    )
+    icon: ""
   }
 ];
 const services = [
@@ -416,10 +209,10 @@ const steps: Step[] = [
   },
   {
     id: 7,
-    header: "Save Your Date & Time",
-    title: "Select the perfect date and time for your consultation",
+    header: "Secure Payment",
+    title: "Complete your booking securely",
     description:
-      "Pick a time based on your astrologer’s availability. We recommend choosing a calm, quiet space for the best experience."
+      "All payments are secure and encrypted. By paying, you agree to our terms of service. You’ll receive a confirmation email and reminders."
   }
 ];
 
@@ -432,7 +225,6 @@ export function GuidanceDialog() {
   const [selectedServices, setSelectedServices] = useState(0);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
-  const [selectedTimezone, setSelectedTimezone] = useState(timezones[0]);
 
   const handleSelectArea = (id: string) => {
     setSelectedAreas((prev) => (prev.includes(id) ? prev.filter((areaId) => areaId !== id) : [...prev, id]));
@@ -450,11 +242,6 @@ export function GuidanceDialog() {
     }
   };
 
-  const resetDialog = () => {
-    setCurrentStep(1);
-    setSelectedAreas(["relationships", "legal"]); // Reset to pre-selected for demo
-    setOtherValue("Future, Fortune...");
-  };
   const handleSelectService = (service: any) => {
     const selectedService = services.find((ser) => ser.id === service.id);
     setSelectedServices(selectedService?.id ?? 0);
@@ -605,7 +392,6 @@ export function GuidanceDialog() {
                 <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
                   Choose Astrologer
                 </Typography>
-                {/* <div className="mb-3 border-2 rounded-lg border-secondary/20 px-5 py-9"> */}
                 <div className="grid grid-cols-2 md:grid-cols-2 gap-4 border-2 rounded-lg border-secondary/20 p-10">
                   {TIME_SLOTS.map((slot) => (
                     <button
@@ -628,32 +414,7 @@ export function GuidanceDialog() {
                 <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
                   Select Date
                 </Typography>
-                <div className="custom-calender border-2 rounded-lg border-secondary/20 px-6 py-6 mb-8">
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
-                    inline
-                    calendarClassName="custom-calendar"
-                    renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-                      <div className="flex items-center justify-evenly px-4 py-2">
-                        <button onClick={decreaseMonth} className="text-lg">
-                          &lt;
-                        </button>
-                        <span className="font-semibold text-lg text-secondary">
-                          {format(date, "MMMM yyyy").toUpperCase()}
-                        </span>
-                        <button onClick={increaseMonth} className="text-lg">
-                          &gt;
-                        </button>
-                      </div>
-                    )}
-                    dayClassName={(date) =>
-                      format(date, "yyyy-MM-dd") === format(selectedDate || new Date(), "yyyy-MM-dd")
-                        ? "bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center mx-auto"
-                        : "text-secondary hover:bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center mx-auto"
-                    }
-                  />
-                </div>
+                <CustomDatePicker selectedDate={selectedDate} change={setSelectedDate} />
                 <>
                   <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
                     Select Preferred time slot
