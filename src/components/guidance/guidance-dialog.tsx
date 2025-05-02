@@ -12,6 +12,19 @@ import { ServiceCard } from "../common/service-card";
 import ProfileCard from "../common/profile-card";
 import { FullTimeIcon, HalfTimeIcon } from "@/shared/icons/time-icons";
 import DatePicker from "react-datepicker";
+import { format } from "date-fns";
+import Step6 from "./components/step-6";
+
+import "react-datepicker/dist/react-datepicker.css";
+import "@/assets/scss/datepicker.scss";
+
+const timeSlots = ["08:30 AM", "09:30 AM", "10:30 AM", "11:30 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
+
+const timezones = [
+  { value: "Europe/London", label: "UK/London" },
+  { value: "Europe/Paris", label: "Europe/Paris" },
+  { value: "Asia/Kolkata", label: "Asia/Kolkata" }
+];
 
 type LifeArea = {
   id: string;
@@ -412,11 +425,14 @@ const steps: Step[] = [
 
 export function GuidanceDialog() {
   const [dialogOpen, setDialogOpen] = useState(true);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(6);
   const [selectedAreas, setSelectedAreas] = useState<string[]>(["relationships", "legal"]); // Pre-selected for demo
   const [otherValue, setOtherValue] = useState("Future, Fortune...");
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(0);
   const [selectedServices, setSelectedServices] = useState(0);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [selectedTimezone, setSelectedTimezone] = useState(timezones[0]);
 
   const handleSelectArea = (id: string) => {
     setSelectedAreas((prev) => (prev.includes(id) ? prev.filter((areaId) => areaId !== id) : [...prev, id]));
@@ -608,10 +624,57 @@ export function GuidanceDialog() {
               </section>
             )}
             {currentStep === 5 && (
-              <main className="min-h-screen flex items-center justify-center bg-gray-50">
-                <DatePicker onChange={(date) => console.log(date)} inline />
-              </main>
+              <div className="w-full flex flex-col justify-center">
+                <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
+                  Select Date
+                </Typography>
+                <div className="custom-calender border-2 rounded-lg border-secondary/20 px-6 py-6 mb-8">
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    inline
+                    calendarClassName="custom-calendar"
+                    renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+                      <div className="flex items-center justify-evenly px-4 py-2">
+                        <button onClick={decreaseMonth} className="text-lg">
+                          &lt;
+                        </button>
+                        <span className="font-semibold text-lg text-secondary">
+                          {format(date, "MMMM yyyy").toUpperCase()}
+                        </span>
+                        <button onClick={increaseMonth} className="text-lg">
+                          &gt;
+                        </button>
+                      </div>
+                    )}
+                    dayClassName={(date) =>
+                      format(date, "yyyy-MM-dd") === format(selectedDate || new Date(), "yyyy-MM-dd")
+                        ? "bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center mx-auto"
+                        : "text-secondary hover:bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center mx-auto"
+                    }
+                  />
+                </div>
+                <>
+                  <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
+                    Select Preferred time slot
+                  </Typography>
+                  <div className="grid grid-cols-4 gap-4 border-2 rounded-lg border-secondary/20  px-8 py-10 mb-8">
+                    {timeSlots.map((slot) => (
+                      <button
+                        key={slot}
+                        onClick={() => setSelectedTime(slot)}
+                        className={`border-2 px-8 py-6 rounded-lg text-base font-medium  ${
+                          selectedTime === slot ? "border-primary bg-primary/10" : "border-secondary/30"
+                        }`}
+                      >
+                        {slot}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              </div>
             )}
+            {currentStep === 6 && <Step6 />}
             <div className="mt-8 flex justify-between lg:col-span-2">
               {currentStep === 1 ? (
                 <Button onClick={() => setDialogOpen(false)} variant="outline">

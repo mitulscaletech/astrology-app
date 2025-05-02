@@ -44,7 +44,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2 lg:gap-3 text-secondary-500">
             <Button asChild size="sm" variant="secondary" className="hidden md:flex">
-              <Link href="/user/astrologer">Astrologer Login</Link>
+              <Link href="/astrologer/login">Astrologer Login</Link>
             </Button>
             <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
               <IconSearch />
