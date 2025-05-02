@@ -44,8 +44,12 @@ export default function UserDetailsForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Name fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InputField label="First Name" {...register("firstName")} error={errors.firstName?.message} />
-        <InputField label="Last Name" {...register("lastName")} error={errors.lastName?.message} />
+        <div>
+          <InputField label="First Name" {...register("firstName")} error={errors.firstName?.message} />
+        </div>
+        <div>
+          <InputField label="Last Name" {...register("lastName")} error={errors.lastName?.message} />
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Controller
