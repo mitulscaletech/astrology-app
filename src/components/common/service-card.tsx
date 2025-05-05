@@ -3,6 +3,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import astrologer from "@/assets/images/dummy/astrologer-01.jpg";
+import Typography from "../ui/typography";
 
 interface ServiceCardProps {
   service: any;
@@ -21,15 +23,22 @@ export function ServiceCard({ service, highlight = false, className, onClick }: 
         className
       )}
       onClick={() => onClick(service)}
-      // role={onClick ? "button" : undefined}
-      // tabIndex={onClick ? 0 : undefined}
     >
-      <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full">
-        <Image src={icon} alt={title} fill className="object-cover" sizes="(max-width: 48px) 100vw, 48px" />
+      <div className="relative size-10 md:size-12 xl:size-14 3xl:size-15 flex-shrink-0 overflow-hidden rounded-full">
+        <Image
+          src={icon || astrologer}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 48px) 100vw, 48px"
+        />
       </div>
 
       <div className="flex-1 space-y-1">
-        <h3 className="font-head font-semibold text-gray-900">{title}</h3>
+        <Typography variant="h3" size="h6-head" className="font-head">
+          {title}
+        </Typography>
+        <h3 className="font-head font-semibold text-gray-900"></h3>
         <p className="text-sm text-current">{description}</p>
       </div>
 

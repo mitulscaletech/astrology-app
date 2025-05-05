@@ -28,6 +28,8 @@ import {
   SurpriseIcon
 } from "@/shared/icons/guidenceIcon";
 import Grid from "../ui/grid";
+import IconButton from "../common/icon-button";
+import InputButton from "../common/input-button";
 
 const timeSlots = ["08:30 AM", "09:30 AM", "10:30 AM", "11:30 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
 
@@ -41,6 +43,7 @@ type LifeArea = {
   id: string;
   label: string;
   icon: React.ReactNode;
+  className?: any;
 };
 
 const lifeAreas: LifeArea[] = [
@@ -109,7 +112,8 @@ const emotions: LifeArea[] = [
   {
     id: "prefer-not-to-say",
     label: "Prefer not to say",
-    icon: ""
+    icon: "",
+    className: "items-center"
   }
 ];
 const services = [
@@ -296,69 +300,70 @@ export function GuidanceDialog() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 gap-9 md:p-4 lg:p-6 xl:p-10 2x:p-12 2xl:p-18 justify-center"
+            className="md:p-4 lg:p-6 xl:p-10 2x:p-12 2xl:p-18"
           >
-            <Grid>
+            <Grid className="gap-y-4">
               {/* Left Column - Step info */}
-              <Grid.Col className="md:w-4/12">
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-primary mb-2">Step {currentStep}.</p>
-                  <Typography variant="h2" size="h4" className="font-head font-semibold">
+              <Grid.Col className="md:w-5/12">
+                <div className="lg:pe-4 xl:pe-5 2xl:pe-5 3xl:pe-6 4xl:pe-14">
+                  <p className="font-medium text-primary">Step {currentStep}.</p>
+                  <Typography
+                    variant="h2"
+                    size="h4-head"
+                    className="my-2 md:my-2.5 lg:my-3 xl:my-4 3xl:my-5 font-head font-semibold"
+                  >
                     {steps[currentStep - 1].title}
                   </Typography>
-                  <p className="mt-2 text-gray-600">{steps[currentStep - 1].description}</p>
+                  <p>{steps[currentStep - 1].description}</p>
                 </div>
               </Grid.Col>
               {/* Right Column - Options */}
-              <Grid.Col className="md:w-8/12">
+              <Grid.Col className="md:w-7/12">
                 {currentStep === 1 && (
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
-                    {lifeAreas.map((area) => (
-                      <button
-                        key={area.id}
-                        className={cn(
-                          "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5 text-left transition-all hover:border-red-300",
-                          selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                        )}
-                        onClick={() => handleSelectArea(area.id)}
-                      >
-                        <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
-                        <span>{area.label}</span>
-                      </button>
-                    ))}
-                    <div className="flex flex-col rounded-md border border-gray-200 p-4">
-                      <label className="mb-1 text-sm text-gray-500">Other:</label>
-                      <input
-                        type="text"
-                        value={otherValue}
-                        onChange={(e) => setOtherValue(e.target.value)}
-                        placeholder="Future, Fortune..."
-                        className="border-none p-0 text-base outline-none"
-                      />
-                    </div>
+                  <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
+                    <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+                      {lifeAreas.map((area) => (
+                        <Grid.Col className="md:w-6/12" key={area.id}>
+                          <IconButton
+                            label={area.label}
+                            icon={area.icon}
+                            isSelected={selectedAreas.includes(area.id)}
+                            onClick={() => handleSelectArea(area.id)}
+                          />
+                        </Grid.Col>
+                      ))}
+                      <Grid.Col>
+                        <InputButton
+                          value={otherValue}
+                          onChange={(e) => setOtherValue(e.target.value)}
+                          label="Other:"
+                          placeholder="Future, Fortune..."
+                        />
+                      </Grid.Col>
+                    </Grid>
                   </div>
                 )}
 
                 {currentStep === 2 && (
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
-                    {emotions.map((area) => (
-                      <button
-                        key={area.id}
-                        className={cn(
-                          "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5  text-left transition-all hover:border-red-300",
-                          selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                        )}
-                        onClick={() => handleSelectArea(area.id)}
-                      >
-                        <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
-                        <span>{area.label}</span>
-                      </button>
-                    ))}
+                  <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
+                    <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+                      {emotions.map((area) => (
+                        <Grid.Col className="md:w-6/12 grow" key={area.id}>
+                          <IconButton
+                            label={area.label}
+                            className={area.className}
+                            icon={area.icon}
+                            isSelected={selectedAreas.includes(area.id)}
+                            onClick={() => handleSelectArea(area.id)}
+                          />
+                        </Grid.Col>
+                      ))}
+                    </Grid>
                   </div>
                 )}
 
                 {currentStep === 3 && (
-                  <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10">
+                  <div className="flex flex-col gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5 border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
                     {services.map((service) => (
                       <ServiceCard
                         key={service.id}
@@ -375,12 +380,12 @@ export function GuidanceDialog() {
                     <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
                       Choose Astrologer
                     </Typography>
-                    <div className="mb-3 border-2 rounded-lg border-secondary/20 px-5 py-9">
-                      <Typography variant="h4" size="base" className="text-base text-start ">
+                    <div className="mb-3 border-2 rounded-lg border-secondary/20 px-3 lg:px-4 2xl:px-5 py-9 md:py-5 lg:py-6 xl:py-7 2xl:py-8 4xl:py-9">
+                      <Typography variant="h4" size="base" className="text-small lg:text-base text-start ">
                         Choose AI Astrologer
                       </Typography>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10 mb-15">
+                    <div className="mb-6 md:mb-8 xl:mb-10 2xl:mb-12 4xl:mb-14 flex flex-col gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5 border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
                       {["Dr Vishwanath MV", "Dr Ganesh Prasad Mishra", "Mr Sudhir Pandey"].map((name, index) => (
                         <ProfileCard
                           key={index}
@@ -397,46 +402,60 @@ export function GuidanceDialog() {
                     <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
                       Choose Astrologer
                     </Typography>
-                    <div className="grid grid-cols-2 md:grid-cols-2 gap-4 border-2 rounded-lg border-secondary/20 p-10">
-                      {TIME_SLOTS.map((slot) => (
-                        <button
-                          key={slot.id}
-                          className={cn(
-                            "flex flex-col gap-1.5 rounded-lg border-[2px] p-4 text-left transition-all hover:border-red-300",
-                            selectedAreas.includes(slot.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                          )}
-                          onClick={() => handleSelectArea(slot.id)}
-                        >
-                          <span className="flex h-8 w-8 items-center justify-center">{slot.icon}</span>
-                          <span>{`${slot.time} ${slot.title}`}</span>
-                        </button>
-                      ))}
+                    <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
+                      <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+                        {TIME_SLOTS.map((slot) => (
+                          <button
+                            key={slot.id}
+                            className={cn(
+                              "flex flex-col gap-1.5 rounded-lg border-2 p-4 text-left transition-all hover:border-red-300",
+                              selectedAreas.includes(slot.id) ? "border-primary bg-primary/10" : "border-secondary/30"
+                            )}
+                            onClick={() => handleSelectArea(slot.id)}
+                          >
+                            <span className="flex h-8 w-8 items-center justify-center">{slot.icon}</span>
+                            <span>{`${slot.time} ${slot.title}`}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </section>
                 )}
 
                 {currentStep === 5 && (
                   <div className="w-full flex flex-col justify-center">
-                    <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
-                      Select Date
-                    </Typography>
-                    <CustomDatePicker selectedDate={selectedDate} change={setSelectedDate} />
+                    <div className="mb-4 lg:mb-5 xl:mb-6">
+                      <Typography
+                        variant="label"
+                        size="base"
+                        className="block font-medium text-secondary/70 mb-2 xl:mb-3 uppercase"
+                      >
+                        Select Date
+                      </Typography>
+                      <CustomDatePicker selectedDate={selectedDate} change={setSelectedDate} isFullWidth />
+                    </div>
                     <>
-                      <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
+                      <Typography
+                        variant="label"
+                        size="base"
+                        className="block font-medium text-secondary/70 mb-2 xl:mb-3 uppercase"
+                      >
                         Select Preferred time slot
                       </Typography>
-                      <div className="grid grid-cols-4 gap-4 border-2 rounded-lg border-secondary/20  px-8 py-10 mb-8">
-                        {timeSlots.map((slot) => (
-                          <button
-                            key={slot}
-                            onClick={() => setSelectedTime(slot)}
-                            className={`border-2 px-8 py-6 rounded-lg text-base font-medium  ${
-                              selectedTime === slot ? "border-primary bg-primary/10" : "border-secondary/30"
-                            }`}
-                          >
-                            {slot}
-                          </button>
-                        ))}
+                      <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
+                        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4 xl:gap-6 3xl:gap-8 text-small 2xl:text-base font-medium">
+                          {timeSlots.map((slot) => (
+                            <button
+                              key={slot}
+                              onClick={() => setSelectedTime(slot)}
+                              className={`border-2 px-1 3xl:px-3 py-2 h-10 md:h-11 lg:h-12 2xl:h-14 3xl:h-15 rounded-lg ${
+                                selectedTime === slot ? "border-primary bg-primary/10" : "border-secondary/30"
+                              }`}
+                            >
+                              {slot}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </>
                   </div>
@@ -445,7 +464,7 @@ export function GuidanceDialog() {
                 {currentStep === 6 && <Step6 />}
               </Grid.Col>
             </Grid>
-            <div className="mt-8 flex justify-between lg:col-span-2">
+            <div className="mt-4 lg:mt-6 2xl:mt-8 flex justify-between">
               {currentStep === 1 ? (
                 <Button onClick={() => setDialogOpen(false)} variant="outline">
                   Cancel
@@ -458,6 +477,7 @@ export function GuidanceDialog() {
               <Button
                 onClick={currentStep === steps.length ? () => setDialogOpen(false) : handleNext}
                 disabled={currentStep === 1 && selectedAreas.length === 0 && !otherValue}
+                variant="highlight"
               >
                 {currentStep === steps.length ? "Submit" : "Continue"}
               </Button>

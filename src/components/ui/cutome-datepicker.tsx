@@ -56,6 +56,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         showTimeSelectOnly={showTimeOnly}
         timeIntervals={15}
         timeCaption="Time"
+        calendarClassName="custom-date-picker"
         dateFormat={dateFormat}
         {...props}
         customInput={<CustomInput />}

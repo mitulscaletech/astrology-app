@@ -3,37 +3,36 @@ import { format } from "date-fns";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "@/assets/scss/datepicker.scss";
+import IconChevronLeft from "@/shared/icons/chevronLeft";
+import IconChevronRight from "@/shared/icons/chevronRight";
 
 interface IDatePicker {
   selectedDate: Date | null;
+  className?: string;
+  isFullWidth: boolean;
   change: (date: Date | null) => void;
 }
 const CustomDatePicker = (props: IDatePicker) => {
-  const { selectedDate, change } = props;
+  const { selectedDate, change, className, isFullWidth } = props;
 
   return (
-    <div className="custom-calender border-2 rounded-lg border-secondary/20 px-6 py-6 mb-8">
+    <div className={`${className}`}>
       <DatePicker
         selected={selectedDate}
         onChange={(date) => change(date)}
         inline
-        calendarClassName="custom-calendar"
+        calendarClassName="custom-date-picker full-width"
         renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-          <div className="flex items-center justify-evenly px-4 py-2">
-            <button onClick={decreaseMonth} className="text-lg">
-              &lt;
+          <div className="flex items-center justify-evenly">
+            <button onClick={decreaseMonth} className="size-6">
+              <IconChevronLeft />
             </button>
-            <span className="font-semibold text-lg text-secondary">{format(date, "MMMM yyyy").toUpperCase()}</span>
-            <button onClick={increaseMonth} className="text-lg">
-              &gt;
+            <span className="font-medium text-base text-secondary">{format(date, "MMMM yyyy").toUpperCase()}</span>
+            <button onClick={increaseMonth} className="size-6">
+              <IconChevronRight />
             </button>
           </div>
         )}
-        dayClassName={(date) =>
-          format(date, "yyyy-MM-dd") === format(selectedDate || new Date(), "yyyy-MM-dd")
-            ? "bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center mx-auto"
-            : "text-secondary hover:bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center mx-auto"
-        }
       />
     </div>
   );
