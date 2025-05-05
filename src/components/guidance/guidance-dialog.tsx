@@ -27,6 +27,7 @@ import {
   SadIcon,
   SurpriseIcon
 } from "@/shared/icons/guidenceIcon";
+import Grid from "../ui/grid";
 
 const timeSlots = ["08:30 AM", "09:30 AM", "10:30 AM", "11:30 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
 
@@ -254,7 +255,7 @@ export function GuidanceDialog() {
           {currentStep > 1 ? (
             <button
               onClick={handleBack}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 hover:bg-gray-100"
+              className="flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-200 hover:bg-gray-100"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -271,19 +272,19 @@ export function GuidanceDialog() {
               </svg>
             </button>
           ) : (
-            <div className="h-8 w-8"></div> // Empty div for spacing when back button is not shown
+            <div className="size-8 shrink-0"></div> // Empty div for spacing when back button is not shown
           )}
 
-          <div className="flex items-center gap-3 w-full max-w-xs">
+          <div className="flex items-center gap-1 md:gap-2 lg:gap-3 xl:gap-3.5 3xl:gap-4 w-full grow me-10 lg:me-14 3xl:me-16">
             {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <div
-                  className={cn(
-                    "h-2 w-40 rounded-full",
-                    currentStep > index + 1 ? "bg-primary" : currentStep === index + 1 ? "bg-primary" : "bg-warning-100"
-                  )}
-                />
-                {index < steps.length - 1 && <div className="w-3" />}
+              <div
+                key={step.id}
+                className={cn(
+                  "flex flex-1 items-center grow h-1 xl:h-1.5 rounded-full",
+                  currentStep > index + 1 ? "bg-primary" : currentStep === index + 1 ? "bg-primary" : "bg-secondary/10"
+                )}
+              >
+                {/* {index < steps.length - 1 && <div className="w-3" />} */}
               </div>
             ))}
           </div>
@@ -295,147 +296,155 @@ export function GuidanceDialog() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 gap-9 p-18 lg:grid-cols-[40%_60%] justify-center"
+            className="grid grid-cols-1 gap-9 md:p-4 lg:p-6 xl:p-10 2x:p-12 2xl:p-18 justify-center"
           >
-            {/* Left Column - Step info */}
-            <div className="mb-4">
-              <p className="text-sm font-medium text-primary mb-2">Step {currentStep}.</p>
-              <Typography variant="h2" size="h4" className="font-head font-semibold">
-                {steps[currentStep - 1].title}
-              </Typography>
-              <p className="mt-2 text-gray-600">{steps[currentStep - 1].description}</p>
-            </div>
-
-            {/* Right Column - Options */}
-            {currentStep === 1 && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
-                {lifeAreas.map((area) => (
-                  <button
-                    key={area.id}
-                    className={cn(
-                      "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5 text-left transition-all hover:border-red-300",
-                      selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                    )}
-                    onClick={() => handleSelectArea(area.id)}
-                  >
-                    <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
-                    <span>{area.label}</span>
-                  </button>
-                ))}
-                <div className="flex flex-col rounded-md border border-gray-200 p-4">
-                  <label className="mb-1 text-sm text-gray-500">Other:</label>
-                  <input
-                    type="text"
-                    value={otherValue}
-                    onChange={(e) => setOtherValue(e.target.value)}
-                    placeholder="Future, Fortune..."
-                    className="border-none p-0 text-base outline-none"
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentStep === 2 && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
-                {emotions.map((area) => (
-                  <button
-                    key={area.id}
-                    className={cn(
-                      "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5  text-left transition-all hover:border-red-300",
-                      selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                    )}
-                    onClick={() => handleSelectArea(area.id)}
-                  >
-                    <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
-                    <span>{area.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {currentStep === 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10">
-                {services.map((service) => (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    highlight={Boolean(selectedServices === service.id)}
-                    onClick={(data: any) => handleSelectService(data)}
-                  />
-                ))}
-              </div>
-            )}
-            {currentStep === 4 && (
-              <section>
-                <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
-                  Choose Astrologer
-                </Typography>
-                <div className="mb-3 border-2 rounded-lg border-secondary/20 px-5 py-9">
-                  <Typography variant="h4" size="base" className="text-base text-start ">
-                    Choose AI Astrologer
+            <Grid>
+              {/* Left Column - Step info */}
+              <Grid.Col className="md:w-4/12">
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-primary mb-2">Step {currentStep}.</p>
+                  <Typography variant="h2" size="h4" className="font-head font-semibold">
+                    {steps[currentStep - 1].title}
                   </Typography>
+                  <p className="mt-2 text-gray-600">{steps[currentStep - 1].description}</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10 mb-15">
-                  {["Dr Vishwanath MV", "Dr Ganesh Prasad Mishra", "Mr Sudhir Pandey"].map((name, index) => (
-                    <ProfileCard
-                      key={index}
-                      name={name}
-                      imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`}
-                      languages={index === 0 ? ["English", "Hindi"] : ["Hindi"]}
-                      rating={5}
-                      reviews={100}
-                      isSelected={selectedProfileId === index}
-                      onSelect={() => setSelectedProfileId(index)}
-                    />
-                  ))}
-                </div>
-                <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
-                  Choose Astrologer
-                </Typography>
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 border-2 rounded-lg border-secondary/20 p-10">
-                  {TIME_SLOTS.map((slot) => (
-                    <button
-                      key={slot.id}
-                      className={cn(
-                        "flex flex-col gap-1.5 rounded-lg border-[2px] p-4 text-left transition-all hover:border-red-300",
-                        selectedAreas.includes(slot.id) ? "border-primary bg-primary/10" : "border-secondary/30"
-                      )}
-                      onClick={() => handleSelectArea(slot.id)}
-                    >
-                      <span className="flex h-8 w-8 items-center justify-center">{slot.icon}</span>
-                      <span>{`${slot.time} ${slot.title}`}</span>
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
-            {currentStep === 5 && (
-              <div className="w-full flex flex-col justify-center">
-                <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
-                  Select Date
-                </Typography>
-                <CustomDatePicker selectedDate={selectedDate} change={setSelectedDate} />
-                <>
-                  <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
-                    Select Preferred time slot
-                  </Typography>
-                  <div className="grid grid-cols-4 gap-4 border-2 rounded-lg border-secondary/20  px-8 py-10 mb-8">
-                    {timeSlots.map((slot) => (
+              </Grid.Col>
+              {/* Right Column - Options */}
+              <Grid.Col className="md:w-8/12">
+                {currentStep === 1 && (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
+                    {lifeAreas.map((area) => (
                       <button
-                        key={slot}
-                        onClick={() => setSelectedTime(slot)}
-                        className={`border-2 px-8 py-6 rounded-lg text-base font-medium  ${
-                          selectedTime === slot ? "border-primary bg-primary/10" : "border-secondary/30"
-                        }`}
+                        key={area.id}
+                        className={cn(
+                          "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5 text-left transition-all hover:border-red-300",
+                          selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
+                        )}
+                        onClick={() => handleSelectArea(area.id)}
                       >
-                        {slot}
+                        <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
+                        <span>{area.label}</span>
+                      </button>
+                    ))}
+                    <div className="flex flex-col rounded-md border border-gray-200 p-4">
+                      <label className="mb-1 text-sm text-gray-500">Other:</label>
+                      <input
+                        type="text"
+                        value={otherValue}
+                        onChange={(e) => setOtherValue(e.target.value)}
+                        placeholder="Future, Fortune..."
+                        className="border-none p-0 text-base outline-none"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {currentStep === 2 && (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-2 rounded-lg border-secondary/20 p-10">
+                    {emotions.map((area) => (
+                      <button
+                        key={area.id}
+                        className={cn(
+                          "flex flex-col gap-1.5 rounded-lg border-2 px-4 py-2.5  text-left transition-all hover:border-red-300",
+                          selectedAreas.includes(area.id) ? "border-primary bg-primary/10" : "border-secondary/30"
+                        )}
+                        onClick={() => handleSelectArea(area.id)}
+                      >
+                        <span className="flex h-6 w-6 items-center justify-center">{area.icon}</span>
+                        <span>{area.label}</span>
                       </button>
                     ))}
                   </div>
-                </>
-              </div>
-            )}
-            {currentStep === 6 && <Step6 />}
+                )}
+
+                {currentStep === 3 && (
+                  <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10">
+                    {services.map((service) => (
+                      <ServiceCard
+                        key={service.id}
+                        service={service}
+                        highlight={Boolean(selectedServices === service.id)}
+                        onClick={(data: any) => handleSelectService(data)}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {currentStep === 4 && (
+                  <section>
+                    <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
+                      Choose Astrologer
+                    </Typography>
+                    <div className="mb-3 border-2 rounded-lg border-secondary/20 px-5 py-9">
+                      <Typography variant="h4" size="base" className="text-base text-start ">
+                        Choose AI Astrologer
+                      </Typography>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-2 border-2 rounded-lg border-secondary/20 p-10 mb-15">
+                      {["Dr Vishwanath MV", "Dr Ganesh Prasad Mishra", "Mr Sudhir Pandey"].map((name, index) => (
+                        <ProfileCard
+                          key={index}
+                          name={name}
+                          imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`}
+                          languages={index === 0 ? ["English", "Hindi"] : ["Hindi"]}
+                          rating={5}
+                          reviews={100}
+                          isSelected={selectedProfileId === index}
+                          onSelect={() => setSelectedProfileId(index)}
+                        />
+                      ))}
+                    </div>
+                    <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
+                      Choose Astrologer
+                    </Typography>
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-4 border-2 rounded-lg border-secondary/20 p-10">
+                      {TIME_SLOTS.map((slot) => (
+                        <button
+                          key={slot.id}
+                          className={cn(
+                            "flex flex-col gap-1.5 rounded-lg border-[2px] p-4 text-left transition-all hover:border-red-300",
+                            selectedAreas.includes(slot.id) ? "border-primary bg-primary/10" : "border-secondary/30"
+                          )}
+                          onClick={() => handleSelectArea(slot.id)}
+                        >
+                          <span className="flex h-8 w-8 items-center justify-center">{slot.icon}</span>
+                          <span>{`${slot.time} ${slot.title}`}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {currentStep === 5 && (
+                  <div className="w-full flex flex-col justify-center">
+                    <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
+                      Select Date
+                    </Typography>
+                    <CustomDatePicker selectedDate={selectedDate} change={setSelectedDate} />
+                    <>
+                      <Typography size="p" className="text-md text-secondary/70 mb-3 uppercase">
+                        Select Preferred time slot
+                      </Typography>
+                      <div className="grid grid-cols-4 gap-4 border-2 rounded-lg border-secondary/20  px-8 py-10 mb-8">
+                        {timeSlots.map((slot) => (
+                          <button
+                            key={slot}
+                            onClick={() => setSelectedTime(slot)}
+                            className={`border-2 px-8 py-6 rounded-lg text-base font-medium  ${
+                              selectedTime === slot ? "border-primary bg-primary/10" : "border-secondary/30"
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  </div>
+                )}
+
+                {currentStep === 6 && <Step6 />}
+              </Grid.Col>
+            </Grid>
             <div className="mt-8 flex justify-between lg:col-span-2">
               {currentStep === 1 ? (
                 <Button onClick={() => setDialogOpen(false)} variant="outline">

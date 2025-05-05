@@ -45,7 +45,7 @@ export const ModalContent = ({
       >
         <Dialog.DialogTitle className="sr-only">Authentication Dialog</Dialog.DialogTitle>
         <div
-          className={`p-6 bg-accent-white rounded-md shadow-lg max-w-full relative ${
+          className={`p-4 md:p-5 xl:p-6 bg-accent-white rounded-md shadow-lg max-w-full relative ${
             sizeClasses[size] || "w-auto"
           } m-auto pointer-events-auto`}
         >

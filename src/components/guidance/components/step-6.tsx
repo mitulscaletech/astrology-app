@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { InputField } from "@/components/ui/custom-input";
 import { DatePickerField } from "@/components/ui/cutome-datepicker";
+import { Button } from "@/components/ui/button";
 
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -100,9 +101,9 @@ export default function UserDetailsForm() {
       </div>
       <InputField label="Question to Ask" {...register("question")} error={errors.question?.message} />
 
-      <button type="submit" className="px-6 py-2 rounded-md bg-[#BD262A] text-white hover:bg-[#a32124] transition">
+      <Button type="submit" size="sm">
         Submit
-      </button>
+      </Button>
     </form>
   );
 }

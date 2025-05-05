@@ -29,7 +29,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <label
             htmlFor={props.id || label.toLowerCase().replace(/\s+/g, "-")}
             className={cn(
-              "absolute text-base text-secondary/50 -translate-y-full top-1/2 z-10 origin-[0] start-3 font-medium duration-300 transform",
+              "pointer-events-none absolute text-base text-secondary/50 -translate-y-full top-1/2 z-10 origin-[0] start-3 font-medium duration-300 transform",
               "peer-focus:-translate-y-full peer-focus:text-secondary",
               "peer-placeholder-shown:-translate-y-1/2"
             )}
