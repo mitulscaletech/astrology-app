@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 
 import banner from "@/assets/images/home/home-banner.jpg";
+import { GuidanceDialog } from "@/components/guidance/guidance-dialog";
 
 const HomeBanner = () => {
   return (
@@ -38,6 +39,7 @@ const HomeBanner = () => {
           </div>
         </div>
       </div>
+      <GuidanceDialog />
     </section>
   );
 };

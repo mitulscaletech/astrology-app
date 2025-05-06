@@ -6,13 +6,15 @@ declare module "next-auth" {
   interface Session {
     user: {
       full_name?: string | null;
+      first_name: string | null;
+      last_name: string | null;
       email?: string | null;
       image?: string | null;
       mobile_number?: string | null; // 👈 Add your custom property
       date_of_birth?: Date | null;
       place_of_birth?: string | null;
-      time_of_birth?: string | null;
-      languages_spoken?: string | null;
+      time_of_birth?: Date | null;
+      languages_spoken?: IOption[];
       current_address?: string | null;
       permanent_address?: string | null;
       sameAsCurrentAddress?: boolean;
@@ -29,7 +31,7 @@ declare module "next-auth" {
       isPhoneVerified?: boolean;
       isEmailVerified?: boolean;
       country_code?: string;
-      gender: string;
+      gender: IOption;
       profilePhoto: File | undefined;
       resume: string;
       institute_university_name: string;
@@ -39,11 +41,11 @@ declare module "next-auth" {
         additional_emails: any;
         place_of_birth: string;
         time_of_birth: string;
-        languages_spoken: string;
+        languages_spoken: IOption[];
         current_address: string;
         permanent_address: string;
         years_of_experience: number;
-        highest_qualification: string;
+        highest_qualification: IOption;
         institute_university_name: string;
         instagram: string;
         facebook: string;
@@ -62,6 +64,10 @@ declare module "next-auth" {
       };
       media_files: IMediaFile[];
     };
+  }
+  interface IOption {
+    value: string;
+    label: string;
   }
 
   interface IMediaFile {

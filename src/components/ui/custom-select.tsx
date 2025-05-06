@@ -8,8 +8,10 @@ interface OptionType {
   label: string;
 }
 
-type CustomSelectProps = SelectProps<OptionType, false, GroupBase<OptionType>> & {
+type CustomSelectProps = SelectProps<OptionType, boolean, GroupBase<OptionType>> & {
   label?: string;
+  isMulti: boolean;
+  error?: string;
 };
 
 const DropdownIndicator = (props: any) => (
@@ -20,12 +22,13 @@ const DropdownIndicator = (props: any) => (
   </components.DropdownIndicator>
 );
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ label, ...props }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ label, isMulti = false, error, ...props }) => {
   return (
-    <div className="w-full max-w-sm">
-      {label && <label className="block mb-1 text-sm font-medium text-gray-700">{label}</label>}
+    <div className="w-full">
+      {label && <label className="block mb-1 text-sm font-medium text-secondary-700">{label}</label>}
       <Select
         {...props}
+        isMulti={isMulti}
         className="custom-select-container"
         classNamePrefix="custom-select"
         components={{
@@ -33,6 +36,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ label, ...props }) => {
           IndicatorSeparator: () => null
         }}
       />
+      {error && <p className="mt-0.5 ml-1 text-sm text-primary">{error}</p>}
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const handleAstrologerRedirect = (status: string): string | undefined => 
       return "/astrologer/dashboard";
 
     case USER_PROFILE_STATUS.PENDING_PROFILE_COMPLETION:
-      return "/astrologer/onboarding";
+      return "/astrologer/profile";
 
     case USER_PROFILE_STATUS.PROFILE_INCOMPLETE:
       return "/astrologer/profile";

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { InputField } from "@/components/ui/custom-input";
-import { DatePickerField } from "@/components/ui/cutome-datepicker";
+import { DatePickerField } from "@/components/ui/custom-datepicker";
 import { Button } from "@/components/ui/button";
 
 const schema = yup.object({

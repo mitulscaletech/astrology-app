@@ -60,6 +60,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         dateFormat={dateFormat}
         {...props}
         customInput={<CustomInput />}
+        showYearDropdown
       />
       {error && <p className="mt-0.5 ml-1 text-sm text-primary">{error}</p>}
     </div>
