@@ -1,9 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-
 import Typography from "@/components/ui/typography";
 import Grid from "@/components/ui/grid";
-import { Button } from "../ui/button";
+import AstrologyCard from "@/components/common/astrology-card";
 
 import astrologyImg1 from "@/assets/images/home/astrology-img-01.png";
 import astrologyImg2 from "@/assets/images/home/astrology-img-02.png";
@@ -16,6 +13,7 @@ const ASTROLOGY_DATA = [
     tag: "Janma Kundali",
     title: "Holistic Life Blueprint",
     description: "Unlock the secrets of your birth chart and take control of your life's journey with awareness.",
+    btnText: "BOOK NOW",
     slug: "BOOK NOW"
   },
   {
@@ -23,6 +21,7 @@ const ASTROLOGY_DATA = [
     tag: "Kundali Matching",
     title: "Aligning Destinies For A Harmonious Future",
     description: "A valuable guidance to navigate life with your partner through thick & thin.",
+    btnText: "BOOK NOW",
     slug: "BOOK NOW"
   },
   {
@@ -30,6 +29,7 @@ const ASTROLOGY_DATA = [
     tag: "Prashna Kundali",
     title: "Practical Life Strategies",
     description: "Gain deeper insights into your life's pressing questions and find clarity.",
+    btnText: "BOOK NOW",
     slug: "BOOK NOW"
   },
   {
@@ -37,6 +37,7 @@ const ASTROLOGY_DATA = [
     tag: "Muhurta",
     title: "The Best Time For Success",
     description: "Align with the most auspicious time to crease the probabilities of success.",
+    btnText: "BOOK NOW",
     slug: "BOOK NOW"
   }
 ];
@@ -65,31 +66,13 @@ const Astrology = () => {
           {ASTROLOGY_DATA?.map((astrology) => {
             return (
               <Grid.Col key={astrology?.tag} className="md:w-6/12 xl:w-3/12">
-                <div className="flex flex-col hover:bg-highlight/20 p-3.5 md:p-5 lg:p-6 xl:p-2.5 2xl:p-3 4xl:p-6 border border-secondary/20 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card min-h-full transition-all ease-out duration-200">
-                  <div className="mb-3 md:mb-3.5 xl:mb-4 3xl:mb-6 w-48 sm:w-56 xl:w-full mx-auto">
-                    <Image
-                      src={astrology?.image}
-                      alt={astrology?.tag}
-                      className="w-full aspect-square object-contain"
-                    />
-                  </div>
-                  <div className="px-1.5 3xl:px-3 4xl:px-4 pb-2 4xl:pb-4 grow flex flex-col">
-                    <Typography variant="p" size="p" className="mb-2">
-                      {astrology?.tag}
-                    </Typography>
-                    <Typography variant="h4" size="h5-head" className="font-head mb-2.5 md:mb-3 xl:mb-4">
-                      {astrology?.title}
-                    </Typography>
-                    <Typography variant="p" size="p" className="text-secondary/70">
-                      {astrology?.description}
-                    </Typography>
-                    <div className="text-end mt-auto">
-                      <Button asChild variant="highlight" className="mt-4 md:mt-5 xl:mt-5 2xl:mt-6 3xl:mt-8">
-                        <Link href="/">BOOK NOW</Link>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <AstrologyCard
+                  image={astrology?.image.src}
+                  tag={astrology?.tag}
+                  title={astrology?.title}
+                  description={astrology?.description}
+                  btnText={astrology?.btnText}
+                />
               </Grid.Col>
             );
           })}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 
 import Typography from "@/components/ui/typography";
@@ -40,25 +41,16 @@ const LEARN_DATA = [
   }
 ];
 
-const Learn = () => {
+const PopularInsights = () => {
   return (
-    <section className="common-section">
+    <section className="small-section">
       <div className="container">
         <Typography variant="h2" size="p" className="mb-3" isTitle>
-          Learn
+          Popular Insights
         </Typography>
-        <Grid className="justify-between">
-          <Grid.Col className="md:w-5/12">
-            <Typography variant="h3" size="h3" className="mb-0 font-semibold">
-              Wisdom for Your Journey
-            </Typography>
-          </Grid.Col>
-          <Grid.Col className="md:w-7/12 lg:w-6/12 xl:w-5/12">
-            <Typography variant="p" size="h6" className="mb-0 text-secondary/70">
-              Discover insights, stories, and guidance to help you live with clarity, balance, and purpose.
-            </Typography>
-          </Grid.Col>
-        </Grid>
+        <Typography variant="h3" size="h3" className="mb-0 font-semibold">
+          Trending Wisdom
+        </Typography>
         <Grid className="py-6 md:py-9 lg:py-10 xl:py-12 gap-y-4 justify-center" size="md">
           {LEARN_DATA?.map((astrology) => {
             return (
@@ -77,7 +69,7 @@ const Learn = () => {
         <div className="text-center">
           <Button asChild variant="highlight" className="gap-2.5">
             <Link href="/">
-              Start Learning with Us
+              View More
               <span className="size-5 md:size-6">
                 <IconArrowForward />
               </span>
@@ -89,4 +81,4 @@ const Learn = () => {
   );
 };
 
-export default Learn;
+export default PopularInsights;

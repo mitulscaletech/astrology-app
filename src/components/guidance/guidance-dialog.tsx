@@ -267,6 +267,7 @@ export function GuidanceDialog() {
           {currentStep > 1 ? (
             <button
               onClick={handleBack}
+              aria-label="back"
               className="flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-200 hover:bg-gray-100"
             >
               <svg

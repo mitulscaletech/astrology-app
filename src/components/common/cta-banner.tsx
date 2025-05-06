@@ -18,7 +18,7 @@ const CTABanner = () => {
             <Grid className="justify-center">
               <Grid.Col className="md:w-8/12 lg:w-7/12">
                 <div className="relative z-2">
-                  <Typography variant="h1" size="h1" className="font-head mb-4 2xl:mb-5">
+                  <Typography variant="h2" size="h1" className="font-head mb-4 2xl:mb-5">
                     Ready to Find Clarity?
                   </Typography>
                   <Typography variant="p" size="h6" className="opacity-80 lg:w-9/12 4xl:w-8/12 mx-auto">

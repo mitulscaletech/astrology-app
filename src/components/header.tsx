@@ -17,12 +17,6 @@ export function Header() {
             </Link>
             <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden xl:flex">
               <Link
-                href="/"
-                className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-primary text-primary"
-              >
-                Home
-              </Link>
-              <Link
                 href="/astrology"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
               >
@@ -35,7 +29,7 @@ export function Header() {
                 Pooja
               </Link>
               <Link
-                href="#"
+                href="/learn"
                 className="px-4 md:px-5 xl:px-6 py-1 md:py-2 lg:py-2.5 xl:py-3 hover:text-primary border-b-2 border-transparent"
               >
                 Learn
@@ -46,15 +40,24 @@ export function Header() {
             <Button asChild size="sm" variant="secondary" className="hidden md:flex">
               <Link href="/astrologer/login">Astrologer Login</Link>
             </Button>
-            <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
+            <Link
+              href="/user/login"
+              aria-label="search"
+              className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary"
+            >
               <IconSearch />
             </Link>
-            <Link href="/user/login" className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary">
+            <Link
+              aria-label="user login"
+              href="/user/login"
+              className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary"
+            >
               <IconUser />
             </Link>
             <div className="h-7 md:h-8 xl:h-9 border-l border-primary/30" />
             <Link
               href="#"
+              aria-label="cart"
               className="size-8 md:size-10 2xl:size-12 p-1.5 md:p-2 2xl:p-3 bg-primary text-accent-white rounded-full"
             >
               <IconCart />

@@ -147,13 +147,31 @@ export function Footer() {
         <div className="mt-4 md:mt-5 lg:mt-6 xl:mt-7 2xl:mt-8 flex flex-col md:flex-row items-center justify-between border-t border-secondary/10 pt-3 lg:pt-4 2xl:pt-5">
           <p className="opacity-50">&copy; {new Date().getFullYear()} WeWake Astrology & Pooja.</p>
           <div className="flex gap-x-3 mt-3 md:mt-0">
-            <Link href="https://facebook.com" className="size-6" target="_blank" rel="noopener noreferrer">
+            <Link
+              aria-label="facebook"
+              href="https://facebook.com"
+              className="size-6"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconFacebook />
             </Link>
-            <Link href="https://instagram.com" className="size-6" target="_blank" rel="noopener noreferrer">
+            <Link
+              aria-label="instagram"
+              href="https://instagram.com"
+              className="size-6"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconInstagram />
             </Link>
-            <Link href="https://youtube.com" className="size-6" target="_blank" rel="noopener noreferrer">
+            <Link
+              aria-label="youtube"
+              href="https://youtube.com"
+              className="size-6"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconYoutube />
             </Link>
           </div>

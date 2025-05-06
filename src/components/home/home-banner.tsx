@@ -6,18 +6,18 @@ import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 
 import banner from "@/assets/images/home/home-banner.jpg";
-import { GuidanceDialog } from "@/components/guidance/guidance-dialog";
+// import { GuidanceDialog } from "@/components/guidance/guidance-dialog";
 
 const HomeBanner = () => {
   return (
     <section>
       <div className="container">
         <div
-          className="img-shadow flex items-center relative px-3 md:px-4 lg:px-8 xl:px-12 3xl:px-20 rounded-xl md:rounded-2xl lg:rounded-3xl min-h-80 lg:min-h-96 xl:min-h-128 2xl:min-h-144 3xl:min-h-[626px] overflow-hidden text-accent-white
+          className="bg-secondary img-shadow flex items-center relative px-3 md:px-4 lg:px-8 xl:px-12 3xl:px-20 rounded-xl md:rounded-2xl lg:rounded-3xl min-h-80 lg:min-h-96 xl:min-h-128 2xl:min-h-144 3xl:min-h-[626px] overflow-hidden text-accent-white
          after:z-2 after:top-1/2 after:-translate-y-1/2 after:start-0 after:-translate-x-1/4 after:opacity-30
          "
         >
-          <Image src={banner} alt="home-banner" className="absolute size-full inset-0 object-cover z-1" />
+          <Image src={banner} priority alt="home-banner" className="absolute size-full inset-0 object-cover z-1" />
           <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/35 to-80% to-secondary/0 opacity-50 after:contents-[''] after:bg-gradient-to-r after:from-bg-secondary after:to-bg-secondary/50 after:absolute after:inset-0 z-2"></div>
           <div className="w-full">
             <Grid className="relative z-3">
@@ -39,7 +39,7 @@ const HomeBanner = () => {
           </div>
         </div>
       </div>
-      <GuidanceDialog />
+      {/* <GuidanceDialog /> */}
     </section>
   );
 };

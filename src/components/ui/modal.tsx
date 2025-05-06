@@ -51,7 +51,7 @@ export const ModalContent = ({
         >
           {children}
           {showClose && (
-            <Button size="rounded" className="bg-secondary/10 text-secondary absolute top-4 end-4">
+            <Button size="rounded" aria-label="close" className="bg-secondary/10 text-secondary absolute top-4 end-4">
               <IconClose />
             </Button>
           )}

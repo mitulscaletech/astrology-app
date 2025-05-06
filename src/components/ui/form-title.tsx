@@ -15,7 +15,7 @@ const sizeClasses = {
 export function FormTitle({ size = "default", title, className }: FormTitleProps) {
   return (
     <Typography
-      variant="h5"
+      variant="h3"
       size="base"
       className={cn("block font-medium text-secondary/70 mb-2 xl:mb-3 uppercase", sizeClasses[size], className)}
     >
