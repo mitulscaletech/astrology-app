@@ -21,7 +21,7 @@ const Grid: GridComponent = ({ children, className = "", size }) => {
       className={`flex flex-wrap ${className} 
   ${!size ? "-mx-2 lg:-mx-3 [&>*]:px-2 lg:[&>*]:px-3" : ""} 
   ${size === "lg" ? "-mx-1.5 md:-mx-2.5 xl:-mx-4 [&>*]:px-1.5 [&>*]:md:px-2.5 [&>*]:xl:px-4" : ""}
-  ${size === "md" ? "-mx-1.5 [&>*]:px-1.5 md:-mx-2 md:[&>*]:px-2" : ""}
+  ${size === "md" ? "-mx-1.5 [&>*]:px-1.5 md:-mx-2.5 md:[&>*]:px-2.5" : ""}
   ${size === "sm" ? "-mx-1.5 [&>*]:px-1.5" : ""}
   ${size === "xs" ? "-mx-1 [&>*]:px-1" : ""}
   ${size === "zero" ? "mx-0 [&>*]:px-0" : ""} `}

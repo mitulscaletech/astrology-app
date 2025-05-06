@@ -96,10 +96,10 @@ export default function UserDetailsForm() {
       <div className="flex items-center gap-2">
         <input type="checkbox" id="subscribe" {...register("subscribe")} />
         <label htmlFor="subscribe" className="text-sm text-gray-700">
-          Subscribe with email
+          Email me with news and offers
         </label>
       </div>
-      <InputField label="Question to Ask" {...register("question")} error={errors.question?.message} />
+      <InputField label="Questions you want to ask" {...register("question")} error={errors.question?.message} />
 
       <Button type="submit" size="sm">
         Submit

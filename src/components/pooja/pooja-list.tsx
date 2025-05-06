@@ -81,10 +81,11 @@ const PoojaList = () => {
           </div>
           <div className="w-52">
             <CustomSelect
+              isMulti={false}
               options={poojaOptions}
               value={selected}
-              onChange={(option) => setSelected(option)}
-              placeholder="Sort"
+              onChange={(option) => setSelected(option as { value: string; label: string } | null)}
+              label="Sort"
             />
           </div>
         </div>

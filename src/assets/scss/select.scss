@@ -1,6 +1,6 @@
 .custom-select-container {
   .custom-select__control {
-    @apply bg-accent-white border-2 rounded-lg text-lg font-medium border-secondary/10 min-h-12 md:min-h-16;
+    @apply bg-accent-white border-2 rounded-lg text-lg font-medium border-secondary/30 min-h-12 md:min-h-15;
     box-shadow: none;
     &:hover {
       @apply border-secondary;
@@ -16,15 +16,15 @@
     }
   }
   .custom-select__value-container {
-    @apply pe-1 ps-3 md:ps-4 py-2.5 md:py-3;
+    @apply pe-1 ps-2.5 md:ps-3 py-2.5 md:py-3;
   }
   .custom-select__indicator {
     @apply ps-0 py-1;
   }
   .custom-select__menu {
-    @apply m-0 z-10 text-secondary/50 font-medium border-2 border-secondary/20;
+    @apply m-0 z-20 text-secondary/50 font-medium border-2 border-secondary/20 rounded-lg;
     .custom-select__option {
-      @apply py-4 px-5;
+      @apply py-3 px-4;
       &.custom-select__option--is-selected.custom-select__option--is-focused,
       &.custom-select__option--is-selected {
         @apply bg-secondary/10 text-secondary;
@@ -72,6 +72,16 @@
   &.size-sm {
     .custom-select__value-container {
       @apply min-h-12 py-1 px-3;
+    }
+  }
+}
+
+.floating-label-select {
+  // .custom-lable { }
+  .custom-select-container {
+    .custom-select__value-container {
+      padding-top: 22px;
+      padding-bottom: 2px;
     }
   }
 }

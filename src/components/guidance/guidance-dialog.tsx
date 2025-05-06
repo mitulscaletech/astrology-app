@@ -30,6 +30,7 @@ import {
 import Grid from "../ui/grid";
 import IconButton from "../common/icon-button";
 import InputButton from "../common/input-button";
+import BillingDetailsForm from "./components/step-7";
 
 const timeSlots = ["08:30 AM", "09:30 AM", "10:30 AM", "11:30 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
 
@@ -184,13 +185,13 @@ const steps: Step[] = [
     description:
       "Your emotions matter. Select the feelings that best describe your current state — this helps us offer guidance and rituals that truly support where you are right now."
   },
-  {
-    id: 3,
-    header: "Choose Your Astrology Service",
-    title: "Discover the Right Path Forward",
-    description:
-      "Based on your query, we recommend starting with one of these powerful astrology consultations. Each one is designed to guide you with clarity, confidence, and cosmic insight."
-  },
+  // {
+  //   id: 3,
+  //   header: "Choose Your Astrology Service",
+  //   title: "Discover the Right Path Forward",
+  //   description:
+  //     "Based on your query, we recommend starting with one of these powerful astrology consultations. Each one is designed to guide you with clarity, confidence, and cosmic insight."
+  // },
   {
     id: 4,
     header: "Choose Your Astrologer & Session Time",
@@ -216,6 +217,13 @@ const steps: Step[] = [
     id: 7,
     header: "Secure Payment",
     title: "Complete your booking securely",
+    description:
+      "All payments are secure and encrypted. By paying, you agree to our terms of service. You’ll receive a confirmation email and reminders."
+  },
+  {
+    id: 8,
+    header: "Secure Payment",
+    title: "Your session is confirmed",
     description:
       "All payments are secure and encrypted. By paying, you agree to our terms of service. You’ll receive a confirmation email and reminders."
   }
@@ -362,7 +370,7 @@ export function GuidanceDialog() {
                   </div>
                 )}
 
-                {currentStep === 3 && (
+                {/* {currentStep === 3 && (
                   <div className="flex flex-col gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5 border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
                     {services.map((service) => (
                       <ServiceCard
@@ -373,9 +381,9 @@ export function GuidanceDialog() {
                       />
                     ))}
                   </div>
-                )}
+                )} */}
 
-                {currentStep === 4 && (
+                {currentStep === 3 && (
                   <section>
                     <Typography variant="h2" size="small" className="mb-3 uppercase text-secondary/70">
                       Choose Astrologer
@@ -422,7 +430,7 @@ export function GuidanceDialog() {
                   </section>
                 )}
 
-                {currentStep === 5 && (
+                {currentStep === 4 && (
                   <div className="w-full flex flex-col justify-center">
                     <div className="mb-4 lg:mb-5 xl:mb-6">
                       <Typography
@@ -461,7 +469,8 @@ export function GuidanceDialog() {
                   </div>
                 )}
 
-                {currentStep === 6 && <Step6 />}
+                {currentStep === 5 && <Step6 />}
+                {currentStep === 6 && <BillingDetailsForm />}
               </Grid.Col>
             </Grid>
             <div className="mt-4 lg:mt-6 2xl:mt-8 flex justify-between">

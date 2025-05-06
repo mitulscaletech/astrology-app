@@ -18,7 +18,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             ref={ref}
             id={id}
             className={cn(
-              "peer h-16 w-full font-medium rounded-md border-2 px-3 pt-6 pb-2 text-base lg:text-lg text-secondary-800 placeholder-transparent transition-all outline-none",
+              "peer h-16 w-full font-medium rounded-md border-2 px-3 pt-6 pb-2 text-base lg:text-lg text-secondary placeholder-transparent transition-all outline-none",
               error ? "border-primary focus:border-primary-500 " : "border-secondary/30 focus:border-secondary",
               className
             )}
