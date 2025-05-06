@@ -255,7 +255,7 @@ export function GuidanceDialog() {
   return (
     <Modal open={dialogOpen} onOpenChange={setDialogOpen}>
       <ModalContent size="xl" showClose={true}>
-        <div className="mb-8 flex items-center gap-4 w-full">
+        <div className="mb-4 md:mb-6 2xl:mb-8 flex items-center gap-4 w-full">
           {currentStep > 1 ? (
             <button
               onClick={handleBack}
