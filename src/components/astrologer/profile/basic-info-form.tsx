@@ -45,7 +45,7 @@ const schema = yup.object().shape({
     })
     .required("Gender is required")
 });
-interface BasicInfoFormProps {
+interface IBasicInfoFormProps {
   onComplete: () => void;
 }
 const languageOptions: any[] = [
@@ -54,7 +54,7 @@ const languageOptions: any[] = [
   { value: "spanish", label: "Spanish" }
 ];
 
-export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
+export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
   const { update, data: session } = useSession();
   const {
     control,
@@ -84,16 +84,17 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
     }
   });
   const onSubmit = async (data: any) => {
-    HttpService.post(`${API_CONFIG.intakeForm}/basic`, {
+    const params = {
       ...data,
       languages_spoken: data.languages_spoken.map((lang: any) => lang.value),
       gender: data.gender.value,
-      completed_steps: 1
-    }).then((response) => {
+      intake_form: { ...session?.user?.intake_form, completed_steps: 1 }
+    };
+    HttpService.post(`${API_CONFIG.intakeForm}/basic`, params).then((response) => {
       if (!response.is_error) {
         toast.success(response.message);
         onComplete();
-        update({ ...session?.user, ...data });
+        update({ ...session?.user, ...params });
       } else {
         toast.error(response.message);
       }
@@ -106,6 +107,17 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
     setValue("country_code", `+${dialCode}`, { shouldValidate: true });
     setValue("mobile_number", number, { shouldValidate: true });
   };
+  const handleGetLanguage = (languages: string): any[] => {
+    if (!languages) return [];
+    const cleaned = languages.replace(/[{}"]/g, ""); // remove {, }, and "
+    const parsedLanguages = languages
+      .replace(/[{}"]/g, "")
+      .split(",")
+      .map((lang) => lang.trim().toLowerCase());
+
+    // Match against languageOptions
+    return languageOptions.filter((option) => parsedLanguages.includes(option.value.toLowerCase()));
+  };
 
   useEffect(() => {
     if (session?.user) {
@@ -115,13 +127,16 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
         first_name: session.user.first_name || "",
         last_name: session.user.last_name || "",
         date_of_birth: session.user.date_of_birth || undefined,
-        place_of_birth: session.user.place_of_birth || "",
-        time_of_birth: session.user?.time_of_birth || undefined,
-        current_address: session.user.current_address || "",
-        permanent_address: session.user.permanent_address || "",
+        place_of_birth: session.user.intake_form?.place_of_birth || "",
+        time_of_birth: session.user.intake_form?.time_of_birth || undefined,
+        current_address: session.user.intake_form?.current_address || "",
+        permanent_address: session.user.intake_form?.permanent_address || "",
         country_code: session.user.country_code,
-        gender: session.user.gender || "",
-        languages_spoken: session.user.languages_spoken || []
+        gender:
+          typeof session.user.gender === "string"
+            ? GENDER_OPTIONS.find((gen) => gen.value === session.user.gender)
+            : session.user.gender,
+        languages_spoken: handleGetLanguage(session.user?.intake_form?.languages_spoken) || []
       });
     }
   }, [session, reset]);
@@ -140,14 +155,18 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
             Start building your professional astrologer profile. This section collects your basic details — all
             essential for setting up your identity on WeWake. Your progress is saved as you go.
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <InputField label="First Name" {...register("first_name")} error={errors.first_name?.message} />
-              <InputField label="Last Name" {...register("last_name")} error={errors.last_name?.message} />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <InputField label="Email Address *" type="email" {...register("email")} error={errors.email?.message} />
-              <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+              <Grid.Col className="md:w-6/12">
+                <InputField label="First Name" {...register("first_name")} error={errors.first_name?.message} />
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <InputField label="Last Name" {...register("last_name")} error={errors.last_name?.message} />
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <InputField label="Email Address *" type="email" {...register("email")} error={errors.email?.message} />
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
                 <Label htmlFor="mobile">Mobile Number *</Label>
                 <PhoneInput
                   country="in"
@@ -158,101 +177,108 @@ export function BasicInfoForm({ onComplete }: BasicInfoFormProps) {
                   inputStyle={{ width: "100%", height: "40px" }}
                 />
                 {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Controller
-                control={control}
-                name="date_of_birth"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <DatePickerField
-                    label="Date of Birth"
-                    placeholder="dd/mm/yyyy"
-                    selected={field.value}
-                    onChange={field.onChange}
-                    dateFormat="dd/MM/yyyy"
-                    error={errors.date_of_birth?.message} // 👈 pass error here
-                  />
-                )}
-              />
-              <Controller
-                control={control}
-                name="time_of_birth"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <DatePickerField
-                    label="Time of Birth"
-                    placeholder="HH:mm:ss"
-                    selected={field?.value || null}
-                    // onChange={field.onChange}
-                    onChange={(date) => {
-                      field.onChange(date); // triggers validation
-                    }}
-                    showTimeOnly
-                    dateFormat="HH:mm:ss"
-                    error={errors.time_of_birth?.message} // 👈 pass error here
-                  />
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-              <InputField
-                label="Place of Birth"
-                {...register("place_of_birth")}
-                error={errors.place_of_birth?.message}
-              />
-            </div>
-            <Controller
-              control={control}
-              name="gender"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomSelect
-                  label="Gender"
-                  options={GENDER_OPTIONS}
-                  placeholder="Select a your gender"
-                  isMulti={false}
-                  value={field.value ? { ...field.value, label: field.value.label || "" } : null}
-                  onChange={(gender: any) => {
-                    field.onChange(gender); // triggers validation
-                  }}
-                  error={errors.gender?.message}
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <Controller
+                  control={control}
+                  name="date_of_birth"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <DatePickerField
+                      label="Date of Birth"
+                      placeholder="dd/mm/yyyy"
+                      selected={field.value}
+                      onChange={field.onChange}
+                      dateFormat="dd/MM/yyyy"
+                      error={errors.date_of_birth?.message} // 👈 pass error here
+                    />
+                  )}
                 />
-              )}
-            />
-            <Controller
-              control={control}
-              name="languages_spoken"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomSelect
-                  label="Languages"
-                  options={languageOptions}
-                  isMulti={true}
-                  value={field.value}
-                  placeholder="Select your spoken language"
-                  onChange={(language) => {
-                    field.onChange(language); // triggers validation
-                  }}
-                  error={errors.languages_spoken?.message}
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <Controller
+                  control={control}
+                  name="time_of_birth"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <DatePickerField
+                      label="Time of Birth"
+                      placeholder="HH:mm:ss"
+                      selected={field?.value || null}
+                      // onChange={field.onChange}
+                      onChange={(date) => {
+                        field.onChange(date); // triggers validation
+                      }}
+                      showTimeOnly
+                      dateFormat="HH:mm:ss"
+                      error={errors.time_of_birth?.message} // 👈 pass error here
+                    />
+                  )}
                 />
-              )}
-            />
-            <div className="grid grid-cols-1 gap-4">
-              <InputField
-                label="Current Address *"
-                {...register("current_address")}
-                error={errors.current_address?.message}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-              <InputField
-                label="Permanent Address *"
-                {...register("permanent_address")}
-                error={errors.permanent_address?.message}
-              />
-            </div>
+              </Grid.Col>
+
+              <Grid.Col className="md:w-6/12">
+                <InputField
+                  label="Place of Birth"
+                  {...register("place_of_birth")}
+                  error={errors.place_of_birth?.message}
+                />
+              </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <Controller
+                  control={control}
+                  name="gender"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      label="Gender"
+                      options={GENDER_OPTIONS}
+                      placeholder="Select a your gender"
+                      isMulti={false}
+                      value={field.value ? { ...field.value, label: field.value.label || "" } : null}
+                      onChange={(gender: any) => {
+                        field.onChange(gender); // triggers validation
+                      }}
+                      error={errors.gender?.message}
+                    />
+                  )}
+                />
+              </Grid.Col>
+              <Grid.Col>
+                <Controller
+                  control={control}
+                  name="languages_spoken"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      label="Languages"
+                      options={languageOptions}
+                      isMulti={true}
+                      value={field.value}
+                      placeholder="Select your spoken language"
+                      onChange={(language) => {
+                        field.onChange(language); // triggers validation
+                      }}
+                      error={errors.languages_spoken?.message}
+                    />
+                  )}
+                />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField
+                  label="Current Address *"
+                  {...register("current_address")}
+                  error={errors.current_address?.message}
+                />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField
+                  label="Permanent Address *"
+                  {...register("permanent_address")}
+                  error={errors.permanent_address?.message}
+                />
+              </Grid.Col>
+            </Grid>
             <div className="flex justify-end">
               <Button type="submit">Save & Continue</Button>
             </div>

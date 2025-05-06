@@ -15,6 +15,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import { useEffect } from "react";
+import { InputField } from "@/components/ui/custom-input";
+import Grid from "@/components/ui/grid";
+import Typography from "@/components/ui/typography";
 
 const schema = yup.object().shape({
   instagram: yup.string().url("Enter a valid Instagram URL").notRequired(),
@@ -36,10 +39,11 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors }
   } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
     resolver: yupResolver(schema)
   });
 
@@ -89,39 +93,57 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
   }, [session, reset]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <FormInput label="Instagram Profile" id="instagram" register={register} error={errors.instagram?.message} />
-      <FormInput label="Facebook Profile" id="facebook" register={register} error={errors.facebook?.message} />
-      <FormInput label="LinkedIn Profile" id="linkedin" register={register} error={errors.linkedin?.message} />
-      <FormInput label="Twitter Profile" id="twitter" register={register} error={errors.twitter?.message} />
-      <FormInput label="TikTok Profile" id="tiktok" register={register} error={errors.tiktok?.message} />
-      <FormInput label="YouTube Channel" id="youtube" register={register} error={errors.youtube?.message} />
-      <FormInput
-        label="Personal Website"
-        id="personal_website"
-        type="url"
-        register={register}
-        error={errors.personal_website?.message}
-      />
-
-      <div>
-        <label className="block text-sm font-medium">Other Astrology Companies Associated With</label>
-        <Select onValueChange={(value: yup.Maybe<string | undefined>) => setValue("associated_companies", value)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select number of companies" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">1 Company</SelectItem>
-            <SelectItem value="2">2 Companies</SelectItem>
-            <SelectItem value="3">3 Companies</SelectItem>
-            <SelectItem value="4">4 or more Companies</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex justify-end">
-        <Button type="submit">Save & Continue</Button>
-      </div>
-    </form>
+    <div className="container mb-15">
+      <Grid className="justify-center">
+        <Grid.Col className="md:w-10/12 lg:w-8/12 2xl:w-7/12">
+          <Typography variant="h3" size="base" className="text-lg font-normal text-secondary uppercase mb-3">
+            Social Profiles
+          </Typography>
+          <Typography variant="h2" size="h3" className="text-7xl font-semibold text-secondary mb-8">
+            Expand Your Reach
+          </Typography>
+          <Typography variant="h4" size="p" className="text-2xl font-normal text-secondary/70 mb-8">
+            Link your social and professional presence. This helps seekers explore your credibility and connect with you
+            across platforms.
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+              <Grid.Col>
+                <InputField label="Instagram (Optional)" {...register("instagram")} error={errors.instagram?.message} />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField label="Linkedin (Optional)" {...register("linkedin")} error={errors.linkedin?.message} />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField label="Twitter (Optional)" {...register("twitter")} error={errors.twitter?.message} />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField label="Tiktok (Optional)" {...register("tiktok")} error={errors.tiktok?.message} />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField label="Youtube (Optional)" {...register("youtube")} error={errors.youtube?.message} />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField
+                  label="Personal Website (Optional)"
+                  {...register("personal_website")}
+                  error={errors.personal_website?.message}
+                />
+              </Grid.Col>
+              <Grid.Col>
+                <InputField
+                  label="Associated Companies (Optional)"
+                  {...register("associated_companies")}
+                  error={errors.associated_companies?.message}
+                />
+              </Grid.Col>
+            </Grid>
+            <div className="flex justify-end">
+              <Button type="submit">Continue</Button>
+            </div>
+          </form>
+        </Grid.Col>
+      </Grid>
+    </div>
   );
 }

@@ -13,7 +13,7 @@ export const handleAstrologerRedirect = (status: string): string | undefined => 
       return "/astrologer/profile";
 
     case USER_PROFILE_STATUS.AWAITING_FINAL_REVIEW:
-      return "/astrologer/awaiting-review";
+      return "/astrologer/profile";
 
     case USER_PROFILE_STATUS.REJECTED:
       toast.error("Your account is rejected. Please contact to Admin");

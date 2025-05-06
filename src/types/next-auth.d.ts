@@ -10,42 +10,28 @@ declare module "next-auth" {
       last_name: string | null;
       email?: string | null;
       image?: string | null;
-      mobile_number?: string | null; // 👈 Add your custom property
+      mobile_number?: string | null;
       date_of_birth?: Date | null;
-      place_of_birth?: string | null;
-      time_of_birth?: Date | null;
-      languages_spoken?: IOption[];
-      current_address?: string | null;
-      permanent_address?: string | null;
-      sameAsCurrentAddress?: boolean;
-      isNewUser?: boolean;
       role?: string | null;
       access_token?: string | null;
-      provider?: string | null;
       id?: string;
-      isAstrologer?: boolean;
-      isAdmin?: boolean;
-      isUser?: boolean;
-      isLoggedIn?: boolean;
-      isVerified?: boolean;
-      isPhoneVerified?: boolean;
-      isEmailVerified?: boolean;
       country_code?: string;
-      gender: IOption;
+      gender: string | IOption;
       profilePhoto: File | undefined;
-      resume: string;
-      institute_university_name: string;
-      otherCompanies: string;
+      status: string;
+      is_active: boolean;
+      is_verified: boolean;
+      specializations: ISpecialization[];
       intake_form: {
         id: string;
         additional_emails: any;
         place_of_birth: string;
-        time_of_birth: string;
-        languages_spoken: IOption[];
+        time_of_birth?: Date | null;
+        languages_spoken: string;
         current_address: string;
         permanent_address: string;
         years_of_experience: number;
-        highest_qualification: IOption;
+        highest_qualification: string;
         institute_university_name: string;
         instagram: string;
         facebook: string;
@@ -60,10 +46,17 @@ declare module "next-auth" {
         completed_steps: number;
         created_at: string;
         updated_at: string;
-        specialization: string;
+        specialization: ISpecialization[];
+        current_address?: string | null;
+        permanent_address?: string | null;
       };
       media_files: IMediaFile[];
     };
+  }
+  interface ISpecialization {
+    specialization_id: string;
+    specialization_name: string;
+    description: string;
   }
   interface IOption {
     value: string;
@@ -95,5 +88,6 @@ declare module "next-auth" {
     role?: string | null;
     access_token?: string | null;
     provider?: string | null;
+    status: string;
   }
 }
