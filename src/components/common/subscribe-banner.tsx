@@ -18,7 +18,7 @@ const SubscribeBanner = () => {
             <Grid className="justify-center">
               <Grid.Col className="md:w-8/12 lg:w-7/12">
                 <div className="relative z-2">
-                  <Typography variant="h2" size="h1" className="font-head mb-4 2xl:mb-5">
+                  <Typography variant="h2" size="h1" className="font-head font-medium mb-3 lg:mb-4 2xl:mb-5">
                     Never Miss a New Insight
                   </Typography>
                   <Typography variant="p" size="h6" className="opacity-80">

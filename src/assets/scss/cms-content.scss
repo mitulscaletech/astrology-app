@@ -1,0 +1,11 @@
+.cms-content {
+  > * {
+    @apply mb-2.5 md:mb-4 xl:mb-5 2xl:mb-6 last:mb-0;
+  }
+  ul {
+    @apply ps-4 md:ps-6 list-disc;
+    li {
+      @apply mb-1 md:mb-2 xl:mb-2.5 2xl:mb-3 last:mb-0;
+    }
+  }
+}

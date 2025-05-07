@@ -1,19 +1,19 @@
-import Astrologers from "@/components/astrology/astrologers";
-import AstrologyAbout from "@/components/astrology/astrology-about";
-import AstrologyDetailBanner from "@/components/astrology/astrology-detail-banner";
-import CTABanner from "@/components/common/cta-banner";
+import SubscribeBanner from "@/components/common/subscribe-banner";
 import FAQAbout from "@/components/home/faq-about";
+import LearnDetailsBanner from "@/components/learn/learn-details-banner";
+import LearnDetailsContent from "@/components/learn/learn-details-content";
+import PopularInsights from "@/components/learn/popular-insights";
 
-const AstrologyDetailPage = () => {
+const LearnDetailPage = () => {
   return (
     <>
-      <AstrologyDetailBanner />
-      <AstrologyAbout />
-      <Astrologers />
-      <CTABanner />
+      <LearnDetailsBanner />
+      <LearnDetailsContent />
+      <PopularInsights />
+      <SubscribeBanner />
       <FAQAbout />
     </>
   );
 };
 
-export default AstrologyDetailPage;
+export default LearnDetailPage;

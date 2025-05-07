@@ -37,7 +37,7 @@ const LEARN_DATA = [
   }
 ];
 
-const PopularInsights = () => {
+const CategoryLearnList = () => {
   return (
     <section className="small-section">
       <div className="container">
@@ -77,4 +77,4 @@ const PopularInsights = () => {
   );
 };
 
-export default PopularInsights;
+export default CategoryLearnList;
