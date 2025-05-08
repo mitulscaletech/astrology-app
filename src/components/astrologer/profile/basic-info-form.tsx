@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import * as yup from "yup";
+import moment from "moment";
 import toast from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import { Controller, useForm } from "react-hook-form";
@@ -57,6 +58,8 @@ const languageOptions: any[] = [
 
 export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
   const { update, data: session } = useSession();
+  const [totalAge, setTotalAge] = useState(0);
+
   const {
     control,
     register,
@@ -133,9 +136,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
   };
   const handleGetLanguage = (languages: any): any[] => {
     if (!languages) return [];
-
     let parsedLanguages: string[] = [];
-
     if (typeof languages === "string") {
       parsedLanguages = languages
         .replace(/[{}"]/g, "")
@@ -150,6 +151,13 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
 
     return languageOptions.filter((option) => parsedLanguages.includes(option.value.toLowerCase()));
   };
+  const handleCalculateAge = (date: Date | null, field?: any) => {
+    const providedDate = moment(date);
+    const now = moment();
+    const years = now.diff(providedDate, "years");
+    setTotalAge(years);
+    if (field) field.onChange(date);
+  };
 
   useEffect(() => {
     if (session?.user) {
@@ -160,7 +168,9 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
         last_name: session.user.last_name || "",
         date_of_birth: session.user.date_of_birth || undefined,
         place_of_birth: session.user.intake_form?.place_of_birth || "",
-        time_of_birth: session.user.intake_form?.time_of_birth || undefined,
+        time_of_birth: session.user.intake_form?.time_of_birth
+          ? new Date(session.user.intake_form.time_of_birth)
+          : undefined,
         current_address: session.user.intake_form?.current_address || "",
         permanent_address: session.user.intake_form?.permanent_address || "",
         country_code: session.user.country_code,
@@ -170,6 +180,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
             : session.user.gender,
         languages_spoken: handleGetLanguage(session.user?.intake_form?.languages_spoken) || []
       });
+      handleCalculateAge(session.user.date_of_birth || null, "");
     }
   }, [session, reset]);
 
@@ -223,6 +234,8 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                   onChange={(value, country: any) => handleChangeMobile(value, country)}
                   inputProps={{ name: "phone-input" }}
                   inputStyle={{ width: "100%", height: "40px" }}
+                  disableCountryCode={Boolean(getValues("country_code"))}
+                  disabled={Boolean(getValues("mobile_number"))}
                 />
                 {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
                 {!errors.mobile_number?.message && errors.country_code && (
@@ -239,7 +252,9 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                       label="Date of Birth"
                       placeholder="dd/mm/yyyy"
                       selected={field.value}
-                      onChange={field.onChange}
+                      onChange={(date) => {
+                        handleCalculateAge(date, field);
+                      }}
                       dateFormat="dd/MM/yyyy"
                       error={errors.date_of_birth?.message}
                       id="date_of_birth"
@@ -247,28 +262,37 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                   )}
                 />
               </Grid.Col>
-              <Grid.Col className="md:w-6/12">
-                <Controller
-                  control={control}
-                  name="time_of_birth"
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <DatePickerField
-                      label="Time of Birth"
-                      placeholder="HH:mm:ss"
-                      selected={field?.value || null}
-                      // onChange={field.onChange}
-                      onChange={(date) => {
-                        console.log(" date:", date);
-                        field.onChange(date);
-                      }}
-                      showTimeOnly
-                      dateFormat="HH:mm:ss"
-                      error={errors.time_of_birth?.message}
-                      id="time_of_birth"
-                    />
-                  )}
-                />
+              <Grid.Col className="flex gap-4 md:w-6/12">
+                <Grid.Col className="md:w-2/12">
+                  <InputField
+                    label="Age"
+                    id="email"
+                    type="number"
+                    value={totalAge}
+                    disabled
+                    className="disabled:bg-secondary/20 text-secondary/70"
+                  />
+                </Grid.Col>
+                <Grid.Col className="md:w-10/12">
+                  <Controller
+                    control={control}
+                    name="time_of_birth"
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <DatePickerField
+                        label="Time of Birth"
+                        placeholder="HH:mm:ss"
+                        selected={field?.value || null}
+                        onChange={field.onChange}
+                        showTimeOnly
+                        show
+                        dateFormat="HH:mm:ss"
+                        error={errors.time_of_birth?.message}
+                        id="time_of_birth"
+                      />
+                    )}
+                  />
+                </Grid.Col>
               </Grid.Col>
 
               <Grid.Col className="md:w-6/12">

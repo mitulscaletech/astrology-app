@@ -4,7 +4,7 @@ import logo from "@/assets/images/logo.png";
 import IconCart from "@/shared/icons/cart";
 import IconSearch from "@/shared/icons/search";
 import { Button } from "./ui/button";
-// import UserAuthMenu from "@/components/header/user-auth-menu";
+import UserAuthMenu from "@/components/header/user-auth-menu";
 import IconMenu from "@/shared/icons/menu";
 
 export function Header() {
@@ -51,7 +51,7 @@ export function Header() {
             >
               <IconSearch />
             </Link>
-            {/* <UserAuthMenu /> */}
+            <UserAuthMenu />
             <div className="h-7 md:h-8 xl:h-9 border-l border-primary/30" />
             <Link
               href="#"
