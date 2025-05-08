@@ -4,15 +4,19 @@ import logo from "@/assets/images/logo.png";
 import IconCart from "@/shared/icons/cart";
 import IconSearch from "@/shared/icons/search";
 import { Button } from "./ui/button";
-import UserAuthMenu from "./header/user-auth-menu";
+// import UserAuthMenu from "@/components/header/user-auth-menu";
+import IconMenu from "@/shared/icons/menu";
 
 export function Header() {
   return (
     <header className="py-2 md:py-3 3xl:py-4">
       <div className="container">
         <div className="flex px-3 md:px-4 lg:px-8 xl:px-12 3xl:px-20 py-2 md:py-4 lg:py-5 xl:py-6 2xl:py-7 border border-secondary-100 items-center justify-between shadow-card rounded-lg lg:rounded-2xl 2xl:rounded-3xl">
-          <div className="flex items-center gap-6 md:gap-7 xl:gap-8">
-            <Link href="/" className="w-28 md:w-36 lg:w-40 xl:w-44">
+          <div className="flex items-center gap-2 lg:gap-4 2xl:gap-8">
+            <button className="size-6 md:hidden">
+              <IconMenu />
+            </button>
+            <Link href="/" className="w-32 md:w-36 lg:w-40 xl:w-44">
               <Image src={logo} alt="logo" width={190} height={58} />
             </Link>
             <nav className="gap-2 xl:gap-3 text-secondary-500 font-medium text-lg text-semibold hidden xl:flex">
@@ -47,7 +51,7 @@ export function Header() {
             >
               <IconSearch />
             </Link>
-            <UserAuthMenu />
+            {/* <UserAuthMenu /> */}
             <div className="h-7 md:h-8 xl:h-9 border-l border-primary/30" />
             <Link
               href="#"
