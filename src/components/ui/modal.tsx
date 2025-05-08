@@ -50,11 +50,11 @@ export const ModalContent = ({
           } m-auto pointer-events-auto`}
         >
           {children}
-          {showClose && (
+          <Dialog.Close aria-label="Close">
             <Button size="rounded" aria-label="close" className="bg-secondary/10 text-secondary absolute top-4 end-4">
               <IconClose />
             </Button>
-          )}
+          </Dialog.Close>
         </div>
       </Dialog.Content>
     </Dialog.Portal>

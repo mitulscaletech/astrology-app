@@ -11,14 +11,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import Grid from "@/components/ui/grid";
+import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
+import { InputField } from "@/components/ui/custom-input";
 
-import { getMediaFile } from "@/lib/utils";
+import { getCurrentStep, getMediaFile } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import { InputField } from "@/components/ui/custom-input";
-import { Button } from "@/components/ui/button";
-import { Camera, Upload } from "lucide-react";
 import { UploadIcon, UserThumbnail } from "@/shared/icons/intake-form";
 
 interface IAdditionalInfoProps {
@@ -45,7 +44,15 @@ export function AdditionalInfoForm({ onComplete }: IAdditionalInfoProps) {
 
   const onSubmit = async (additionalData: any) => {
     try {
-      HttpService.post(`${API_CONFIG.intakeForm}/final`, { short_bio: additionalData.short_bio, completed_steps: 4 })
+      const currentStep = getCurrentStep(
+        session?.user?.status as string,
+        session?.user.intake_form?.completed_steps as number,
+        4
+      );
+      HttpService.post(`${API_CONFIG.intakeForm}/final`, {
+        short_bio: additionalData.short_bio,
+        completed_steps: currentStep
+      })
         .then(async (response) => {
           if (!response.is_error) {
             if (typeof additionalData.video !== "string") {
@@ -55,12 +62,24 @@ export function AdditionalInfoForm({ onComplete }: IAdditionalInfoProps) {
               const data = await HttpService.post(API_CONFIG.uploadMedia, formData, {
                 contentType: "multipart/form-data"
               });
-              update({ ...session?.user, intake_form: { ...additionalData, video: data.data, completed_steps: 4 } });
+              update({
+                ...session?.user,
+                intake_form: {
+                  ...session?.user?.intake_form,
+                  ...additionalData,
+                  video: data.data,
+                  completed_steps: currentStep
+                }
+              });
             } else {
               update({
                 ...session?.user,
                 status: response.data.user?.status,
-                intake_form: { ...additionalData, completed_steps: 4 }
+                intake_form: {
+                  ...session?.user?.intake_form,
+                  ...additionalData,
+                  completed_steps: currentStep
+                }
               });
             }
             onComplete();

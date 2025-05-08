@@ -13,6 +13,7 @@ interface DatePickerFieldProps {
   showTimeOnly?: boolean;
   dateFormat?: string;
   error?: string;
+  [key: string]: any;
 }
 
 export const DatePickerField: React.FC<DatePickerFieldProps> = ({

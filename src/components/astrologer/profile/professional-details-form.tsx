@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
-import { IOption, ISpecialization } from "next-auth";
+import { ISpecialization } from "next-auth";
 
 import * as yup from "yup";
 import toast from "react-hot-toast";
@@ -12,18 +12,18 @@ import { Controller, FieldError, useForm } from "react-hook-form";
 
 import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
+import Typography from "@/components/ui/typography";
 import FileUpload from "@/components/ui/file-upload";
 import IconButton from "@/components/common/icon-button";
 import CustomSelect from "@/components/ui/custom-select";
 import { InputField } from "@/components/ui/custom-input";
 import InputButton from "@/components/common/input-button";
 
-import { getMediaFile } from "@/lib/utils";
+import { getCurrentStep, getMediaFile } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import { VedicIcon } from "@/shared/icons/intake-form";
 import HttpService from "@/shared/services/http.service";
 import { HIGHTEST_QUALIFICATION } from "@/shared/constants";
-import Typography from "@/components/ui/typography";
 
 const schema = yup.object().shape({
   years_of_experience: yup
@@ -73,7 +73,11 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
         specialization: data.specialization,
         highest_qualification: data.highest_qualification.value,
         institute_university_name: data.institute_university_name,
-        completed_steps: 2
+        completed_steps: getCurrentStep(
+          session?.user?.status as string,
+          session?.user.intake_form?.completed_steps as number,
+          2
+        )
       };
       const response = await HttpService.post(`${API_CONFIG.intakeForm}/professional`, tempData);
       if (response.is_error) {
@@ -98,10 +102,10 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
           ? uploadMedia(data.resume[0], "resume")
           : Promise.resolve(null)
       ]);
-
       update({
         ...session?.user,
         intake_form: {
+          ...session?.user?.intake_form,
           ...tempData,
           certification: certificateRes?.data ?? data.certification,
           resume: resumeRes?.data ?? data.resume

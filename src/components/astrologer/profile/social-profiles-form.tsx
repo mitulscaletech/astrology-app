@@ -1,23 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 import * as yup from "yup";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import toast from "react-hot-toast";
-
+import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/ui/forminput";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Typography from "@/components/ui/typography";
+import { InputField } from "@/components/ui/custom-input";
 
+import { getCurrentStep } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import { useEffect } from "react";
-import { InputField } from "@/components/ui/custom-input";
-import Grid from "@/components/ui/grid";
-import Typography from "@/components/ui/typography";
 
 const schema = yup.object().shape({
   instagram: yup.string().url("Enter a valid Instagram URL").notRequired(),
@@ -49,11 +47,25 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
 
   const onSubmit = async (data: any) => {
     try {
-      HttpService.post(`${API_CONFIG.intakeForm}/social`, { ...data, completed_steps: 3 })
+      const params = {
+        ...data,
+        completed_steps: getCurrentStep(
+          session?.user?.status as string,
+          session?.user.intake_form?.completed_steps as number,
+          3
+        )
+      };
+      HttpService.post(`${API_CONFIG.intakeForm}/social`, params)
         .then((response) => {
           if (!response.is_error) {
             toast.success(response.message);
-            update({ ...session?.user, intake_form: { ...session?.user.intake_form, ...data, completed_steps: 3 } });
+            update({
+              ...session?.user,
+              intake_form: {
+                ...session?.user.intake_form,
+                ...params
+              }
+            });
             onComplete();
           } else {
             toast.error(response.message);

@@ -20,6 +20,7 @@ import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import CustomSelect from "@/components/ui/custom-select";
 import { GENDER_OPTIONS } from "@/shared/constants";
+import { getCurrentStep } from "@/lib/utils";
 
 // Validation Schema using Yup
 const schema = yup.object().shape({
@@ -27,9 +28,9 @@ const schema = yup.object().shape({
   last_name: yup.string().required("Last name is required"),
   mobile_number: yup.string().required("Mobile number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  date_of_birth: yup.date().nullable().typeError("Date of Birth is required").required("Date of birth is required"),
+  date_of_birth: yup.date().nullable().typeError("Date of birth is required").required("Date of birth is required"),
   place_of_birth: yup.string(),
-  time_of_birth: yup.date().nullable().typeError("Time of Birth is required"),
+  time_of_birth: yup.date().nullable().typeError("Time of birth is required").required("Date of birth is required"),
   languages_spoken: yup.array().required("Language spoken is required"),
   current_address: yup.string().required("Current address is required"),
   sameAsCurrentAddress: yup.boolean(),
@@ -83,18 +84,41 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
       // gender: ""
     }
   });
-  const onSubmit = async (data: any) => {
+  const onSubmit = (data: any) => {
+    const currentStep = getCurrentStep(
+      session?.user?.status as string,
+      session?.user.intake_form?.completed_steps as number,
+      1
+    );
     const params = {
       ...data,
       languages_spoken: data.languages_spoken.map((lang: any) => lang.value),
       gender: data.gender.value,
-      intake_form: { ...session?.user?.intake_form, completed_steps: 1 }
+      completed_steps: currentStep
     };
     HttpService.post(`${API_CONFIG.intakeForm}/basic`, params).then((response) => {
       if (!response.is_error) {
         toast.success(response.message);
         onComplete();
-        update({ ...session?.user, ...params });
+        update({
+          ...session?.user,
+          email: data.email,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          gender: data.gender.value,
+          date_of_birth: data.date_of_birth,
+          country_code: data.country_code,
+          mobile_number: data.mobile_number,
+          intake_form: {
+            ...session?.user?.intake_form,
+            completed_steps: currentStep,
+            current_address: data.current_address,
+            permanent_address: data.permanent_address,
+            place_of_birth: data.place_of_birth,
+            time_of_birth: data.time_of_birth,
+            languages_spoken: data.languages_spoken.map((lang: any) => lang.value)
+          }
+        });
       } else {
         toast.error(response.message);
       }
@@ -107,15 +131,23 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
     setValue("country_code", `+${dialCode}`, { shouldValidate: true });
     setValue("mobile_number", number, { shouldValidate: true });
   };
-  const handleGetLanguage = (languages: string): any[] => {
+  const handleGetLanguage = (languages: any): any[] => {
     if (!languages) return [];
-    const cleaned = languages.replace(/[{}"]/g, ""); // remove {, }, and "
-    const parsedLanguages = languages
-      .replace(/[{}"]/g, "")
-      .split(",")
-      .map((lang) => lang.trim().toLowerCase());
 
-    // Match against languageOptions
+    let parsedLanguages: string[] = [];
+
+    if (typeof languages === "string") {
+      parsedLanguages = languages
+        .replace(/[{}"]/g, "")
+        .split(",")
+        .map((lang) => lang.trim().toLowerCase());
+    } else if (Array.isArray(languages)) {
+      parsedLanguages = languages.map((lang) => (typeof lang === "string" ? lang.trim().toLowerCase() : ""));
+    } else {
+      console.warn("Unexpected languages type:", typeof languages);
+      return [];
+    }
+
     return languageOptions.filter((option) => parsedLanguages.includes(option.value.toLowerCase()));
   };
 
@@ -158,13 +190,29 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
               <Grid.Col className="md:w-6/12">
-                <InputField label="First Name" {...register("first_name")} error={errors.first_name?.message} />
+                <InputField
+                  label="First Name"
+                  id="first_name"
+                  {...register("first_name")}
+                  error={errors.first_name?.message}
+                />
               </Grid.Col>
               <Grid.Col className="md:w-6/12">
-                <InputField label="Last Name" {...register("last_name")} error={errors.last_name?.message} />
+                <InputField
+                  label="Last Name"
+                  id="last_name"
+                  {...register("last_name")}
+                  error={errors.last_name?.message}
+                />
               </Grid.Col>
               <Grid.Col className="md:w-6/12">
-                <InputField label="Email Address *" type="email" {...register("email")} error={errors.email?.message} />
+                <InputField
+                  label="Email Address *"
+                  id="email"
+                  type="email"
+                  {...register("email")}
+                  error={errors.email?.message}
+                />
               </Grid.Col>
               <Grid.Col className="md:w-6/12">
                 <Label htmlFor="mobile">Mobile Number *</Label>
@@ -177,6 +225,9 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                   inputStyle={{ width: "100%", height: "40px" }}
                 />
                 {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
+                {!errors.mobile_number?.message && errors.country_code && (
+                  <p className="text-danger text-sm mt-1">{errors.country_code.message}</p>
+                )}
               </Grid.Col>
               <Grid.Col className="md:w-6/12">
                 <Controller
@@ -190,7 +241,8 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                       selected={field.value}
                       onChange={field.onChange}
                       dateFormat="dd/MM/yyyy"
-                      error={errors.date_of_birth?.message} // 👈 pass error here
+                      error={errors.date_of_birth?.message}
+                      id="date_of_birth"
                     />
                   )}
                 />
@@ -207,11 +259,13 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                       selected={field?.value || null}
                       // onChange={field.onChange}
                       onChange={(date) => {
-                        field.onChange(date); // triggers validation
+                        console.log(" date:", date);
+                        field.onChange(date);
                       }}
                       showTimeOnly
                       dateFormat="HH:mm:ss"
-                      error={errors.time_of_birth?.message} // 👈 pass error here
+                      error={errors.time_of_birth?.message}
+                      id="time_of_birth"
                     />
                   )}
                 />
@@ -222,6 +276,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                   label="Place of Birth"
                   {...register("place_of_birth")}
                   error={errors.place_of_birth?.message}
+                  id="place_of_birth"
                 />
               </Grid.Col>
               <Grid.Col className="md:w-6/12">
@@ -240,6 +295,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                         field.onChange(gender); // triggers validation
                       }}
                       error={errors.gender?.message}
+                      id="gender"
                     />
                   )}
                 />
@@ -260,6 +316,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                         field.onChange(language); // triggers validation
                       }}
                       error={errors.languages_spoken?.message}
+                      id="languages_spoken"
                     />
                   )}
                 />
@@ -268,6 +325,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                 <InputField
                   label="Current Address *"
                   {...register("current_address")}
+                  id="current_address"
                   error={errors.current_address?.message}
                 />
               </Grid.Col>
@@ -275,12 +333,13 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                 <InputField
                   label="Permanent Address *"
                   {...register("permanent_address")}
+                  id="permanent_address"
                   error={errors.permanent_address?.message}
                 />
               </Grid.Col>
             </Grid>
             <div className="flex justify-end">
-              <Button type="submit">Save & Continue</Button>
+              <Button type="submit">Save & Continue ss</Button>
             </div>
           </form>
         </Grid.Col>

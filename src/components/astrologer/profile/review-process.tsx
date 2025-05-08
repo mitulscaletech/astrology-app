@@ -22,8 +22,8 @@ export function ReviewProcess() {
           <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
             <Grid.Col>
               <Typography variant="h4" size="p" className="text-2xl font-normal text-secondary mb-8">
-                We're reviewing your submission carefully. Once approved, you’ll be notified by email and your profile
-                will be live. You’ll then gain full access to your personal dashboard, calendar sync, and begin
+                We&apos;re reviewing your submission carefully. Once approved, you’ll be notified by email and your
+                profile will be live. You’ll then gain full access to your personal dashboard, calendar sync, and begin
                 receiving consultations.
               </Typography>
             </Grid.Col>

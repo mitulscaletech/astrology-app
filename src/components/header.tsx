@@ -2,9 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/images/logo.png";
 import IconCart from "@/shared/icons/cart";
-import { Button } from "@/components/ui/button";
-import IconUser from "@/shared/icons/user";
 import IconSearch from "@/shared/icons/search";
+import { Button } from "./ui/button";
+import UserAuthMenu from "./header/user-auth-menu";
 
 export function Header() {
   return (
@@ -47,13 +47,7 @@ export function Header() {
             >
               <IconSearch />
             </Link>
-            <Link
-              aria-label="user login"
-              href="/user/login"
-              className="size-6 md:size-8 3xl:size-9 p-0.5 md:p-1 3xl:p-1.5 hover:text-primary"
-            >
-              <IconUser />
-            </Link>
+            <UserAuthMenu />
             <div className="h-7 md:h-8 xl:h-9 border-l border-primary/30" />
             <Link
               href="#"

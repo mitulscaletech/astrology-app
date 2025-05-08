@@ -111,3 +111,10 @@ export function astrologerActiveTab(completedSteps: number): string {
       return "basic-info";
   }
 }
+export function getCurrentStep(status: string, completed_steps: number, currentStep: number): number {
+  return status === USER_PROFILE_STATUS.APPROVED_ACTIVATED
+    ? completed_steps
+    : (completed_steps ?? currentStep) > currentStep
+      ? completed_steps
+      : currentStep;
+}
