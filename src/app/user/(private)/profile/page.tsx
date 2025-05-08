@@ -16,7 +16,6 @@ import Grid from "@/components/ui/grid";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import DatePickerComponent from "@/components/ui/date-picker";
 import FamilyInvitations from "@/components/user/profile/family-invitations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -158,11 +157,11 @@ export default function AstrologerOnboarding() {
 
           {/* Date of Birth */}
           <div className="w-100%">
-            <DatePickerComponent
+            {/* <DatePickerComponent
               selectedDate={getValues("date_of_birth")}
               onChange={(date) => setValue("date_of_birth", date as Date, { shouldValidate: true })}
             />
-            {errors.date_of_birth && <p className="text-danger text-sm mt-1">{errors.date_of_birth.message}</p>}
+            {errors.date_of_birth && <p className="text-danger text-sm mt-1">{errors.date_of_birth.message}</p>} */}
           </div>
 
           {/* Gender */}

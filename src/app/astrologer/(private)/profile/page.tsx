@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
+import Loader from "@/components/ui/loader";
 import { Stepper } from "@/components/ui/stepper";
 import { ReviewProcess } from "@/components/astrologer/profile/review-process";
 import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
@@ -11,11 +12,10 @@ import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-i
 import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
 
 import { USER_PROFILE_STATUS } from "@/shared/constants";
-import { useLoader } from "@/context/LoaderContext";
 
 export default function AstrologerProfile() {
   const [step, setStep] = useState("1");
-  const { setLoading } = useLoader();
+  const [loader, setLoader] = useState(true);
   const { data: session } = useSession();
 
   const steps = [
@@ -57,13 +57,13 @@ export default function AstrologerProfile() {
   };
 
   useEffect(() => {
-    setLoading(true);
+    setLoader(true);
     const completedSteps = (session?.user?.intake_form?.completed_steps ?? 0) + 1;
     setStep(completedSteps.toString());
     setTimeout(() => {
-      setLoading(false);
+      setLoader(false);
     }, 500);
   }, [session]);
 
-  return <Stepper currentStep={step} onStepChange={handleTabChange} steps={steps} />;
+  return loader ? <Loader /> : <Stepper currentStep={step} onStepChange={handleTabChange} steps={steps} />;
 }
