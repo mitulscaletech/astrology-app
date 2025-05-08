@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
-import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
-import { SocialProfilesForm } from "@/components/astrologer/profile/social-profiles-form";
-import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-info-form";
-// import { astrologerActiveTab } from "@/lib/utils";
+
 import { Stepper } from "@/components/ui/stepper";
 import { ReviewProcess } from "@/components/astrologer/profile/review-process";
+import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
+import { SocialProfilesForm } from "@/components/astrologer/profile/social-profiles-form";
+import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-info-form";
+import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
+
 import { USER_PROFILE_STATUS } from "@/shared/constants";
+import { useLoader } from "@/context/LoaderContext";
 
 export default function AstrologerProfile() {
-  const { data: session } = useSession();
   const [step, setStep] = useState("1");
+  const { setLoading } = useLoader();
+  const { data: session } = useSession();
+
   const steps = [
     {
       value: "1",
@@ -53,14 +57,13 @@ export default function AstrologerProfile() {
   };
 
   useEffect(() => {
+    setLoading(true);
     const completedSteps = (session?.user?.intake_form?.completed_steps ?? 0) + 1;
     setStep(completedSteps.toString());
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [session]);
 
-  return (
-    <>
-      <Stepper currentStep={step} onStepChange={handleTabChange} steps={steps} />
-      {/* Tab Contents would go here */}
-    </>
-  );
+  return <Stepper currentStep={step} onStepChange={handleTabChange} steps={steps} />;
 }
