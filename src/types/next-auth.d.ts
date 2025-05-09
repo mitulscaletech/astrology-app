@@ -26,7 +26,7 @@ declare module "next-auth" {
         id: string;
         additional_emails: any;
         place_of_birth: string;
-        time_of_birth?: Date | null;
+        time_of_birth?: string;
         languages_spoken: string;
         current_address: string;
         permanent_address: string;

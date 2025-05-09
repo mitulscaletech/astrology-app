@@ -3,6 +3,7 @@
 import React, { forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "@/assets/scss/datepicker.scss";
 import { InputField } from "./custom-input";
 
 interface DatePickerFieldProps {

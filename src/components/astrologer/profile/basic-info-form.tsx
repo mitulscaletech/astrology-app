@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -88,6 +89,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
     }
   });
   const onSubmit = (data: any) => {
+    console.log("data", data);
     const currentStep = getCurrentStep(
       session?.user?.status as string,
       session?.user.intake_form?.completed_steps as number,
@@ -184,6 +186,17 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
     }
   }, [session, reset]);
 
+  function handleTimeTest(e: React.ChangeEvent<HTMLInputElement>) {
+    const timeValue = e.target.value;
+    if (timeValue) {
+      // Create a new Date object with today's date and the selected time
+      const [hours, minutes] = timeValue.split(":");
+      const date = new Date();
+      date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+      setValue("time_of_birth", date, { shouldValidate: true });
+    }
+  }
+
   return (
     <div className="container mb-15">
       <Grid className="justify-center">
@@ -262,37 +275,44 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
                   )}
                 />
               </Grid.Col>
-              <Grid.Col className="flex gap-4 md:w-6/12">
-                <Grid.Col className="md:w-2/12">
-                  <InputField
-                    label="Age"
-                    id="email"
-                    type="number"
-                    value={totalAge}
-                    disabled
-                    className="disabled:bg-secondary/20 text-secondary/70"
-                  />
-                </Grid.Col>
-                <Grid.Col className="md:w-10/12">
-                  <Controller
-                    control={control}
-                    name="time_of_birth"
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <DatePickerField
-                        label="Time of Birth"
-                        placeholder="HH:mm:ss"
-                        selected={field?.value || null}
-                        onChange={field.onChange}
-                        showTimeOnly
-                        show
-                        dateFormat="HH:mm:ss"
-                        error={errors.time_of_birth?.message}
-                        id="time_of_birth"
-                      />
-                    )}
-                  />
-                </Grid.Col>
+              <Grid.Col className="md:w-6/12">
+                <div className="flex gap-4">
+                  <div className="w-20">
+                    <InputField
+                      label="Age"
+                      id="email"
+                      type="number"
+                      value={totalAge}
+                      disabled
+                      className="disabled:bg-secondary/20 text-secondary/70"
+                    />
+                  </div>
+                  <div className="grow">
+                    <Controller
+                      control={control}
+                      name="time_of_birth"
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <InputField
+                          label="Time of Birth"
+                          id="time_of_birth"
+                          type="time"
+                          value={
+                            field.value
+                              ? new Date(field.value).toLocaleTimeString("en-US", {
+                                  hour12: false,
+                                  hour: "2-digit",
+                                  minute: "2-digit"
+                                })
+                              : ""
+                          }
+                          onChange={handleTimeTest}
+                          error={errors.time_of_birth?.message}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
               </Grid.Col>
 
               <Grid.Col className="md:w-6/12">

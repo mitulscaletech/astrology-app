@@ -69,6 +69,15 @@
       }
     }
   }
+  .custom-select__value-container--is-multi {
+    @apply gap-1;
+  }
+  .custom-select__multi-value {
+    @apply mt-1 bg-secondary/10 text-secondary;
+    .custom-select__multi-value__label {
+      @apply text-xs;
+    }
+  }
   &.size-sm {
     .custom-select__value-container {
       @apply min-h-12 py-1 px-3;
