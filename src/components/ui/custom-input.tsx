@@ -5,11 +5,10 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   className?: string;
-  multiple?: boolean;
 }
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ label, className, error, multiple = false, ...props }, ref) => {
+  ({ label, className, error, ...props }, ref) => {
     const id = props.id || label.toLowerCase().replace(/\s+/g, "-");
 
     return (
@@ -23,7 +22,6 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               error ? "border-primary focus:border-primary-500 " : "border-secondary/30 focus:border-secondary",
               className
             )}
-            multiple={multiple}
             placeholder=" "
             {...props}
           />
