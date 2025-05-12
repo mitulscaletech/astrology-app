@@ -162,3 +162,18 @@ export interface ReportDetail extends Report {
   recommendations: string;
   astrologerName: string;
 }
+
+export type EventStatus = "completed" | "upcoming" | "blocked";
+
+export type EventCategory = "meeting" | "personal" | "health" | "business";
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+  name: string;
+  pictureUrl: string;
+  category: EventCategory;
+  status: EventStatus;
+  description?: string;
+}

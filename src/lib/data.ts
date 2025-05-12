@@ -1,3 +1,5 @@
+import image01 from "@/assets/images/dummy/astrologer-01.jpg";
+
 export const reviews = [
   {
     id: 1,
@@ -863,3 +865,121 @@ export const SAMPLE_REPORT_DETAIL = {
   sentDate: "2023-06-15T18:45:00",
   astrologerName: "Dr. Raj Sharma"
 };
+
+import { CalendarEvent } from "@/shared/interface";
+import { addDays, addHours, setHours, startOfDay, subDays } from "date-fns";
+
+const today = new Date();
+
+export const events: CalendarEvent[] = [
+  {
+    id: "1",
+    title: "Holistic Life Blueprint",
+    start: setHours(addDays(today, 1), 10),
+    end: setHours(addDays(today, 1), 11),
+    name: "Richard Walters",
+    pictureUrl: image01.src,
+    category: "health",
+    status: "upcoming",
+    description: "Discussion about holistic approaches to wellness and life planning."
+  },
+  {
+    id: "2",
+    title: "Time for Success",
+    start: setHours(addDays(today, 4), 12),
+    end: setHours(addDays(today, 4), 13),
+    name: "Derek Larson",
+    pictureUrl: image01.src,
+    category: "business",
+    status: "upcoming",
+    description: "Strategic planning session for Q2 business goals."
+  },
+  {
+    id: "3",
+    title: "P. Life Strategies",
+    start: setHours(addDays(today, 1), 16),
+    end: setHours(addDays(today, 1), 17),
+    name: "Melissa Bradley",
+    pictureUrl: image01.src,
+    category: "personal",
+    status: "blocked",
+    description: "Personal life coaching session focusing on work-life balance."
+  },
+  {
+    id: "4",
+    title: "Out of office",
+    start: setHours(addDays(today, 5), 8),
+    end: setHours(addDays(today, 5), 11),
+    name: "You",
+    pictureUrl: image01.src,
+    category: "personal",
+    status: "blocked",
+    description: "Not available during this time."
+  },
+  {
+    id: "5",
+    title: "Not available",
+    start: setHours(addDays(today, -1), 13),
+    end: setHours(addDays(today, -1), 17),
+    name: "You",
+    pictureUrl: image01.src,
+    category: "personal",
+    status: "blocked",
+    description: "Blocked time for personal errands."
+  },
+  {
+    id: "6",
+    title: "Team Sync",
+    start: setHours(addDays(today, 2), 14),
+    end: setHours(addDays(today, 2), 15),
+    name: "Team",
+    pictureUrl: image01.src,
+    category: "meeting",
+    status: "upcoming",
+    description: "Weekly team synchronization meeting to discuss progress and blockers."
+  },
+  {
+    id: "7",
+    title: "Project Review",
+    start: setHours(addDays(today, 3), 10),
+    end: setHours(addDays(today, 3), 11),
+    name: "Sarah Johnson",
+    pictureUrl: image01.src,
+    category: "business",
+    status: "completed",
+    description: "Review of the current project milestones and achievements."
+  },
+  {
+    id: "8",
+    title: "Fitness Session",
+    start: setHours(addDays(today, 2), 7),
+    end: setHours(addDays(today, 2), 8),
+    name: "Alex Trainer",
+    pictureUrl: image01.src,
+    category: "health",
+    status: "upcoming",
+    description: "Personal fitness training session at the gym."
+  },
+  {
+    id: "9",
+    title: "Client Meeting",
+    start: setHours(subDays(today, 1), 9),
+    end: setHours(subDays(today, 1), 10),
+    name: "Robert Davis",
+    pictureUrl: image01.src,
+    category: "business",
+    status: "completed",
+    description: "Discussion about new project requirements with the client."
+  },
+  {
+    id: "10",
+    title: "Lunch with Friends",
+    start: setHours(addDays(today, 3), 12),
+    end: setHours(addDays(today, 3), 13),
+    name: "Various Friends",
+    pictureUrl: image01.src,
+    category: "personal",
+    status: "upcoming",
+    description: "Casual lunch meetup with friends at the local restaurant."
+  }
+];

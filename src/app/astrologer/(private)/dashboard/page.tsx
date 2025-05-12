@@ -3,8 +3,10 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 import Loader from "@/components/ui/loader";
 import DashboardBanner from "@/components/astrologer/dashboard/dashboard-banner";
+import UpcomingSessions from "@/components/astrologer/upcoming-sessions/upcoming-sessions";
 
 export default function AstrologerDashboard() {
   const { data: session, status } = useSession();
@@ -23,6 +25,7 @@ export default function AstrologerDashboard() {
   return (
     <>
       <DashboardBanner />
+      <UpcomingSessions />
     </>
   );
 }

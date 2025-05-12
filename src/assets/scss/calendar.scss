@@ -33,11 +33,11 @@
 
 /* Time Slot Headers */
 .rbc-time-view .rbc-time-header {
-  @apply bg-primary-100 border-b border-primary-200;
+  @apply bg-accent-white border-b border-secondary/10;
 }
 
 .rbc-header {
-  @apply text-primary font-medium text-sm p-2 border-b border-primary-200 h-max;
+  @apply text-primary font-medium text-sm p-2 border-b border-secondary/10 h-max;
 }
 
 .rbc-header {
@@ -60,7 +60,7 @@
 
 //   /* Events */
 .rbc-event {
-  @apply bg-primary text-accent-white px-2 py-1 rounded-md shadow-sm text-xs;
+  @apply bg-transparent text-secondary p-0 rounded-md shadow-sm text-xs;
 }
 
 .rbc-event-content {
@@ -68,17 +68,18 @@
 }
 
 .rbc-day-slot .rbc-event {
-  @apply bg-primary text-accent-white border-primary;
-  &.rbc-event-blocked {
-    @apply bg-danger-100 border-danger-100;
-  }
+  @apply bg-accent-white border-0 p-0 overflow-visible;
+  // @apply bg-primary text-accent-white border-primary;
+  // &.rbc-event-blocked {
+  //   @apply bg-danger-100 border-danger-100;
+  // }
 }
 
 /* Blocked Events (handled dynamically via inline style) */
 
 /* Today Highlight */
 .rbc-today {
-  @apply bg-primary-100;
+  @apply bg-primary-100 text-accent-white;
 }
 
 /* Selected Slot (when selecting range) */
