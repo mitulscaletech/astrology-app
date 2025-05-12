@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import ProfileCard from "@/components/astrologer/dashboard/profile-card";
+import ProfileCard from "@/components/common/astrologer-profile-card";
 
 export default function DashboardBanner() {
   return (
