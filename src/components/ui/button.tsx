@@ -5,18 +5,18 @@ import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex text-xs md:text-sm lg:text-small xl:text-base 2xl:text-lg gap-1 md:gap-1.5 2xl:gap-2.5 items-center justify-center tracking-[0.04em] uppercase whitespace-nowrap rounded-md font-semibold ring-offset-secondary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex text-xs md:text-sm lg:text-small border-2 xl:text-base 2xl:text-lg gap-1 md:gap-1.5 2xl:gap-2.5 items-center justify-center tracking-[0.04em] uppercase whitespace-nowrap rounded-md font-semibold ring-offset-secondary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-100 hover:bg-highlight",
-        danger: "bg-danger text-danger-800 hover:bg-danger/90",
-        highlight: "bg-highlight text-accent-white hover:bg-primary hover:text-accent-white",
-        white: "bg-accent-white text-secondary hover:bg-secondary hover:text-accent-white",
-        outline: "border border-secondary-200 bg-accent-white hover:bg-accent hover:text-secondary",
-        secondary: "bg-secondary text-secondary-100 hover:bg-secondary/80",
-        ghost: "hover:bg-primary hover:text-accent-white",
-        link: "text-primary underline-offset-4 hover:underline"
+        default: "bg-primary text-primary-100 hover:bg-highlight border-transparent",
+        danger: "bg-danger text-danger-800 hover:bg-danger/90 border-transparent",
+        highlight: "bg-highlight text-accent-white hover:bg-primary hover:text-accent-white border-transparent",
+        white: "bg-accent-white text-secondary hover:bg-secondary hover:text-accent-white border-transparent",
+        outline: "border-primary text-primary bg-accent-white hover:bg-primary hover:text-accent-white",
+        secondary: "bg-secondary text-secondary-100 hover:bg-secondary/80 border-transparent",
+        ghost: "hover:bg-primary hover:text-accent-white border-transparent",
+        link: "text-primary underline-offset-4 hover:underline border-transparent"
       },
       size: {
         default: "h-10 md:h-12 xl:h-13 2xl:h-15 4xl:h-16 px-5 lg:px-6 xl:px-8 2xl:px-12 py-2",
