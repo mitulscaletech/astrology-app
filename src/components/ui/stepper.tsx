@@ -2,6 +2,7 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { cn } from "@/lib/utils";
+import Grid from "./grid";
 
 interface Step {
   value: string;
@@ -47,12 +48,18 @@ export const Stepper: React.FC<StepperProps> = ({ currentStep, onStepChange, ste
           );
         })}
       </Tabs.List>
-      <div className="mt-6 mt-24">
-        {steps.map((step) => (
-          <Tabs.Content key={step.value} value={step.value}>
-            {step.content}
-          </Tabs.Content>
-        ))}
+      <div className="mt-6 md:mt-24">
+        <div className="container mb-15">
+          <Grid className="justify-center">
+            <Grid.Col className="md:w-10/12 lg:w-9/12 2xl:w-8/12">
+              {steps.map((step) => (
+                <Tabs.Content key={step.value} value={step.value}>
+                  {step.content}
+                </Tabs.Content>
+              ))}
+            </Grid.Col>
+          </Grid>
+        </div>
       </div>
     </Tabs.Root>
   );

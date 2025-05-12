@@ -15,14 +15,14 @@ import Grid from "@/components/ui/grid";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
+import CustomSelect from "@/components/ui/custom-select";
 import { InputField } from "@/components/ui/custom-input";
 import { DatePickerField } from "@/components/ui/custom-datepicker";
 
+import { getCurrentStep } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
-import CustomSelect from "@/components/ui/custom-select";
-import { GENDER_OPTIONS } from "@/shared/constants";
-import { getCurrentStep } from "@/lib/utils";
+import { DEFAULT_ADULT_AGE, GENDER_OPTIONS, LANGUAGE_OPTIONS } from "@/shared/constants";
 
 // Validation Schema using Yup
 const schema = yup.object().shape({
@@ -50,14 +50,9 @@ const schema = yup.object().shape({
 });
 interface IBasicInfoFormProps {
   onComplete: () => void;
+  page?: string;
 }
-const languageOptions: any[] = [
-  { value: "english", label: "English" },
-  { value: "hindi", label: "Hindi" },
-  { value: "spanish", label: "Spanish" }
-];
-
-export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
+export function BasicInfoForm({ onComplete, page }: IBasicInfoFormProps) {
   const { update, data: session } = useSession();
   const [totalAge, setTotalAge] = useState(0);
 
@@ -89,7 +84,6 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
     }
   });
   const onSubmit = (data: any) => {
-    console.log("data", data);
     const currentStep = getCurrentStep(
       session?.user?.status as string,
       session?.user.intake_form?.completed_steps as number,
@@ -151,7 +145,7 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
       return [];
     }
 
-    return languageOptions.filter((option) => parsedLanguages.includes(option.value.toLowerCase()));
+    return LANGUAGE_OPTIONS.filter((option) => parsedLanguages.includes(option.value.toLowerCase()));
   };
   const handleCalculateAge = (date: Date | null, field?: any) => {
     const providedDate = moment(date);
@@ -198,9 +192,16 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
   }
 
   return (
-    <div className="container mb-15">
-      <Grid className="justify-center">
-        <Grid.Col className="md:w-10/12 lg:w-8/12 2xl:w-7/12">
+    <>
+      {page === "my-profile" ? (
+        <>
+          <h2 className="text-3.5xl font-bold mb-2">About Yourself</h2>
+          <Typography size="p" className="text-secondary/70 text-lg mb-8">
+            This section collects your basic details — all essential for setting up your identity on WeWake.
+          </Typography>
+        </>
+      ) : (
+        <>
           <Typography variant="h3" size="base" className="text-lg font-normal text-secondary uppercase mb-3">
             Basic Information
           </Typography>
@@ -211,183 +212,183 @@ export function BasicInfoForm({ onComplete }: IBasicInfoFormProps) {
             Start building your professional astrologer profile. This section collects your basic details — all
             essential for setting up your identity on WeWake. Your progress is saved as you go.
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
-              <Grid.Col className="md:w-6/12">
-                <InputField
-                  label="First Name"
-                  id="first_name"
-                  {...register("first_name")}
-                  error={errors.first_name?.message}
+        </>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+          <Grid.Col className="md:w-6/12">
+            <InputField
+              label="First Name"
+              id="first_name"
+              {...register("first_name")}
+              error={errors.first_name?.message}
+            />
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <InputField label="Last Name" id="last_name" {...register("last_name")} error={errors.last_name?.message} />
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <InputField
+              label="Email Address *"
+              id="email"
+              type="email"
+              {...register("email")}
+              error={errors.email?.message}
+            />
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <Label htmlFor="mobile">Mobile Number *</Label>
+            <PhoneInput
+              country="in"
+              value={`${getValues("country_code")}${getValues("mobile_number")}`}
+              onlyCountries={["us", "in", "gb"]}
+              onChange={(value, country: any) => handleChangeMobile(value, country)}
+              inputProps={{ name: "phone-input" }}
+              inputStyle={{ width: "100%", height: "40px" }}
+              disableCountryCode={Boolean(getValues("country_code"))}
+              disabled={Boolean(getValues("mobile_number"))}
+            />
+            {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
+            {!errors.mobile_number?.message && errors.country_code && (
+              <p className="text-danger text-sm mt-1">{errors.country_code.message}</p>
+            )}
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <Controller
+              control={control}
+              name="date_of_birth"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <DatePickerField
+                  label="Date of Birth"
+                  placeholder="dd/mm/yyyy"
+                  selected={field.value}
+                  onChange={(date) => {
+                    handleCalculateAge(date, field);
+                  }}
+                  dateFormat="dd/MM/yyyy"
+                  error={errors.date_of_birth?.message}
+                  id="date_of_birth"
+                  maxDate={DEFAULT_ADULT_AGE}
+                  openToDate={DEFAULT_ADULT_AGE}
                 />
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
+              )}
+            />
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <div className="flex gap-4">
+              <div className="w-20">
                 <InputField
-                  label="Last Name"
-                  id="last_name"
-                  {...register("last_name")}
-                  error={errors.last_name?.message}
-                />
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
-                <InputField
-                  label="Email Address *"
+                  label="Age"
                   id="email"
-                  type="email"
-                  {...register("email")}
-                  error={errors.email?.message}
+                  type="number"
+                  value={totalAge}
+                  disabled
+                  className="disabled:bg-secondary/20 text-secondary/70"
                 />
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
-                <Label htmlFor="mobile">Mobile Number *</Label>
-                <PhoneInput
-                  country="in"
-                  value={`${getValues("country_code")}${getValues("mobile_number")}`}
-                  onlyCountries={["us", "in", "gb"]}
-                  onChange={(value, country: any) => handleChangeMobile(value, country)}
-                  inputProps={{ name: "phone-input" }}
-                  inputStyle={{ width: "100%", height: "40px" }}
-                  disableCountryCode={Boolean(getValues("country_code"))}
-                  disabled={Boolean(getValues("mobile_number"))}
-                />
-                {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}
-                {!errors.mobile_number?.message && errors.country_code && (
-                  <p className="text-danger text-sm mt-1">{errors.country_code.message}</p>
-                )}
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
+              </div>
+              <div className="grow">
                 <Controller
                   control={control}
-                  name="date_of_birth"
+                  name="time_of_birth"
                   rules={{ required: true }}
                   render={({ field }) => (
-                    <DatePickerField
-                      label="Date of Birth"
-                      placeholder="dd/mm/yyyy"
-                      selected={field.value}
-                      onChange={(date) => {
-                        handleCalculateAge(date, field);
-                      }}
-                      dateFormat="dd/MM/yyyy"
-                      error={errors.date_of_birth?.message}
-                      id="date_of_birth"
-                    />
-                  )}
-                />
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
-                <div className="flex gap-4">
-                  <div className="w-20">
                     <InputField
-                      label="Age"
-                      id="email"
-                      type="number"
-                      value={totalAge}
-                      disabled
-                      className="disabled:bg-secondary/20 text-secondary/70"
-                    />
-                  </div>
-                  <div className="grow">
-                    <Controller
-                      control={control}
-                      name="time_of_birth"
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <InputField
-                          label="Time of Birth"
-                          id="time_of_birth"
-                          type="time"
-                          value={
-                            field.value
-                              ? new Date(field.value).toLocaleTimeString("en-US", {
-                                  hour12: false,
-                                  hour: "2-digit",
-                                  minute: "2-digit"
-                                })
-                              : ""
-                          }
-                          onChange={handleTimeTest}
-                          error={errors.time_of_birth?.message}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </Grid.Col>
-
-              <Grid.Col className="md:w-6/12">
-                <InputField
-                  label="Place of Birth"
-                  {...register("place_of_birth")}
-                  error={errors.place_of_birth?.message}
-                  id="place_of_birth"
-                />
-              </Grid.Col>
-              <Grid.Col className="md:w-6/12">
-                <Controller
-                  control={control}
-                  name="gender"
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <CustomSelect
-                      label="Gender"
-                      options={GENDER_OPTIONS}
-                      placeholder="Select a your gender"
-                      isMulti={false}
-                      value={field.value ? { ...field.value, label: field.value.label || "" } : null}
-                      onChange={(gender: any) => {
-                        field.onChange(gender); // triggers validation
-                      }}
-                      error={errors.gender?.message}
-                      id="gender"
+                      label="Time of Birth"
+                      id="time_of_birth"
+                      type="time"
+                      value={
+                        field.value
+                          ? new Date(field.value).toLocaleTimeString("en-US", {
+                              hour12: false,
+                              hour: "2-digit",
+                              minute: "2-digit"
+                            })
+                          : ""
+                      }
+                      onChange={handleTimeTest}
+                      error={errors.time_of_birth?.message}
                     />
                   )}
                 />
-              </Grid.Col>
-              <Grid.Col>
-                <Controller
-                  control={control}
-                  name="languages_spoken"
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <CustomSelect
-                      label="Languages"
-                      options={languageOptions}
-                      isMulti={true}
-                      value={field.value}
-                      placeholder="Select your spoken language"
-                      onChange={(language) => {
-                        field.onChange(language); // triggers validation
-                      }}
-                      error={errors.languages_spoken?.message}
-                      id="languages_spoken"
-                    />
-                  )}
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField
-                  label="Current Address *"
-                  {...register("current_address")}
-                  id="current_address"
-                  error={errors.current_address?.message}
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField
-                  label="Permanent Address *"
-                  {...register("permanent_address")}
-                  id="permanent_address"
-                  error={errors.permanent_address?.message}
-                />
-              </Grid.Col>
-            </Grid>
-            <div className="flex justify-end">
-              <Button type="submit">Save & Continue ss</Button>
+              </div>
             </div>
-          </form>
-        </Grid.Col>
-      </Grid>
-    </div>
+          </Grid.Col>
+
+          <Grid.Col className="md:w-6/12">
+            <InputField
+              label="Place of Birth"
+              {...register("place_of_birth")}
+              error={errors.place_of_birth?.message}
+              id="place_of_birth"
+            />
+          </Grid.Col>
+          <Grid.Col className="md:w-6/12">
+            <Controller
+              control={control}
+              name="gender"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomSelect
+                  label="Gender"
+                  options={GENDER_OPTIONS}
+                  placeholder="Select a your gender"
+                  isMulti={false}
+                  value={field.value ? { ...field.value, label: field.value.label || "" } : null}
+                  onChange={(gender: any) => {
+                    field.onChange(gender); // triggers validation
+                  }}
+                  error={errors.gender?.message}
+                  id="gender"
+                />
+              )}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <Controller
+              control={control}
+              name="languages_spoken"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomSelect
+                  label="Languages"
+                  options={LANGUAGE_OPTIONS}
+                  isMulti={true}
+                  value={field.value}
+                  placeholder="Select your spoken language"
+                  onChange={(language) => {
+                    field.onChange(language); // triggers validation
+                  }}
+                  error={errors.languages_spoken?.message}
+                  id="languages_spoken"
+                />
+              )}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField
+              label="Current Address *"
+              {...register("current_address")}
+              id="current_address"
+              error={errors.current_address?.message}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField
+              label="Permanent Address *"
+              {...register("permanent_address")}
+              id="permanent_address"
+              error={errors.permanent_address?.message}
+            />
+          </Grid.Col>
+        </Grid>
+        <div className="flex justify-end mt-4 lg:mt-5 xl:mt-6 3xl:mt-8">
+          <Button type="submit">{page === "signup" ? "Continue" : "Save"}</Button>
+        </div>
+      </form>
+      {/* </Grid.Col>
+       </Grid>
+     </div> */}
+    </>
   );
 }

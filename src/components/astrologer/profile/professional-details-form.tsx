@@ -14,16 +14,17 @@ import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 import FileUpload from "@/components/ui/file-upload";
+import FileCard from "@/components/common/file-card";
 import IconButton from "@/components/common/icon-button";
 import CustomSelect from "@/components/ui/custom-select";
 import { InputField } from "@/components/ui/custom-input";
 import InputButton from "@/components/common/input-button";
 
-import { getCurrentStep, getMediaFile } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import { VedicIcon } from "@/shared/icons/intake-form";
 import HttpService from "@/shared/services/http.service";
 import { HIGHTEST_QUALIFICATION } from "@/shared/constants";
+import { getCurrentStep, getFileName, getMediaFile } from "@/lib/utils";
 
 const schema = yup.object().shape({
   years_of_experience: yup
@@ -46,9 +47,10 @@ const schema = yup.object().shape({
 
 interface ProfessionalDetailsFormProps {
   onComplete: () => void;
+  page: string;
 }
 
-export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormProps) {
+export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetailsFormProps) {
   const { update, data: session } = useSession();
   const [specializationList, setSpecializationList] = useState<ISpecialization[]>([]);
   const {
@@ -160,9 +162,16 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
   }, [session, reset]);
 
   return (
-    <div className="container mb-15">
-      <Grid className="justify-center">
-        <Grid.Col className="md:w-10/12 lg:w-8/12 2xl:w-7/12">
+    <>
+      {page === "my-profile" ? (
+        <>
+          <h2 className="text-3.5xl font-bold mb-2">Your Expertise</h2>
+          <Typography size="p" className="text-secondary/70 text-lg mb-8">
+            This section is about your experience, specialization, and qualifications in astrology and related fields.
+          </Typography>
+        </>
+      ) : (
+        <>
           <Typography variant="h3" size="base" className="text-lg font-normal text-secondary uppercase mb-3">
             Professional Details
           </Typography>
@@ -173,157 +182,109 @@ export function ProfessionalDetailsForm({ onComplete }: ProfessionalDetailsFormP
             Help seekers know what makes you special. This section is about your experience, specialization, and
             qualifications in astrology and related fields.
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
-              <Grid.Col>
-                <InputField
-                  label="Years of Experience *"
-                  {...register("years_of_experience")}
-                  error={errors.years_of_experience?.message}
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
-                  <span className="mb-3">
-                    Specialization Areas / <i> Select all areas you specialize in (add your own too). Areas</i>
-                  </span>
-                  <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
-                    {specializationList.map((spec) => (
-                      <Grid.Col className="md:w-6/12" key={spec.specialization_id}>
-                        <IconButton
-                          label={spec.specialization_name}
-                          icon={<VedicIcon />}
-                          isSelected={Boolean(getValues("specialization").length > 0)}
-                          onClick={() => manageSpecialization(spec)}
-                        />
-                      </Grid.Col>
-                    ))}
-                    <Grid.Col>
-                      <InputButton
-                        //value={otherValue}
-                        //onChange={(e) => setOtherValue(e.target.value)}
-                        label="Other:"
-                        placeholder="Future, Fortune..."
-                      />
-                    </Grid.Col>
-                  </Grid>
-                </div>
-                {errors.specialization && (
-                  <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specialization?.message}</p>
-                )}
-              </Grid.Col>
-              <Grid.Col>
-                <Controller
-                  control={control}
-                  name="highest_qualification"
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <CustomSelect
-                      label="Highest Qualification *"
-                      options={HIGHTEST_QUALIFICATION}
-                      isMulti={false}
-                      value={field.value ? { ...field.value, label: field.value.label || "" } : null}
-                      placeholder="Select your highest qualification"
-                      onChange={(language) => {
-                        field.onChange(language);
-                      }}
-                      error={errors.highest_qualification?.message}
+        </>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+          <Grid.Col>
+            <InputField
+              label="Years of Experience *"
+              {...register("years_of_experience")}
+              error={errors.years_of_experience?.message}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <div className="border-2 rounded-lg border-secondary/20 p-4 md:p-6 lg:p-8 3xl:p-10">
+              <span className="mb-3">
+                Specialization Areas / <i> Select all areas you specialize in (add your own too). Areas</i>
+              </span>
+              <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+                {specializationList.map((spec) => (
+                  <Grid.Col className="md:w-6/12" key={spec.specialization_id}>
+                    <IconButton
+                      label={spec.specialization_name}
+                      icon={<VedicIcon />}
+                      isSelected={Boolean(getValues("specialization").length > 0)}
+                      onClick={() => manageSpecialization(spec)}
                     />
-                  )}
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <FileUpload
-                  name="certificate"
-                  label="Relevant Astrology Certification"
-                  title="Upload official certificates."
-                  register={register("certification", { required: "Certificate is required" })}
-                  error={errors.certification as FieldError | undefined}
-                  accept=".pdf,.png,.jpg"
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField
-                  label="Institute/University Name"
-                  {...register("institute_university_name")}
-                  error={errors.institute_university_name?.message}
-                />
-              </Grid.Col>
-
-              {/* <div>
-              <label className="block text-sm font-medium mb-2">Astrology Certification</label>
-              {currentValues.certification && typeof currentValues.certification === "string" ? (
-                <div className="w-48 relative">
-                  <Image
-                    src={currentValues.certification}
-                    alt="Certification"
-                    width={100}
-                    height={100}
-                    className="w-full rounded-md mb-2"
+                  </Grid.Col>
+                ))}
+                <Grid.Col>
+                  <InputButton
+                    //value={otherValue}
+                    //onChange={(e) => setOtherValue(e.target.value)}
+                    label="Other:"
+                    placeholder="Future, Fortune..."
                   />
-                  <div className="bg-secondary cursor-pointer z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
-                    <input
-                      type="file"
-                      accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                      {...register("certification")}
-                      className="size-full absolute opacity-0"
-                    />
-                    <IconEdit />
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                    {...register("certification")}
-                    className="mt-1 block w-full"
-                  />
-                </>
-              )}
-            </div> */}
-              {/*
-            <div>
-              <label className="block text-sm font-medium mb-2">Resume (Optional)</label>
-              {currentValues.resume && typeof currentValues.resume === "string" ? (
-                <div className="flex p-3 justify-center gap-2 border border-secondary-200 rounded-md shadow-sm relative">
-                  <span className="w-6">
-                    <IconFile />
-                  </span>
-                  <p>{currentValues.resume.split("/").pop()}</p>
-                  <div className="bg-secondary z-2 text-accent-white p-1.5 size-8 absolute top-0 end-0 translate-x-1/2 -translate-y-1/2 rounded-full">
-                    <input
-                      type="file"
-                      accept=".pdf,.doc,.docx"
-                      {...register("resume")}
-                      className="mt-1 block w-full absolute size-full opacity-0"
-                    />
-                    <IconEdit />
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <input type="file" accept=".pdf,.doc,.docx" {...register("resume")} className="mt-1 block w-full" />
-                </>
-              )}
-            </div> */}
-              <Grid.Col>
-                <FileUpload
-                  name="resume"
-                  label="Optional"
-                  title="Resume"
-                  register={register("resume")}
-                  error={errors.resume as FieldError | undefined}
-                  accept=".pdf,.doc,.docx"
-                />
-              </Grid.Col>
-            </Grid>
-            <div className="flex justify-end">
-              <Button type="submit">Continue</Button>
+                </Grid.Col>
+              </Grid>
             </div>
-          </form>
-        </Grid.Col>
-      </Grid>
-    </div>
+            {errors.specialization && (
+              <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specialization?.message}</p>
+            )}
+          </Grid.Col>
+          <Grid.Col>
+            <Controller
+              control={control}
+              name="highest_qualification"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomSelect
+                  label="Highest Qualification *"
+                  options={HIGHTEST_QUALIFICATION}
+                  isMulti={false}
+                  value={field.value ? { ...field.value, label: field.value.label || "" } : null}
+                  placeholder="Select your highest qualification"
+                  onChange={(language) => {
+                    field.onChange(language);
+                  }}
+                  error={errors.highest_qualification?.message}
+                />
+              )}
+            />
+          </Grid.Col>
+          {formValue.certification && typeof formValue.certification === "string" && (
+            <Grid.Col>
+              <FileCard name={getFileName(formValue.certification)} />
+            </Grid.Col>
+          )}
+          <Grid.Col>
+            <FileUpload
+              name="certificate"
+              label="Relevant Astrology Certification"
+              title="Upload official certificates."
+              register={register("certification", { required: "Certificate is required" })}
+              error={errors.certification as FieldError | undefined}
+              accept=".pdf,.png,.jpg"
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField
+              label="Institute/University Name"
+              {...register("institute_university_name")}
+              error={errors.institute_university_name?.message}
+            />
+          </Grid.Col>
+          {formValue.resume && typeof formValue.resume === "string" && (
+            <Grid.Col>
+              <FileCard name={getFileName(formValue.resume)} />
+            </Grid.Col>
+          )}
+          <Grid.Col>
+            <FileUpload
+              name="resume"
+              label="Optional"
+              title="Resume"
+              register={register("resume")}
+              error={errors.resume as FieldError | undefined}
+              accept=".pdf,.doc,.docx"
+            />
+          </Grid.Col>
+        </Grid>
+        <div className="flex justify-end mt-4 lg:mt-5 xl:mt-6 3xl:mt-8">
+          <Button type="submit">{page === "signup" ? "Continue" : "Save"}</Button>
+        </div>
+      </form>
+    </>
   );
 }

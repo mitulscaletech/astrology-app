@@ -10,7 +10,6 @@ import { BasicInfoForm } from "@/components/astrologer/profile/basic-info-form";
 import { SocialProfilesForm } from "@/components/astrologer/profile/social-profiles-form";
 import { AdditionalInfoForm } from "@/components/astrologer/profile/additional-info-form";
 import { ProfessionalDetailsForm } from "@/components/astrologer/profile/professional-details-form";
-
 import { USER_PROFILE_STATUS } from "@/shared/constants";
 
 export default function AstrologerProfile() {
@@ -22,22 +21,22 @@ export default function AstrologerProfile() {
     {
       value: "1",
       label: "Basic Information",
-      content: <BasicInfoForm onComplete={() => setStep("2")} />
+      content: <BasicInfoForm onComplete={() => setStep("2")} page="signup" />
     },
     {
       value: "2",
       label: "Professional Details",
-      content: <ProfessionalDetailsForm onComplete={() => setStep("3")} />
+      content: <ProfessionalDetailsForm onComplete={() => setStep("3")} page="signup" />
     },
     {
       value: "3",
       label: "Social Profile",
-      content: <SocialProfilesForm onComplete={() => setStep("4")} />
+      content: <SocialProfilesForm onComplete={() => setStep("4")} page="signup" />
     },
     {
       value: "4",
       label: "Additional Info & Terms",
-      content: <AdditionalInfoForm onComplete={() => setStep("5")} />
+      content: <AdditionalInfoForm onComplete={() => setStep("5")} page="signup" />
     },
     {
       value: "5",
@@ -47,14 +46,13 @@ export default function AstrologerProfile() {
   ];
 
   const handleTabChange = (newStep: string) => {
-    // if (session?.user?.status === USER_PROFILE_STATUS.AWAITING_FINAL_REVIEW) {
-    //   setStep("5");
-    // } else {
-    //   if (Number(newStep) < (session?.user?.intake_form?.completed_steps ?? 1)) {
-    //     setStep(newStep);
-    //   }
-    // }
-    setStep(newStep);
+    if (session?.user?.status === USER_PROFILE_STATUS.AWAITING_FINAL_REVIEW) {
+      setStep("5");
+    } else {
+      if (Number(newStep) < (session?.user?.intake_form?.completed_steps ?? 1)) {
+        setStep(newStep);
+      }
+    }
   };
 
   useEffect(() => {

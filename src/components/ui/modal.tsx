@@ -51,9 +51,12 @@ export const ModalContent = ({
         >
           {children}
           <Dialog.Close aria-label="Close">
-            <Button size="rounded" aria-label="close" className="bg-secondary/10 text-secondary absolute top-4 end-4">
+            <span
+              aria-label="close"
+              className="block size-6 lg:size-8 xl:size-10 rounded-full p-1.5 lg:p-2 xl:p-3 bg-secondary/10 text-secondary absolute top-4 end-4"
+            >
               <IconClose />
-            </Button>
+            </span>
           </Dialog.Close>
         </div>
       </Dialog.Content>

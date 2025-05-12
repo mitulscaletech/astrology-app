@@ -24,7 +24,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               className
             )}
             multiple={multiple}
-            placeholder=""
+            placeholder=" "
             {...props}
           />
 

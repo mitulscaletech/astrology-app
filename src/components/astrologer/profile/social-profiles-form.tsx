@@ -30,9 +30,10 @@ const schema = yup.object().shape({
 
 interface SocialProfilesFormProps {
   onComplete: () => void;
+  page: string;
 }
 
-export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
+export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps) {
   const { update, data: session } = useSession();
   const {
     register,
@@ -105,9 +106,16 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
   }, [session, reset]);
 
   return (
-    <div className="container mb-15">
-      <Grid className="justify-center">
-        <Grid.Col className="md:w-10/12 lg:w-8/12 2xl:w-7/12">
+    <>
+      {page === "my-profile" ? (
+        <>
+          <h2 className="text-3.5xl font-bold mb-2">Expand Your Reach</h2>
+          <Typography size="p" className="text-secondary/70 text-lg mb-8">
+            This section collects your basic details — all essential for setting up your identity on WeWake.
+          </Typography>
+        </>
+      ) : (
+        <>
           <Typography variant="h3" size="base" className="text-lg font-normal text-secondary uppercase mb-3">
             Social Profiles
           </Typography>
@@ -118,44 +126,44 @@ export function SocialProfilesForm({ onComplete }: SocialProfilesFormProps) {
             Link your social and professional presence. This helps seekers explore your credibility and connect with you
             across platforms.
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
-              <Grid.Col>
-                <InputField label="Instagram (Optional)" {...register("instagram")} error={errors.instagram?.message} />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField label="Linkedin (Optional)" {...register("linkedin")} error={errors.linkedin?.message} />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField label="Twitter (Optional)" {...register("twitter")} error={errors.twitter?.message} />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField label="Tiktok (Optional)" {...register("tiktok")} error={errors.tiktok?.message} />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField label="Youtube (Optional)" {...register("youtube")} error={errors.youtube?.message} />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField
-                  label="Personal Website (Optional)"
-                  {...register("personal_website")}
-                  error={errors.personal_website?.message}
-                />
-              </Grid.Col>
-              <Grid.Col>
-                <InputField
-                  label="Associated Companies (Optional)"
-                  {...register("associated_companies")}
-                  error={errors.associated_companies?.message}
-                />
-              </Grid.Col>
-            </Grid>
-            <div className="flex justify-end">
-              <Button type="submit">Continue</Button>
-            </div>
-          </form>
-        </Grid.Col>
-      </Grid>
-    </div>
+        </>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid className="gap-y-2 md:gap-y-3 lg:gap-y-4 xl:gap-y-5">
+          <Grid.Col>
+            <InputField label="Instagram (Optional)" {...register("instagram")} error={errors.instagram?.message} />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField label="Linkedin (Optional)" {...register("linkedin")} error={errors.linkedin?.message} />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField label="Twitter (Optional)" {...register("twitter")} error={errors.twitter?.message} />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField label="Tiktok (Optional)" {...register("tiktok")} error={errors.tiktok?.message} />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField label="Youtube (Optional)" {...register("youtube")} error={errors.youtube?.message} />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField
+              label="Personal Website (Optional)"
+              {...register("personal_website")}
+              error={errors.personal_website?.message}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <InputField
+              label="Associated Companies (Optional)"
+              {...register("associated_companies")}
+              error={errors.associated_companies?.message}
+            />
+          </Grid.Col>
+        </Grid>
+        <div className="flex justify-end mt-4 lg:mt-5 xl:mt-6 3xl:mt-8">
+          <Button type="submit">{page === "signup" ? "Continue" : "Save"}</Button>
+        </div>
+      </form>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import moment from "moment";
 import { IOption } from "next-auth";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
@@ -24,3 +25,9 @@ export const HIGHTEST_QUALIFICATION: IOption[] = [
   { value: "post-graduate", label: "Post Graduate" },
   { value: "diploma", label: "Diploma" }
 ];
+export const LANGUAGE_OPTIONS: IOption[] = [
+  { value: "english", label: "English" },
+  { value: "hindi", label: "Hindi" },
+  { value: "spanish", label: "Spanish" }
+];
+export const DEFAULT_ADULT_AGE = moment().subtract(18, "years").toDate();

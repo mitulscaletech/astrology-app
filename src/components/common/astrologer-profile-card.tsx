@@ -46,7 +46,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
           <input type="file" className="absolute size-full bottom-0 end-0 opacity-0" />
         </div>
       </div>
-      <div className="flex flex-col-reverse md:flex-row justify-between md:gap-2">
+      <div className="flex flex-col-reverse md:flex-row justify-between md:gap-2 grow">
         <div className="lg:w-10/12 2xl:w-9/12 4xl:w-8/12">
           <Typography variant="p" size="p" className="text-secondary/50 mb-2">
             {DATA.tags.join(" • ")}

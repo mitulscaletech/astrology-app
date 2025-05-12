@@ -1,10 +1,11 @@
+import moment from "moment";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
 
-import "react-datepicker/dist/react-datepicker.css";
-import "@/assets/scss/datepicker.scss";
 import IconChevronLeft from "@/shared/icons/chevronLeft";
 import IconChevronRight from "@/shared/icons/chevronRight";
+
+import "@/assets/scss/datepicker.scss";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface IDatePicker {
   selectedDate: Date | null;
@@ -27,7 +28,9 @@ const CustomDatePicker = (props: IDatePicker) => {
             <button onClick={decreaseMonth} className="size-6">
               <IconChevronLeft />
             </button>
-            <span className="font-medium text-base text-secondary">{format(date, "MMMM yyyy").toUpperCase()}</span>
+            <span className="font-medium text-base text-secondary">
+              {moment(date).format("MMMM yyyy").toUpperCase()}
+            </span>
             <button onClick={increaseMonth} className="size-6">
               <IconChevronRight />
             </button>

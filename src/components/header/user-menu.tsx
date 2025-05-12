@@ -37,7 +37,7 @@ const UserMenu: FC<UserMenuProp> = ({ type }) => {
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
           <Link
-            href="/astrologer/dashboard"
+            href="/astrologer/my-profile"
             className="block w-full text-start px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer"
           >
             Profile
