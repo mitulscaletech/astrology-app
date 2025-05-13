@@ -31,3 +31,25 @@ export const LANGUAGE_OPTIONS: IOption[] = [
   { value: "spanish", label: "Spanish" }
 ];
 export const DEFAULT_ADULT_AGE = moment().subtract(18, "years").toDate();
+export const LOGIN_ANIMATION_VARIANTS = {
+  initial: {
+    rotateY: 90,
+    opacity: 0
+  },
+  animate: {
+    rotateY: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut"
+    }
+  },
+  exit: {
+    rotateY: -90,
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut"
+    }
+  }
+};
