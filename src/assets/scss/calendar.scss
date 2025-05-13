@@ -6,7 +6,7 @@
 }
 
 .rbc-current-time-indicator {
-  @apply bg-primary-600;
+  @apply bg-primary;
 }
 
 /* Toolbar */
@@ -50,12 +50,26 @@
 }
 
 /* Time Labels (left side) */
+.rbc-time-header-gutter {
+  @apply flex items-center justify-center;
+}
 .rbc-timeslot-group {
-  @apply border-secondary-200 text-sm;
+  @apply border-secondary-200 text-sm min-h-24;
+
+  .rbc-time-slot {
+    @apply flex items-center;
+    &:nth-child(2) {
+      display: none;
+    }
+  }
 }
 
 .rbc-time-content {
   @apply border-secondary-200;
+}
+
+.rbc-label {
+  @apply text-secondary/50 text-sm lg:text-small 2xl:text-base;
 }
 
 //   /* Events */

@@ -24,7 +24,7 @@
   .custom-select__menu {
     @apply m-0 z-20 text-secondary/50 font-medium border-2 border-secondary/20 rounded-lg;
     .custom-select__option {
-      @apply py-3 px-4;
+      @apply py-2 px-4 text-base;
       &.custom-select__option--is-selected.custom-select__option--is-focused,
       &.custom-select__option--is-selected {
         @apply bg-secondary/10 text-secondary;

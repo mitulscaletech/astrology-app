@@ -1,4 +1,5 @@
 import image01 from "@/assets/images/dummy/astrologer-01.jpg";
+import moment from "moment";
 
 export const reviews = [
   {
@@ -867,7 +868,6 @@ export const SAMPLE_REPORT_DETAIL = {
 };
 
 import { CalendarEvent } from "@/shared/interface";
-import { addDays, addHours, setHours, startOfDay, subDays } from "date-fns";
 
 const today = new Date();
 
@@ -875,8 +875,8 @@ export const events: CalendarEvent[] = [
   {
     id: "1",
     title: "Holistic Life Blueprint",
-    start: setHours(addDays(today, 1), 10),
-    end: setHours(addDays(today, 1), 11),
+    start: moment(today).add(1, "days").set({ hour: 10, minute: 0 }).toDate(),
+    end: moment(today).add(1, "days").set({ hour: 11, minute: 0 }).toDate(),
     name: "Richard Walters",
     pictureUrl: image01.src,
     category: "health",
@@ -886,8 +886,8 @@ export const events: CalendarEvent[] = [
   {
     id: "2",
     title: "Time for Success",
-    start: setHours(addDays(today, 4), 12),
-    end: setHours(addDays(today, 4), 13),
+    start: moment(today).add(4, "days").set({ hour: 12, minute: 0 }).toDate(),
+    end: moment(today).add(4, "days").set({ hour: 13, minute: 0 }).toDate(),
     name: "Derek Larson",
     pictureUrl: image01.src,
     category: "business",
@@ -897,8 +897,8 @@ export const events: CalendarEvent[] = [
   {
     id: "3",
     title: "P. Life Strategies",
-    start: setHours(addDays(today, 1), 16),
-    end: setHours(addDays(today, 1), 17),
+    start: moment(today).add(1, "days").set({ hour: 16, minute: 0 }).toDate(),
+    end: moment(today).add(1, "days").set({ hour: 17, minute: 0 }).toDate(),
     name: "Melissa Bradley",
     pictureUrl: image01.src,
     category: "personal",
@@ -908,8 +908,8 @@ export const events: CalendarEvent[] = [
   {
     id: "4",
     title: "Out of office",
-    start: setHours(addDays(today, 5), 8),
-    end: setHours(addDays(today, 5), 11),
+    start: moment(today).add(5, "days").set({ hour: 8, minute: 0 }).toDate(),
+    end: moment(today).add(5, "days").set({ hour: 11, minute: 0 }).toDate(),
     name: "You",
     pictureUrl: image01.src,
     category: "personal",
@@ -919,8 +919,8 @@ export const events: CalendarEvent[] = [
   {
     id: "5",
     title: "Not available",
-    start: setHours(addDays(today, -1), 13),
-    end: setHours(addDays(today, -1), 17),
+    start: moment(today).subtract(1, "days").set({ hour: 13, minute: 0 }).toDate(),
+    end: moment(today).subtract(1, "days").set({ hour: 17, minute: 0 }).toDate(),
     name: "You",
     pictureUrl: image01.src,
     category: "personal",
@@ -930,8 +930,8 @@ export const events: CalendarEvent[] = [
   {
     id: "6",
     title: "Team Sync",
-    start: setHours(addDays(today, 2), 14),
-    end: setHours(addDays(today, 2), 15),
+    start: moment(today).add(2, "days").set({ hour: 14, minute: 0 }).toDate(),
+    end: moment(today).add(2, "days").set({ hour: 15, minute: 0 }).toDate(),
     name: "Team",
     pictureUrl: image01.src,
     category: "meeting",
@@ -941,8 +941,8 @@ export const events: CalendarEvent[] = [
   {
     id: "7",
     title: "Project Review",
-    start: setHours(addDays(today, 3), 10),
-    end: setHours(addDays(today, 3), 11),
+    start: moment(today).add(3, "days").set({ hour: 10, minute: 0 }).toDate(),
+    end: moment(today).add(3, "days").set({ hour: 11, minute: 0 }).toDate(),
     name: "Sarah Johnson",
     pictureUrl: image01.src,
     category: "business",
@@ -952,8 +952,8 @@ export const events: CalendarEvent[] = [
   {
     id: "8",
     title: "Fitness Session",
-    start: setHours(addDays(today, 2), 7),
-    end: setHours(addDays(today, 2), 8),
+    start: moment(today).add(2, "days").set({ hour: 7, minute: 0 }).toDate(),
+    end: moment(today).add(2, "days").set({ hour: 8, minute: 0 }).toDate(),
     name: "Alex Trainer",
     pictureUrl: image01.src,
     category: "health",
@@ -963,8 +963,8 @@ export const events: CalendarEvent[] = [
   {
     id: "9",
     title: "Client Meeting",
-    start: setHours(subDays(today, 1), 9),
-    end: setHours(subDays(today, 1), 10),
+    start: moment(today).subtract(1, "days").set({ hour: 9, minute: 0 }).toDate(),
+    end: moment(today).subtract(1, "days").set({ hour: 10, minute: 0 }).toDate(),
     name: "Robert Davis",
     pictureUrl: image01.src,
     category: "business",
@@ -974,12 +974,72 @@ export const events: CalendarEvent[] = [
   {
     id: "10",
     title: "Lunch with Friends",
-    start: setHours(addDays(today, 3), 12),
-    end: setHours(addDays(today, 3), 13),
+    start: moment(today).add(3, "days").set({ hour: 12, minute: 0 }).toDate(),
+    end: moment(today).add(3, "days").set({ hour: 13, minute: 0 }).toDate(),
     name: "Various Friends",
     pictureUrl: image01.src,
     category: "personal",
     status: "upcoming",
     description: "Casual lunch meetup with friends at the local restaurant."
+  }
+];
+
+import { Review, ReviewSummary } from "@/shared/interface";
+
+export const mockReviewSummary: ReviewSummary = {
+  totalReviews: 10000,
+  averageRating: 4.0,
+  growthPercentage: 21,
+  ratingBreakdown: {
+    5: 2000,
+    4: 1000,
+    3: 500,
+    2: 200,
+    1: 0
+  }
+};
+
+export const mockReviews: Review[] = [
+  {
+    id: "1",
+    user: {
+      id: "user1",
+      name: "Derek Larson",
+      avatar: image01.src
+    },
+    rating: 4.0,
+    date: "25-10-2025",
+    content:
+      "I felt truly seen and supported during my session with Dr. Mishra. He explained everything with clarity and compassion. I left feeling calm, aligned, and with clear next steps. Highly recommended!",
+    totalSpend: 200,
+    totalReviews: 14
+  },
+  {
+    id: "2",
+    user: {
+      id: "user2",
+      name: "Melissa Bradley",
+      avatar: image01.src
+    },
+    rating: 3.0,
+    date: "25-10-2025",
+    content:
+      "Great insights and practical advice. I appreciated how the astrologer listened patiently and tailored the reading to my situation. Just wish we had a bit more time to go deeper into one topic.",
+    totalSpend: 200,
+    totalReviews: 14
+  },
+  {
+    id: "3",
+    user: {
+      id: "user3",
+      name: "Richard Walters",
+      avatar: image01.src
+    },
+    rating: 5.0,
+    date: "25-10-2025",
+    content:
+      "Great insights and practical advice. I appreciated how the astrologer listened patiently and tailored the reading to my situation. Just wish we had a bit more time to go deeper into one topic.",
+    totalSpend: 200,
+    totalReviews: 14
   }
 ];

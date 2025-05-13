@@ -61,9 +61,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ date, view, onNavigate, onV
   const navigateNext = () => onNavigate(addMonths(date, 1));
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b">
-      <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" onClick={navigateToday}>
+    <div className="flex flex-col sm:flex-row items-center justify-between mb-4 lg:mb-5 2xl:mb-6">
+      <div className="flex gap-2 items-center">
+        <Button variant="outline" size="sm" onClick={navigateToday} className="hidden">
           Today
         </Button>
         <div className="w-40">
@@ -75,22 +75,30 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ date, view, onNavigate, onV
             isFloatingLabel={false}
           />
         </div>
-        <div className="flex items-center">
-          <button onClick={navigatePrev} className="h-4 w-4">
+        <button
+          onClick={navigatePrev}
+          className="size-16 items-center justify-center flex rounded-md border-2 border-secondary/30"
+        >
+          <span className="size-4 lg:size-5 text-secondary">
             <IconChevronLeft />
-          </button>
-          <button onClick={navigateNext} className="h-4 w-4">
+          </span>
+        </button>
+        <button
+          onClick={navigateNext}
+          className="size-16 items-center justify-center flex rounded-md border-2 border-secondary/30"
+        >
+          <span className="size-4 lg:size-5 text-secondary">
             <IconChevronRight />
-          </button>
-          <div className="w-44">
-            <CustomSelect
-              value={monthOptions.find((option) => option.value === format(date, "yyyy-MM"))}
-              options={monthOptions}
-              onChange={handleMonthChange}
-              isMulti={false}
-              isFloatingLabel={false}
-            />
-          </div>
+          </span>
+        </button>
+        <div className="w-44">
+          <CustomSelect
+            value={monthOptions.find((option) => option.value === format(date, "yyyy-MM"))}
+            options={monthOptions}
+            onChange={handleMonthChange}
+            isMulti={false}
+            isFloatingLabel={false}
+          />
         </div>
       </div>
     </div>

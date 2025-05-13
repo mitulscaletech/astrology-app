@@ -12,6 +12,7 @@ import useWindowSize from "@/shared/hooks/useWindowSize";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/assets/scss/calendar.scss";
+import CustomDateHeader from "@/components/astrologer/booking/custom-date-header";
 
 // Setup localizer for the calendar
 const localizer = momentLocalizer(moment);
@@ -46,8 +47,10 @@ const CustomBigCalendar = () => {
     </EventPopup>
   );
 
+  const TimeGutterHeader = () => <span className="uppercase">Time</span>;
+
   return (
-    <div className="">
+    <div className="small-section">
       <BigCalendar
         localizer={localizer}
         events={events}
@@ -60,12 +63,16 @@ const CustomBigCalendar = () => {
         onView={setView}
         date={date}
         onNavigate={setDate}
+        min={new Date(0, 0, 0, 7, 0)} // 07:00
+        max={new Date(0, 0, 0, 18, 0)} // 18:00 6-1 = 5PM
         components={{
           toolbar: (props) => (
             <CustomHeader {...props} view={view} date={date} onViewChange={setView} onNavigate={setDate} />
           ),
           event: EventWrapper,
-          eventWrapper: ({ children }) => <div>{children}</div>
+          eventWrapper: ({ children }) => <div>{children}</div>,
+          header: CustomDateHeader,
+          timeGutterHeader: TimeGutterHeader
         }}
         formats={{
           timeGutterFormat: (date, culture, localizer) => localizer?.format(date, "hh:mm A", culture),

@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import DashboardBanner from "@/components/astrologer/dashboard/dashboard-banner";
 import UpcomingSessions from "@/components/astrologer/upcoming-sessions/upcoming-sessions";
+import Reviews from "@/components/astrologer/review/reviews";
+import { mockReviews, mockReviewSummary } from "@/lib/data";
 
 export default function AstrologerDashboard() {
   const { data: session, status } = useSession();
@@ -26,6 +28,7 @@ export default function AstrologerDashboard() {
     <>
       <DashboardBanner />
       <UpcomingSessions />
+      <Reviews summary={mockReviewSummary} reviews={mockReviews} />
     </>
   );
 }

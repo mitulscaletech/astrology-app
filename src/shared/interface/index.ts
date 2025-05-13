@@ -177,3 +177,30 @@ export interface CalendarEvent {
   status: EventStatus;
   description?: string;
 }
+
+export interface Review {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  rating: number;
+  date: string;
+  content: string;
+  totalSpend: number;
+  totalReviews: number;
+}
+
+export interface ReviewSummary {
+  totalReviews: number;
+  averageRating: number;
+  growthPercentage: number;
+  ratingBreakdown: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+}

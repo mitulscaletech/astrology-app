@@ -3,6 +3,8 @@
 import React from "react";
 import { CalendarEvent } from "@/shared/interface";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import moment from "moment";
 
 interface EventComponentProps {
   event: CalendarEvent;
@@ -13,7 +15,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
   const statusStyles = {
     completed: "bg-primary/10 text-primary border-2 border-primary",
     upcoming: "bg-highlight/10 text-highlight border-2 border-highlight",
-    blocked: "bg-secondary/10 text-secondary border-2 border-secondary"
+    blocked: "bg-secondary/10 text-secondary border-2 border-secondary/30"
   };
 
   // Category-based styling (optional extras)
@@ -27,16 +29,28 @@ const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
   return (
     <div
       className={cn(
-        "p-1 overflow-hidden h-full rounded-sm transition-colors",
+        "p-2 flex items-start gap-1 overflow-hidden h-full rounded transition-colors",
         statusStyles[event.status],
         categoryStyles[event.category]
       )}
     >
       <div className="flex items-center gap-1 mb-1">
-        <img src={event.pictureUrl} alt={event.name} className="w-5 h-5 rounded-full" />
-        <span className="text-xs font-medium truncate">{event.name}</span>
+        <Image
+          src={event.pictureUrl}
+          alt={event.name}
+          className="size-8 rounded-full object-cover"
+          width={32}
+          height={32}
+        />
       </div>
-      <div className="font-medium text-sm truncate">{event.title}</div>
+      <div className="grow">
+        <div className="text-xs lg:text-sm font-semibold truncate text-secondary">{event.name}</div>
+        <div className="text-xs truncate">{event.category}</div>
+        <div className="font-semibold text-sm truncate">{event.title}</div>
+        <div className="text-secondary/50 text-end mt-1.5 font-medium">
+          {moment(event.start).format("hh:mm A")} - {moment(event.end).format("hh:mm A")}
+        </div>
+      </div>
     </div>
   );
 };
