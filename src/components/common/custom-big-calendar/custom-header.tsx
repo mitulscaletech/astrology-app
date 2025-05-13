@@ -2,9 +2,9 @@
 
 import React from "react";
 import { Views } from "react-big-calendar";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
 import { format, addMonths, subMonths } from "date-fns";
+
+import { Button } from "@/components/ui/button";
 import CustomSelect from "@/components/ui/custom-select";
 import IconChevronLeft from "@/shared/icons/chevronLeft";
 import IconChevronRight from "@/shared/icons/chevronRight";

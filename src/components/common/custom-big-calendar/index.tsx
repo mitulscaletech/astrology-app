@@ -68,8 +68,8 @@ const CustomBigCalendar = () => {
           eventWrapper: ({ children }) => <div>{children}</div>
         }}
         formats={{
-          timeGutterFormat: (date, culture, localizer) => localizer.format(date, "hh:mm A", culture),
-          dayFormat: (date, culture, localizer) => localizer.format(date, "DD ddd", culture),
+          timeGutterFormat: (date, culture, localizer) => localizer?.format(date, "hh:mm A", culture),
+          dayFormat: (date, culture, localizer) => localizer?.format(date, "DD ddd", culture),
           eventTimeRangeFormat: () => "",
           timeRangeFormat: () => "",
           agendaTimeRangeFormat: () => ""
