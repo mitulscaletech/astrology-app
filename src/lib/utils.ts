@@ -118,13 +118,16 @@ export function getCurrentStep(status: string, completed_steps: number, currentS
       ? completed_steps
       : currentStep;
 }
-export const getFileName = (url: string): string => {
-  try {
+export const getFileName = (url: string | FileList[]): string => {
+  if (!url) return "";
+  if (typeof url === "string") {
     const urlObj = new URL(url);
-    const pathname = urlObj.pathname; // e.g., /certification/Screenshotfrom2025-05-0610-22-27_d108ae1.png
+    const pathname = urlObj.pathname;
     const segments = pathname.split("/");
-    return segments[segments.length - 1]; // Last part: Screenshotfrom2025-05-0610-22-27_d108ae1.png
-  } catch (error) {
-    return "";
+    return segments[segments.length - 1];
   }
+  if (url instanceof FileList) {
+    return url[0]?.name;
+  }
+  return "";
 };

@@ -26,6 +26,27 @@ import HttpService from "@/shared/services/http.service";
 import { HIGHTEST_QUALIFICATION } from "@/shared/constants";
 import { getCurrentStep, getFileName, getMediaFile } from "@/lib/utils";
 
+interface ProfessionalDetailsFormProps {
+  onComplete: () => void;
+  page: string;
+}
+
+interface FormValues {
+  years_of_experience: number;
+  specialization: Array<{ specialization_id: string }>;
+  certification?: any;
+  resume?: any;
+  institute_university_name: string;
+  highest_qualification: {
+    value: string;
+    label: string;
+  };
+  custom_specialization: {
+    specialization_name: string;
+    specialization_desc: string;
+  };
+}
+
 const schema = yup.object().shape({
   years_of_experience: yup
     .number()
@@ -33,22 +54,32 @@ const schema = yup.object().shape({
     .required("Experience is required")
     .min(1, "Must be at least 1 year")
     .max(50, "Must be less than 50 years"),
-  specialization: yup.array().min(1, "Specialization is required").required("Specialization is required"),
-  certification: yup.mixed().notRequired(),
-  institute_university_name: yup.string().notRequired(),
-  resume: yup.mixed().notRequired(),
+  specialization: yup
+    .array()
+    .of(
+      yup.object().shape({
+        specialization_id: yup.string().required()
+      })
+    )
+    .min(1, "Specialization is required")
+    .required("Specialization is required"),
+  certification: yup.mixed().test("is-file-or-string", "Certificate is required", function (value) {
+    return value !== null && value !== undefined;
+  }),
+  resume: yup.mixed().nullable(),
+  institute_university_name: yup.string().required("Institute/University name is required"),
   highest_qualification: yup
-    .object({
+    .object()
+    .shape({
       value: yup.string().required("Qualification is required"),
-      label: yup.string()
+      label: yup.string().required()
     })
-    .required("Qualification is required")
-});
-
-interface ProfessionalDetailsFormProps {
-  onComplete: () => void;
-  page: string;
-}
+    .required("Qualification is required"),
+  custom_specialization: yup.object().shape({
+    specialization_name: yup.string(),
+    specialization_desc: yup.string()
+  })
+}) as yup.ObjectSchema<FormValues>;
 
 export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetailsFormProps) {
   const { update, data: session } = useSession();
@@ -60,13 +91,15 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
     setValue,
     reset,
     getValues,
+    watch,
     formState: { errors }
-  } = useForm({
-    mode: "onBlur",
+  } = useForm<FormValues>({
+    mode: "all",
     reValidateMode: "onChange",
     resolver: yupResolver(schema)
   });
-  const formValue = getValues();
+  const currentCertificate = watch("certification");
+  const currentResume = watch("resume");
 
   const onSubmit = async (data: any) => {
     try {
@@ -130,14 +163,48 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
   };
   const manageSpecialization = (specialization: ISpecialization) => {
     const { specialization_id } = specialization;
-    const currentSpecializations = formValue.specialization;
+    const currentSpecializations = getValues("specialization") as Array<{ specialization_id: string }>;
 
-    const isExist = currentSpecializations.includes(specialization_id);
+    const isExist = currentSpecializations.some((spec) => spec.specialization_id === specialization_id);
     const updatedSpecializations = isExist
-      ? currentSpecializations.filter((id) => id !== specialization_id)
-      : [...currentSpecializations, specialization_id];
+      ? currentSpecializations.filter((spec) => spec.specialization_id !== specialization_id)
+      : [...currentSpecializations, { specialization_id }];
 
-    setValue("specialization", updatedSpecializations);
+    // If selecting a specialization, clear custom specialization
+    if (!isExist) {
+      setValue("custom_specialization", {
+        specialization_name: "",
+        specialization_desc: ""
+      });
+    }
+
+    setValue("specialization", updatedSpecializations, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    });
+  };
+
+  const handleCustomSpecialization = (value: string) => {
+    // If entering custom specialization, clear regular specializations
+    setValue("specialization", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    });
+
+    setValue(
+      "custom_specialization",
+      {
+        specialization_name: "Other",
+        specialization_desc: value
+      },
+      {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      }
+    );
   };
 
   useEffect(() => {
@@ -154,7 +221,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
         years_of_experience: years_of_experience,
         highest_qualification: HIGHTEST_QUALIFICATION.find((que) => que.value === highest_qualification),
         institute_university_name: institute_university_name,
-        specialization: specialization || [],
+        specialization: [],
         resume: getMediaFile(session.user.media_files, "resume"),
         certification: getMediaFile(session.user.media_files, "certification")
       });
@@ -204,23 +271,28 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
                     <IconButton
                       label={spec.specialization_name}
                       icon={<VedicIcon />}
-                      isSelected={Boolean(getValues("specialization").length > 0)}
+                      isSelected={(getValues("specialization") as Array<{ specialization_id: string }>)?.some(
+                        (s) => s.specialization_id === spec.specialization_id
+                      )}
                       onClick={() => manageSpecialization(spec)}
                     />
                   </Grid.Col>
                 ))}
                 <Grid.Col>
                   <InputButton
-                    //value={otherValue}
-                    //onChange={(e) => setOtherValue(e.target.value)}
                     label="Other:"
                     placeholder="Future, Fortune..."
+                    value={getValues("custom_specialization")?.specialization_desc || ""}
+                    onChange={(e) => handleCustomSpecialization(e.target.value)}
                   />
                 </Grid.Col>
               </Grid>
             </div>
             {errors.specialization && (
               <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specialization?.message}</p>
+            )}
+            {errors.custom_specialization && (
+              <p className="mt-0.5 ml-1 text-sm text-primary">{errors.custom_specialization?.message}</p>
             )}
           </Grid.Col>
           <Grid.Col>
@@ -243,9 +315,9 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
               )}
             />
           </Grid.Col>
-          {formValue.certification && typeof formValue.certification === "string" && (
+          {getValues("certification") && (
             <Grid.Col>
-              <FileCard name={getFileName(formValue.certification)} />
+              <FileCard name={getFileName(currentCertificate)} />
             </Grid.Col>
           )}
           <Grid.Col>
@@ -265,9 +337,9 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
               error={errors.institute_university_name?.message}
             />
           </Grid.Col>
-          {formValue.resume && typeof formValue.resume === "string" && (
+          {getValues("resume") && (
             <Grid.Col>
-              <FileCard name={getFileName(formValue.resume)} />
+              <FileCard name={getFileName(currentResume)} />
             </Grid.Col>
           )}
           <Grid.Col>

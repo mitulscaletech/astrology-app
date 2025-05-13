@@ -2,9 +2,8 @@
 import React from "react";
 import { UseFormRegisterReturn, FieldError } from "react-hook-form";
 import { UploadCloud } from "lucide-react";
-import Typography from "./typography";
 
-interface FileUploadProps {
+interface FileUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   title: string;
   name: string;
@@ -21,15 +20,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
   register,
   error,
   accept = ".pdf,.jpg,.jpeg,.png", // default allowed file types
-  multiple = false
+  multiple = false,
+  ...props
 }) => {
   return (
     <div className="flex flex-col space-y-1">
-      {/* {label && (
-        <label htmlFor={name} className="text-sm text-secondary-500">
-          {label}
-        </label>
-      )} */}
       <label
         htmlFor={name}
         className={`border-[1.5px] border-dashed rounded-md border-secondary/30 p-3 text-center cursor-pointer hover:bg-gray-50 transition-all duration-150 ${
@@ -43,7 +38,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             <span className="text-sm font-medium text-gray-700">{title}</span>
           </div>
         </div>
-        <input id={name} type="file" multiple={multiple} accept={accept} {...register} className="hidden" />
+        <input id={name} type="file" multiple={multiple} accept={accept} {...register} className="hidden" {...props} />
       </label>
       {error && <p className="mt-0.5 ml-1 text-sm text-primary">{error.message}</p>}
     </div>

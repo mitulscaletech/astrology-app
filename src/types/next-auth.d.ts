@@ -40,7 +40,7 @@ declare module "next-auth" {
         tiktok: string;
         youtube: string;
         personal_website: string;
-        associated_companies: string;
+        associated_companies: IAssociatedCompany[];
         short_bio: string;
         reason_for_joining: any;
         completed_steps: number;
@@ -52,6 +52,9 @@ declare module "next-auth" {
       };
       media_files: IMediaFile[];
     };
+  }
+  interface IAssociatedCompany {
+    name: string;
   }
   interface ISpecialization {
     specialization_id: string;

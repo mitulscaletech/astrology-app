@@ -159,6 +159,7 @@ export function BasicInfoForm({ onComplete, page }: IBasicInfoFormProps) {
     if (session?.user) {
       reset({
         email: session.user.email || "",
+        country_code: session.user.country_code,
         mobile_number: session.user.mobile_number || "",
         first_name: session.user.first_name || "",
         last_name: session.user.last_name || "",
@@ -169,7 +170,6 @@ export function BasicInfoForm({ onComplete, page }: IBasicInfoFormProps) {
           : undefined,
         current_address: session.user.intake_form?.current_address || "",
         permanent_address: session.user.intake_form?.permanent_address || "",
-        country_code: session.user.country_code,
         gender:
           typeof session.user.gender === "string"
             ? GENDER_OPTIONS.find((gen) => gen.value === session.user.gender)

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 import * as yup from "yup";
 import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import Grid from "@/components/ui/grid";
@@ -16,6 +16,7 @@ import { InputField } from "@/components/ui/custom-input";
 import { getCurrentStep } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
+import IconClose from "@/shared/icons/close";
 
 const schema = yup.object().shape({
   instagram: yup.string().url("Enter a valid Instagram URL").notRequired(),
@@ -25,7 +26,11 @@ const schema = yup.object().shape({
   tiktok: yup.string().url("Enter a valid TikTok URL").notRequired(),
   youtube: yup.string().url("Enter a valid YouTube URL").notRequired(),
   personal_website: yup.string().url("Enter a valid website URL").notRequired(),
-  associated_companies: yup.string().notRequired()
+  associated_companies: yup.array().of(
+    yup.object().shape({
+      name: yup.string().notRequired()
+    })
+  )
 });
 
 interface SocialProfilesFormProps {
@@ -39,11 +44,19 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      associated_companies: [{ name: "" }]
+    }
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "associated_companies"
   });
 
   const onSubmit = async (data: any) => {
@@ -90,7 +103,7 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
         youtube = "",
         personal_website = "",
         linkedin = "",
-        associated_companies = ""
+        associated_companies
       } = session.user.intake_form;
       reset({
         instagram: instagram,
@@ -100,7 +113,7 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
         youtube: youtube,
         personal_website: personal_website,
         linkedin: linkedin,
-        associated_companies: associated_companies
+        associated_companies: associated_companies ?? [{ name: "" }]
       });
     }
   }, [session, reset]);
@@ -153,11 +166,48 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
             />
           </Grid.Col>
           <Grid.Col>
-            <InputField
+            {/* <InputField
               label="Associated Companies (Optional)"
               {...register("associated_companies")}
               error={errors.associated_companies?.message}
-            />
+            /> */}
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-center gap-2 mb-2">
+                <InputField
+                  label="Associated Companies (Optional)"
+                  {...register(`associated_companies.${index}.name`)}
+                  placeholder="Company Name"
+                  error={errors?.associated_companies?.[index]?.name?.message}
+                />
+                <div
+                  className="flex justify-center items-center size-6 rounded-full shadow-card"
+                  onClick={() => remove(index)}
+                >
+                  <span className="size-6 ms-auto">
+                    <IconClose />
+                  </span>
+                  Remove
+                </div>
+                {/* <Button type="button" variant="secondary" size="sm" onClick={() => remove(index)}>
+                  <span className="size-6 ms-auto">
+                    <IconClose />
+                  </span>{" "}
+                  Remove
+                </Button> */}
+                <div
+                  className="flex justify-center items-center size-6  rounded-full shadow-card"
+                  onClick={() => append({ name: "" })}
+                >
+                  <span className="size-6 ms-auto">
+                    <IconClose />
+                  </span>
+                  Add
+                </div>
+                {/* <Button type="button" onClick={() => append({ name: "" })}>
+                  Add
+                </Button> */}
+              </div>
+            ))}
           </Grid.Col>
         </Grid>
         <div className="flex justify-end mt-4 lg:mt-5 xl:mt-6 3xl:mt-8">
