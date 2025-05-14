@@ -1,13 +1,19 @@
-import Typography from "@/components/ui/typography";
-import IconGroups from "@/shared/icons/groups";
-import IconVideo from "@/shared/icons/video";
-import astrologerImg1 from "@/assets/images/dummy/astrologer-01.jpg";
-import Image from "next/image";
-import IconEdit from "@/shared/icons/edit";
-import { Button } from "@/components/ui/button";
+import { FC, useState } from "react";
+
 import Link from "next/link";
-import { FC } from "react";
+import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
+import Typography from "@/components/ui/typography";
+
+import IconEdit from "@/shared/icons/edit";
 import IconStar from "@/shared/icons/star";
+import IconVideo from "@/shared/icons/video";
+import IconGroups from "@/shared/icons/groups";
+
+import DeleteDialog from "./delete-dialog";
+import ImageCropDialog from "./image-crop-dialog";
+import astrologerImg1 from "@/assets/images/dummy/astrologer-01.jpg";
 
 const DATA = {
   id: 1,
@@ -29,6 +35,15 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
+  const [currentImage, setCurrentImage] = useState<FileList | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleUploadMedia = (file: FileList | null) => {
+    console.log(" file:", file);
+    setCurrentImage(file);
+    setOpenDialog(true);
+  };
+
   return (
     <div className="flex items-start flex-col md:flex-row my-2 lg:my-4 2xl:my-6 gap-4 md:gap-6 lg:gap-8 xl:gap-8 2xl:gap-12 4xl:gap-14 py-4 md:py-6 lg:py-8 xl:py-8 2xl:py-12 4xl:py-14 px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-14 4xl:px-16 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card">
       <div className="w-32 md:w-40 xl:w-48 2xl:w-64 4xl:w-72 relative shrink-0 shadow-card">
@@ -43,7 +58,11 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
           <span className="w-7/12">
             <IconEdit />
           </span>
-          <input type="file" className="absolute size-full bottom-0 end-0 opacity-0" />
+          <input
+            type="file"
+            className="absolute size-full bottom-0 end-0 opacity-0"
+            onChange={(e) => handleUploadMedia(e.target.files)}
+          />
         </div>
       </div>
       <div className="flex flex-col-reverse md:flex-row justify-between md:gap-2 grow">
@@ -104,6 +123,22 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
           </div>
         </div>
       </div>
+      <DeleteDialog
+        isOpen={false}
+        onClose={() => {}} //manage delete
+        header="Delete?"
+        description="Are you sure you want to delete this photo?"
+        confirm={() => {}} //delete API method
+      />
+      <ImageCropDialog
+        isOpen={openDialog}
+        image={currentImage}
+        header="Profile picture"
+        onClose={() => {}} //manage delete
+        confirm={(cropImage: File | null) => {
+          console.log(cropImage);
+        }} //delete API method
+      />
     </div>
   );
 };
