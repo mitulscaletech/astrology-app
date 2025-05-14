@@ -12,9 +12,17 @@ interface IImageCropDialogProps {
   header: string;
   image: FileList | null;
   confirm: (croppedImageFile: File | null) => void;
+  handleDelete: () => void;
 }
 
-export default function ImageCropDialog({ isOpen, onClose, header, image, confirm }: IImageCropDialogProps) {
+export default function ImageCropDialog({
+  isOpen,
+  onClose,
+  header,
+  image,
+  confirm,
+  handleDelete
+}: IImageCropDialogProps) {
   const cropperRef = useRef<CropperRef>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -78,7 +86,7 @@ export default function ImageCropDialog({ isOpen, onClose, header, image, confir
           <div className="text-sm text-gray-500 mb-8">No image selected.</div>
         )}
         <div className="flex justify-between gap-3">
-          <Button variant="outline" onClick={onClose} className="border-secondary text-secondary rounded-xl">
+          <Button variant="outline" onClick={handleDelete} className="border-secondary text-secondary rounded-xl">
             Delete Photo
           </Button>
           <Button variant="highlight" className="cosmic-button rounded-xl" onClick={handleConfirm}>

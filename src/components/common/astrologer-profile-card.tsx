@@ -36,12 +36,13 @@ interface ProfileCardProps {
 
 const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
   const [currentImage, setCurrentImage] = useState<FileList | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openImageCropDialog, setOpenImageCropDialog] = useState(false);
 
   const handleUploadMedia = (file: FileList | null) => {
     console.log(" file:", file);
     setCurrentImage(file);
-    setOpenDialog(true);
+    setOpenImageCropDialog(true);
   };
 
   return (
@@ -124,17 +125,18 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
         </div>
       </div>
       <DeleteDialog
-        isOpen={false}
-        onClose={() => {}} //manage delete
+        isOpen={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
         header="Delete?"
         description="Are you sure you want to delete this photo?"
         confirm={() => {}} //delete API method
       />
       <ImageCropDialog
-        isOpen={openDialog}
+        isOpen={openImageCropDialog}
         image={currentImage}
         header="Profile picture"
-        onClose={() => {}} //manage delete
+        onClose={() => setOpenImageCropDialog(false)} //manage delete
+        handleDelete={() => setOpenDeleteDialog(true)}
         confirm={(cropImage: File | null) => {
           console.log(cropImage);
         }} //delete API method
