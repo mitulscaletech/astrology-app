@@ -1,4 +1,4 @@
-import Typography from "../ui/typography";
+import Typography from "@/components/ui/typography";
 
 export default function CaptchaError() {
   return (
