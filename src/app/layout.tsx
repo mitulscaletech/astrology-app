@@ -10,7 +10,8 @@ import { LoaderProvider } from "@/context/LoaderContext";
 const inter = Inter({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
+  variable: "--inter"
 });
 
 const playfairDisplay = Playfair_Display({
@@ -35,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${playfairDisplay.variable} antialiased`}>
+      <body className={`${inter.className} ${inter.variable} ${playfairDisplay.variable} antialiased`}>
         <LoaderProvider>
           <AuthProvider>
             {children}

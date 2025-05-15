@@ -993,9 +993,9 @@ export const mockReviewSummary: ReviewSummary = {
   ratingBreakdown: {
     5: 2000,
     4: 1000,
-    3: 500,
-    2: 200,
-    1: 0
+    3: 800,
+    2: 400,
+    1: 200
   }
 };
 

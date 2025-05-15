@@ -14,16 +14,19 @@ const buttonVariants = cva(
         highlight: "bg-highlight text-accent-white hover:bg-primary hover:text-accent-white border-transparent",
         white: "bg-accent-white text-secondary hover:bg-secondary hover:text-accent-white border-transparent",
         outline: "border-primary text-primary bg-accent-white hover:bg-primary hover:text-accent-white",
+        "outline-secondary":
+          "border-secondary text-secondary bg-accent-white hover:bg-secondary hover:text-accent-white",
         secondary: "bg-secondary text-secondary-100 hover:bg-secondary/80 border-transparent",
         ghost: "hover:bg-primary hover:text-accent-white border-transparent",
-        link: "text-primary underline-offset-4 hover:underline border-transparent"
+        link: "text-primary underline-offset-4 hover:underline border-transparent",
+        icon: "border border-secondary/30 bg-transparent"
       },
       size: {
         default: "h-10 md:h-12 xl:h-13 2xl:h-15 4xl:h-16 px-5 lg:px-6 xl:px-8 2xl:px-12 py-2",
         sm: "h-9 md:h-11 xl:h-12 rounded-md px-4 md:px-5 xl:px-6",
         lg: "h-12 md:h-14 xl:h-15 2xl:h-16 3xl:h-18 4xl:h-20 px-6 lg:px-7 xl:px-10 2xl:px-12",
         icon: "h-7 w-7 p-1",
-        rounded: "size-6 lg:size-8 xl:size-10 rounded-full p-1.5 lg:p-2 xl:p-3"
+        rounded: "size-7 lg:size-8 xl:size-10 2xl:size-12 rounded-full"
       }
     },
     defaultVariants: {

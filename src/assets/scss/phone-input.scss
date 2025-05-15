@@ -1,0 +1,17 @@
+div.react-tel-input {
+  @apply flex gap-2 md:gap-3 xl:gap-4 2xl:gap-5 flex-row-reverse;
+  .form-control {
+    @apply px-3 py-4 border-2 border-secondary/30 text-base lg:text-md placeholder:text-secondary/50 font-medium rounded-lg;
+    height: auto !important;
+    font-family: var(--inter);
+  }
+  .flag-dropdown {
+    @apply static bg-accent-white min-h-full px-4 border-2 border-secondary/30 text-base lg:text-md rounded-lg;
+    &.open {
+      @apply rounded-lg;
+    }
+  }
+  .flag {
+    @apply scale-150;
+  }
+}

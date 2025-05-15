@@ -34,7 +34,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
         categoryStyles[event.category]
       )}
     >
-      <div className="flex items-center gap-1 mb-1">
+      <div className="flex items-center shrink-0">
         <Image
           src={event.pictureUrl}
           alt={event.name}

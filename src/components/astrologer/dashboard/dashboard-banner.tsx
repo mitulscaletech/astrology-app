@@ -11,7 +11,7 @@ export default function DashboardBanner() {
         <Typography variant="h3" size="h4" className="font-head font-semibold">
           Welcome Dr Ganesh,
         </Typography>
-        <ProfileCard isButtons isDesc />
+        <ProfileCard isButtons isDesc={false} />
       </div>
     </section>
   );

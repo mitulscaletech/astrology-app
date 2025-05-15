@@ -42,7 +42,6 @@ export default function Login() {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(60);
   const [showOtp, setShowOtp] = useState(false);
-  const [resendCount, setResendCount] = useState(0);
   const [mobileNumber, setMobileNumber] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -51,14 +50,14 @@ export default function Login() {
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
-    setIsCaptchaVerified(false);
     HttpService.post(API_CONFIG.verifyCaptcha, { captchaToken: token }, { isPublic: true }).then((response) => {
       if (!response.is_error) {
         setIsCaptchaVerified(true);
         toast.success(response.message);
       } else {
         setIsCaptchaVerified(false);
-        toast.error(response.message);
+        recaptchaRef.current?.reset();
+        // toast.error(response.message);
       }
     });
   };
@@ -88,58 +87,49 @@ export default function Login() {
     }, 1000);
   };
   const handleResendOtp = () => {
-    if (resendCount >= 3) {
-      // Show captcha
-      if (captchaToken && mobileNumber) {
-        handleSendOtp();
-      }
-      toast.error("Please solve the captcha");
-      return;
-    }
-    // handleSendOtp();
-    setResendCount((prev) => prev + 1);
     startTimer();
-    toast.success("OTP resent successfully!");
+    handleSendOtp();
   };
   const handleVerifyOtp = async () => {
     if (!otp) {
       toast.error("Please enter OTP");
       return;
     }
-    if (resendCount >= 3 && !captchaToken) {
+    if (!captchaToken) {
       toast.error("Please solve the captcha");
       return;
     }
-    HttpService.post(API_CONFIG.verifyOtp, { country_code: countryCode, mobile_number: mobileNumber, otp: +otp })
-      .then(async (response) => {
-        if (!response.is_error) {
-          const { status, token } = response.data;
-          await signIn("credentials", {
-            redirect: false,
-            token: JSON.stringify({ status, access_token: token })
-          });
-          HttpService.get(API_CONFIG.me).then(async (userResponse) => {
-            if (!userResponse.is_error) {
-              await signIn("credentials", {
-                redirect: false,
-                token: JSON.stringify({ ...userResponse.data, access_token: response.data.token })
-              });
-              const status = userResponse.data.status;
-              const path = handleUserStatusRedirect(status);
-              if (path) router.push(path);
-            } else {
-              toast.error(response.message);
-            }
-          });
-        } else {
-          toast.error(response.message);
-        }
+    try {
+      HttpService.post(API_CONFIG.verifyOtp, {
+        country_code: countryCode,
+        mobile_number: mobileNumber,
+        otp: +otp,
+        role: ROLE.astrologer
       })
-      .catch((error) => {
-        console.error("Error sending OTP:", error);
-      });
-
-    // Verify OTP logic here
+        .then(async (response) => {
+          if (!response.is_error) {
+            const mockUser = {
+              mobile_number: mobileNumber,
+              access_token: response.data,
+              country_code: countryCode
+            };
+            await signIn("credentials", {
+              redirect: false,
+              token: JSON.stringify(mockUser)
+            });
+            const status = response.data.status;
+            const path = handleUserStatusRedirect(status);
+            if (path) router.push(path);
+          } else {
+            toast.error(response.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending OTP:", error);
+        });
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
   const handleSocialSignup = async (result: UserCredential, provider: string) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -152,8 +142,8 @@ export default function Login() {
       provider_user_id: result.user.providerData[0].uid,
       refresh_token: user?.stsTokenManager.refreshToken,
       expires_at: user?.stsTokenManager.expirationTime,
-      social_photo: user.photoURL
-      //   role: activeTab
+      social_photo: user.photoURL,
+      role: activeTab
     };
     HttpService.post(API_CONFIG.socialLogin, params)
       .then(async (response) => {
@@ -233,6 +223,7 @@ export default function Login() {
         console.error("Error sending OTP:", error);
       });
   };
+
   const handleChangeTab = (val: string) => {
     setActiveTab(val);
     // setCurrentView("phone");
@@ -242,6 +233,7 @@ export default function Login() {
   return (
     <div className="container min-h-screen flex items-center justify-center">
       <CommonTabs value={activeTab}>
+        {/* onValueChange={(val) => handleChangeTab(val)} */}
         <div className="mx-auto mb-40">
           <CommonTabsList>
             <CommonTabsTrigger value="USER">USER</CommonTabsTrigger>
@@ -249,11 +241,14 @@ export default function Login() {
           </CommonTabsList>
         </div>
 
-        <CommonTabsContent value="USER" className="space-y-6"></CommonTabsContent>
+        <CommonTabsContent value="USER" className="space-y-6">
+          {/* {renderAuth()} */}
+        </CommonTabsContent>
         <CommonTabsContent value="ASTROLOGER" className="space-y-6">
           <div className="text-center mx-auto perspective-1000">
             <AnimatePresence mode="wait">
               <motion.div
+                // key={currentPage}
                 variants={LOGIN_ANIMATION_VARIANTS}
                 initial="initial"
                 animate="animate"
@@ -263,12 +258,13 @@ export default function Login() {
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="md:w-2/4 shrink-0">
                     <span className="text-xl uppercase text-primary font-sans font-medium tracking-wider block mb-6 lg:mb-8">
-                      Login
+                      Signup
                     </span>
 
                     <Typography variant="h2" size="h4" className="font-head font-semibold mb-6 lg:mb-8">
-                      {!showOtp ? "Welcome to Your Divine Journey" : "Enter Your OTP To Continue"}
+                      {!showOtp ? "To Begin Your Divine Journey" : "Enter Your OTP To Continue"}
                     </Typography>
+
                     <Typography variant="h2" size="p" className="mb-6 lg:mb-12">
                       {!showOtp ? (
                         `Choose your preferred method to access your WeWake ${activeTab?.toLowerCase()} dashboard.`
@@ -281,9 +277,9 @@ export default function Login() {
                     </Typography>
 
                     <div className="text-center text-sm mb-15">
-                      Don&apos;t have an account? &nbsp;
-                      <Link href="/signup" className="text-primary hover:underline font-semibold">
-                        Sign up here
+                      Already have an account?&nbsp;
+                      <Link href="/login" className="text-primary hover:underline font-semibold">
+                        Log in here
                       </Link>
                     </div>
                     {!isCaptchaVerified && <CaptchaError />}
@@ -323,36 +319,25 @@ export default function Login() {
                             onChange={(value, country: any) => handleChangeMobile(value, country)}
                             inputProps={{ name: "phone-input" }}
                             inputStyle={{ width: "100%", height: "40px" }}
-                            inputClass="mb-8"
                           />
                         </div>
-                        {resendCount >= 3 && (
-                          <ReCAPTCHA
-                            ref={recaptchaRef}
-                            sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
-                            onChange={handleCaptchaChange}
-                          />
-                        )}
-                        <div className="flex flex-row gap-3 justify-center">
-                          <Button
-                            size="rounded"
-                            className="h-12 p-3 px-0 bg-accent-white border-[1px] border-secondary/30 rounded-full"
-                            onClick={() => handleGoogleLogin()}
-                          >
+                        <div className="flex flex-row gap-3 justify-center mb-15">
+                          <Button variant="icon" size="rounded" onClick={() => handleGoogleLogin()}>
                             <span className="size-6">
                               <IconGoogle />
                             </span>
                           </Button>
-                          <Button
-                            size="rounded"
-                            className="h-12 p-3 px-0 bg-accent-white border-[1px] border-secondary/30 rounded-full"
-                            onClick={() => handleFacebookLogin()}
-                          >
+                          <Button variant="icon" size="rounded" onClick={() => handleFacebookLogin()}>
                             <span className="size-6">
                               <IconFacebook />
                             </span>
                           </Button>
                         </div>
+                        <ReCAPTCHA
+                          ref={recaptchaRef}
+                          sitekey={process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY || ""}
+                          onChange={handleCaptchaChange}
+                        />
                       </>
                     )}
                   </div>
@@ -365,11 +350,11 @@ export default function Login() {
 
         <div className="flex justify-end mt-8">
           {!showOtp ? (
-            <Button variant="highlight" className="cosmic-button" onClick={manageSendOtp}>
+            <Button variant="highlight" className="cosmic-button" onClick={manageSendOtp} disabled={!isCaptchaVerified}>
               CONTINUE
             </Button>
           ) : (
-            <Button className="cosmic-button" onClick={handleVerifyOtp} disabled={!isCaptchaVerified}>
+            <Button className="cosmic-button" onClick={handleVerifyOtp}>
               Verify OTP
             </Button>
           )}

@@ -9,6 +9,7 @@ import DashboardBanner from "@/components/astrologer/dashboard/dashboard-banner"
 import UpcomingSessions from "@/components/astrologer/upcoming-sessions/upcoming-sessions";
 import Reviews from "@/components/astrologer/review/reviews";
 import { mockReviews, mockReviewSummary } from "@/lib/data";
+import Insights from "@/components/astrologer/dashboard/session-revenue/insights";
 
 export default function AstrologerDashboard() {
   const { data: session, status } = useSession();
@@ -27,6 +28,7 @@ export default function AstrologerDashboard() {
   return (
     <>
       <DashboardBanner />
+      <Insights />
       <UpcomingSessions />
       <Reviews summary={mockReviewSummary} reviews={mockReviews} />
     </>

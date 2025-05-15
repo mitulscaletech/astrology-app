@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import IconStar from "@/shared/icons/star";
+import IconStarOutline from "@/shared/icons/star-outline";
 
 interface StarRatingProps {
   rating: number;
@@ -14,9 +15,9 @@ export function StarRating({ rating, maxRating = 5, size = "md", className }: St
   const hasHalfStar = rating % 1 >= 0.5;
 
   const starSizes = {
-    sm: "w-4 h-4",
-    md: "w-5 h-5",
-    lg: "w-6 h-6"
+    sm: "size-4",
+    md: "size-5 lg:size-6",
+    lg: "size-6 lg:size-8"
   };
 
   const starSize = starSizes[size];
@@ -24,19 +25,8 @@ export function StarRating({ rating, maxRating = 5, size = "md", className }: St
   return (
     <div className={cn("flex items-center", className)}>
       {Array.from({ length: maxRating }).map((_, i) => (
-        <span
-          key={i}
-          className={cn(
-            starSize,
-            i < fullStars
-              ? "text-primary fill-primary"
-              : i === fullStars && hasHalfStar
-                ? "text-primary"
-                : "text-muted",
-            "transition-colors"
-          )}
-        >
-          <IconStar />
+        <span key={i} className={cn(starSize, "text-primary")}>
+          {i < fullStars ? <IconStar /> : i === fullStars && hasHalfStar ? <IconStar /> : <IconStarOutline />}
         </span>
       ))}
     </div>
