@@ -215,8 +215,6 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
         institute_university_name
       } = session?.user?.intake_form || {};
 
-      console.log(" highest_qualification:", highest_qualification);
-      debugger;
       reset({
         years_of_experience: years_of_experience,
         highest_qualification: HIGHTEST_QUALIFICATION.find((que) => que.value === highest_qualification),
