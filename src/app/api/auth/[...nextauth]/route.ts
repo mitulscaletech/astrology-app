@@ -42,7 +42,7 @@ const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/astrologer/login"
+    signIn: "/login"
   },
 
   secret: process.env.NEXTAUTH_SECRET || "development_secret"

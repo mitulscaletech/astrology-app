@@ -11,11 +11,8 @@ import {
   DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 import logoIcon from "@/assets/images/logo-icon.png";
-interface UserMenuProp {
-  type: string;
-}
 
-const UserMenu: FC<UserMenuProp> = ({ type }) => {
+const UserMenu = () => {
   const { data: session } = useSession();
 
   return (
@@ -56,7 +53,7 @@ const UserMenu: FC<UserMenuProp> = ({ type }) => {
             onClick={() =>
               signOut({
                 redirect: true,
-                callbackUrl: type === "astrologer" ? "/astrologer/login" : "/user/login"
+                callbackUrl: "/login"
               })
             }
             className="block w-full text-start px-4 py-2 hover:bg-primary-100 hover:text-white cursor-pointer"

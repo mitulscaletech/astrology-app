@@ -103,7 +103,7 @@ const commonAxios = async (config: IAxiosParams): Promise<any> => {
           const responseData = res.data;
           if ((status === 401 || status === 403) && responseData) {
             signOut();
-            window.location.pathname = "/astrologer/login";
+            window.location.pathname = "/login";
           }
           toast.error(responseData.message);
           reject(error);

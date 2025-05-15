@@ -17,7 +17,7 @@ export default function AstrologerDashboard() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/astrologer/login");
+      router.push("/login");
     }
   }, [status, router]);
 

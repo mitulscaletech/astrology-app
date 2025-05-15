@@ -309,7 +309,7 @@ export default function AstrologerLogin() {
 
         <div className="text-center text-sm">
           Don&apos;t have an account?{" "}
-          <Link href="/astrologer/signup" className="text-purple-600 hover:underline">
+          <Link href="/signup" className="text-purple-600 hover:underline">
             Sign up
           </Link>
         </div>

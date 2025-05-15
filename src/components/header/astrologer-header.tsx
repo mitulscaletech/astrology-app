@@ -20,7 +20,7 @@ const AstrologerHeader = () => {
           <div className="flex items-center gap-3 text-secondary-500">
             <Notification />
             {/* User Menu */}
-            <UserMenu type="astrologer" />
+            <UserMenu />
             <div className="h-6 border-l border-primary-100" />
             <Link href="#" className="size-6">
               <IconCart />

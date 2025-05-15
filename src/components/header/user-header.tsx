@@ -20,7 +20,7 @@ const UserHeader = () => {
           {/* Right side */}
           <div className="flex items-center gap-3 text-secondary-500">
             <Notification />
-            <UserMenu type="user" />
+            <UserMenu />
             <div className="h-6 border-l border-primary-100" />
             {/* User Menu */}
             <Link href="#" className="size-6">
