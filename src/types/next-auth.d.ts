@@ -46,10 +46,10 @@ declare module "next-auth" {
         completed_steps: number;
         created_at: string;
         updated_at: string;
-        specialization: ISpecialization[];
         current_address?: string | null;
         permanent_address?: string | null;
       };
+      specializations: ISpecialization[];
       media_files: IMediaFile[];
     };
   }

@@ -33,7 +33,7 @@ interface ProfessionalDetailsFormProps {
 
 interface FormValues {
   years_of_experience: number;
-  specialization: Array<{ specialization_id: string }>;
+  specializations: ISpecialization[];
   certification?: any;
   resume?: any;
   institute_university_name: string;
@@ -54,7 +54,7 @@ const schema = yup.object().shape({
     .required("Experience is required")
     .min(1, "Must be at least 1 year")
     .max(50, "Must be less than 50 years"),
-  specialization: yup
+  specializations: yup
     .array()
     .of(
       yup.object().shape({
@@ -101,11 +101,11 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
   const currentCertificate = watch("certification");
   const currentResume = watch("resume");
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormValues) => {
     try {
-      const tempData = {
+      const params = {
         years_of_experience: data.years_of_experience,
-        specialization: data.specialization,
+        specializations: data.specializations,
         highest_qualification: data.highest_qualification.value,
         institute_university_name: data.institute_university_name,
         completed_steps: getCurrentStep(
@@ -114,7 +114,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
           2
         )
       };
-      const response = await HttpService.post(`${API_CONFIG.intakeForm}/professional`, tempData);
+      const response = await HttpService.post(`${API_CONFIG.intakeForm}/professional`, params);
       if (response.is_error) {
         toast.error(response.message);
         return;
@@ -139,9 +139,13 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
       ]);
       update({
         ...session?.user,
+        specializations: params.specializations,
         intake_form: {
           ...session?.user?.intake_form,
-          ...tempData,
+          years_of_experience: data.years_of_experience,
+          completed_steps: params.completed_steps,
+          highest_qualification: data.highest_qualification.value,
+          institute_university_name: data.institute_university_name,
           certification: certificateRes?.data ?? data.certification,
           resume: resumeRes?.data ?? data.resume
         }
@@ -151,6 +155,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
     } catch (error) {
       console.error("Submission error:", error);
     }
+    data;
   };
   const getSpecializationList = () => {
     HttpService.get(API_CONFIG.specialization).then((response) => {
@@ -163,31 +168,25 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
   };
   const manageSpecialization = (specialization: ISpecialization) => {
     const { specialization_id } = specialization;
-    const currentSpecializations = getValues("specialization") as Array<{ specialization_id: string }>;
-
+    const currentSpecializations = getValues("specializations") as ISpecialization[];
     const isExist = currentSpecializations.some((spec) => spec.specialization_id === specialization_id);
     const updatedSpecializations = isExist
       ? currentSpecializations.filter((spec) => spec.specialization_id !== specialization_id)
-      : [...currentSpecializations, { specialization_id }];
+      : [...currentSpecializations, specialization];
 
-    // If selecting a specialization, clear custom specialization
-    if (!isExist) {
-      setValue("custom_specialization", {
-        specialization_name: "",
-        specialization_desc: ""
-      });
-    }
-
-    setValue("specialization", updatedSpecializations, {
+    setValue("specializations", updatedSpecializations, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true
     });
+    setValue("custom_specialization", {
+      specialization_name: "",
+      specialization_desc: ""
+    });
   };
 
   const handleCustomSpecialization = (value: string) => {
-    // If entering custom specialization, clear regular specializations
-    setValue("specialization", [], {
+    setValue("specializations", [], {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true
@@ -213,15 +212,16 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
       const {
         years_of_experience = 0,
         highest_qualification,
-        institute_university_name,
-        specialization
+        institute_university_name
       } = session?.user?.intake_form || {};
 
+      console.log(" highest_qualification:", highest_qualification);
+      debugger;
       reset({
         years_of_experience: years_of_experience,
         highest_qualification: HIGHTEST_QUALIFICATION.find((que) => que.value === highest_qualification),
         institute_university_name: institute_university_name,
-        specialization: [],
+        specializations: session?.user?.specializations,
         resume: getMediaFile(session.user.media_files, "resume"),
         certification: getMediaFile(session.user.media_files, "certification")
       });
@@ -271,7 +271,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
                     <IconButton
                       label={spec.specialization_name}
                       icon={<VedicIcon />}
-                      isSelected={(getValues("specialization") as Array<{ specialization_id: string }>)?.some(
+                      isSelected={(getValues("specializations") as Array<{ specialization_id: string }>)?.some(
                         (s) => s.specialization_id === spec.specialization_id
                       )}
                       onClick={() => manageSpecialization(spec)}
@@ -288,8 +288,8 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
                 </Grid.Col>
               </Grid>
             </div>
-            {errors.specialization && (
-              <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specialization?.message}</p>
+            {errors.specializations && (
+              <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specializations?.message}</p>
             )}
             {errors.custom_specialization && (
               <p className="mt-0.5 ml-1 text-sm text-primary">{errors.custom_specialization?.message}</p>
