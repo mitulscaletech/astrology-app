@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import IconExpand from "@/shared/icons/expand";
 import IconSpeaker from "@/shared/icons/speaker";
 import IconPlay from "@/shared/icons/play";
+import { IconSpeakerMuted, IconPause } from "@/shared/icons/booking";
 
 interface VideoPlayerProps {
   videoSrc: string;
@@ -14,23 +15,25 @@ const VideoPlayer = ({ videoSrc, width = 1016, height = 574, className = "" }: V
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
+  const togglePlay = useCallback(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
     }
-  };
+  }, [isPlaying]);
 
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
-  };
+  const toggleMute = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  }, [isMuted]);
 
   const enterFullScreen = () => {
     if (!videoRef.current) return;
@@ -39,30 +42,40 @@ const VideoPlayer = ({ videoSrc, width = 1016, height = 574, className = "" }: V
     }
   };
 
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
   return (
-    <div className="relative">
+    <div className="relative group" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <video
         width={width || 900}
         height={height || 600}
         className={`w-full aspect-[770/440] object-cover rounded-xl xl:rounded-3xl ${className}`}
         ref={videoRef}
-        controls
+        controls={false}
+        onClick={togglePlay}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
-      <div className="absolute bottom-4 lg:bottom-6 end-4 lg:end-6 flex flex-col gap-1.5">
+      {(!isPlaying || (isPlaying && isHovering)) && (
         <button
           onClick={togglePlay}
-          className="size-6 md:size-10 lg:size-12 p-1.5 md:p-2 lg:p-3 text-accent-white bg-accent-white/50 backdrop-blur-sm rounded-full"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 size-6 md:size-10 lg:size-12 p-1.5 md:p-2 lg:p-3 text-accent-white bg-accent-white/50 backdrop-blur-sm rounded-full transition-all"
         >
-          {isPlaying ? <IconPlay /> : <IconPlay />}
+          {isPlaying ? <IconPause /> : <IconPlay />}
         </button>
-
+      )}
+      <div className="absolute bottom-4 lg:bottom-6 end-4 lg:end-6 flex flex-col gap-1.5">
         <button
           onClick={toggleMute}
           className="size-6 md:size-10 lg:size-12 p-1.5 md:p-2 lg:p-3 text-accent-white bg-accent-white/50 backdrop-blur-sm rounded-full"
         >
-          {isMuted ? <IconSpeaker /> : <IconSpeaker />}
+          {isMuted ? <IconSpeakerMuted /> : <IconSpeaker />}
         </button>
 
         <button
