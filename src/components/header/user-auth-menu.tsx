@@ -10,6 +10,7 @@ import {
 import AuthModal from "@/components/dialogs/auth-modal";
 import IconUser, { SignUpArrowIcon } from "@/shared/icons/user";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const UserAuthMenu = () => {
   const router = useRouter();
@@ -48,20 +49,20 @@ const UserAuthMenu = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-60">
           <DropdownMenuItem asChild>
-            <button onClick={() => handleAuthDialog(true, "login")} className="flex items-center gap-2">
+            <Link href="/login" className="flex items-center gap-2">
               <span className="size-6">
                 <IconUser />
               </span>
               Log In
-            </button>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <button onClick={() => handleAuthDialog(true, "signup")} className="flex items-center gap-2">
+            <Link href="/signup" className="flex items-center gap-2">
               <span className="size-6">
                 <SignUpArrowIcon />
               </span>
               Create An Account
-            </button>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

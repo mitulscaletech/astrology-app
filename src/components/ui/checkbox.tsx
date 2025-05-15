@@ -4,25 +4,24 @@ import IconCheck from "@/shared/icons/check";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({ className, ...props }, ref) => {
+const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({ className, children, ...props }, ref) => {
   return (
-    <label className="inline-flex items-center cursor-pointer">
+    <label className="flex gap-1.5 md:gap-2 2xl:gap-3 items-center cursor-pointer">
       <input ref={ref} type="checkbox" className={cn("peer hidden", className)} {...props} />
       <span
         className={cn(
-          `h-4 w-4 inline-flex items-center justify-center 
-             rounded-sm border border-primary 
-             bg-background text-background 
-             peer-checked:bg-primary peer-checked:text-primary-foreground 
-             peer-focus:ring-2 peer-focus:ring-ring peer-focus:ring-offset-2 
-             disabled:cursor-not-allowed disabled:opacity-50 
-             transition-all`
+          "size-5 inline-flex items-center justify-center rounded-sm transition-all",
+          "border-2 border-secondary/70 bg-accent-white text-transparent",
+          "peer-checked:border-secondary peer-checked:text-secondary",
+          "peer-focus:ring-2 peer-focus:ring-secondary peer-focus:ring-offset-2",
+          "peer-disabled:cursor-not-allowed peer-disabled:opacity-50 peer-disabled:bg-secondary/20"
         )}
       >
-        <span className="h-3 w-3">
+        <span className="size-3.5">
           <IconCheck />
         </span>
       </span>
+      {children && <span className="text-secondary/70">{children}</span>}
     </label>
   );
 });

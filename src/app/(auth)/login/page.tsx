@@ -246,13 +246,13 @@ export default function Login() {
     <div className="container flex flex-col grow">
       <CommonTabs value={activeTab} asChild>
         <div className="grow flex flex-col">
-          <div className="mx-auto w-full md:w-8/12 3xl:w-6/12 4xl:w-5/12">
+          <div className="mx-auto w-full md:w-8/12 lg:w-7/12 2xl:w-6/12 4xl:w-5/12">
             <CommonTabsList>
               <CommonTabsTrigger value="USER">USER</CommonTabsTrigger>
               <CommonTabsTrigger value="ASTROLOGER">ASTROLOGER</CommonTabsTrigger>
             </CommonTabsList>
           </div>
-          <div className="w-full md:w-8/12 4xl:w-7/12 m-auto">
+          <div className="w-full lg:w-9/12 xl:w-8/12 3xl:w-7/12 m-auto">
             <CommonTabsContent value="USER" className="space-y-6"></CommonTabsContent>
             <CommonTabsContent value="ASTROLOGER" className="space-y-6">
               <div className="mx-auto perspective-1000">
@@ -264,9 +264,9 @@ export default function Login() {
                     exit="exit"
                     className="backface-hidden"
                   >
-                    <Grid className="gap-y-4" size="lg">
+                    <Grid className="gap-y-4 items-center" size="lg">
                       <Grid.Col className="md:w-6/12">
-                        <div className="">
+                        <div className="lg:pe-6">
                           <Typography
                             variant="h2"
                             className="uppercase text-primary font-medium mb-4 lg:mb-4 xl:mb-5 3xl:mb-6"
@@ -275,18 +275,21 @@ export default function Login() {
                           </Typography>
                           <Typography
                             variant="h3"
-                            size="h4"
+                            size="h4-head"
                             className="font-head font-semibold mb-4 lg:mb-4 xl:mb-5 3xl:mb-6"
                           >
                             {!showOtp ? "Welcome to Your Divine Journey" : "Enter Your OTP To Continue"}
                           </Typography>
-                          <Typography variant="h2" size="p" className="">
+                          <Typography variant="p" size="p">
                             {!showOtp ? (
                               `Choose your preferred method to access your WeWake ${activeTab?.toLowerCase()} dashboard.`
                             ) : (
                               <>
                                 We’ve sent a 6-digit verification code to your mobile number.
-                                <i> Please enter it below to securely access your account.</i>
+                                <i className="text-secondary/50">
+                                  {" "}
+                                  Please enter it below to securely access your account.
+                                </i>
                               </>
                             )}
                           </Typography>
@@ -303,7 +306,7 @@ export default function Login() {
                       <Grid.Col className="md:w-6/12">
                         <div className="">
                           {showOtp ? (
-                            <div className="flex flex-col justify-center items-center">
+                            <div>
                               <InputOTP id="otp" maxLength={6} value={otp} onChange={setOtp} className="mb-15">
                                 <InputOTPGroup>
                                   {[...Array(6)].map((_, index) => (
@@ -312,17 +315,15 @@ export default function Login() {
                                 </InputOTPGroup>
                               </InputOTP>
 
-                              <div className="text-center text-sm">
-                                Didn’t receive the code?
-                                <Button
-                                  className="text-primary hover:underline text-lg font-semibold"
-                                  variant="link"
-                                  size="sm"
+                              <div className="mt-6 md:mt-8 xl:mt-10 3xl:mt-12 text-center">
+                                Didn’t receive the code?{" "}
+                                <button
+                                  className="text-primary hover:underline font-bold disabled:cursor-not-allowed"
                                   disabled={timer > 0}
                                   onClick={handleResendOtp}
                                 >
                                   Resend OTP {timer > 0 && `(${timer}s)`}
-                                </Button>
+                                </button>
                               </div>
                             </div>
                           ) : (
@@ -368,7 +369,7 @@ export default function Login() {
               {/* Main Title */}
             </CommonTabsContent>
           </div>
-          <div className="flex justify-end mt-8">
+          <div className="w-full lg:w-9/12 xl:w-8/12 3xl:w-7/12 mx-auto flex justify-end mt-6 lg:mt-8">
             {!showOtp ? (
               <Button variant="highlight" className="cosmic-button" onClick={manageSendOtp}>
                 CONTINUE

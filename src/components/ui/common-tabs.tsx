@@ -19,7 +19,7 @@ const CommonTabsList = React.forwardRef<
       <TabsPrimitive.List
         ref={ref}
         className={cn(
-          "flex w-full border gap-1 xl:gap-1.5 border-secondary/30 rounded-xl overflow-hidden bg-white p-1.5",
+          "flex w-full border gap-1 xl:gap-1.5 border-secondary/30 rounded-lg lg:rounded-xl overflow-hidden bg-white p-1 lg:p-1.5",
           className
         )}
         {...props}
@@ -30,7 +30,7 @@ const CommonTabsList = React.forwardRef<
       {activeIndex !== -1 && (
         <motion.div
           layoutId="tab-indicator"
-          className="absolute top-1 left-0 h-[calc(100%-0.5rem)] bg-primary rounded-xl z-0"
+          className="absolute top-1 left-0 h-[calc(100%-0.5rem)] bg-primary rounded-lg lg:rounded-xl z-0"
           style={{
             width: `calc((100% - 0.5rem * ${tabsArray.length - 1}) / ${tabsArray.length})`,
             transform: `translateX(calc(${activeIndex} * (100% / ${tabsArray.length})))`,
@@ -50,7 +50,7 @@ const CommonTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex-1 py-3 text-lg font-semibold transition-all focus:outline-none rounded-xl relative z-10",
+      "flex-1 py-2.5 lg:py-3 text-small md:text-base lg:text-md 2xl:text-lg font-semibold transition-all focus:outline-none rounded-lg lg:rounded-xl relative z-10",
       "data-[state=active]:bg-primary data-[state=active]:!text-primary-100",
       "data-[state=inactive]:bg-white data-[state=inactive]:text-primary",
       className

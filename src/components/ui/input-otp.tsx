@@ -10,7 +10,7 @@ const InputOTP = React.forwardRef<React.ElementRef<typeof OTPInput>, React.Compo
   ({ className, containerClassName, ...props }, ref) => (
     <OTPInput
       ref={ref}
-      containerClassName={cn("flex items-center gap-2 has-[:disabled]:opacity-50", containerClassName)}
+      containerClassName={cn("has-[:disabled]:opacity-50", containerClassName)}
       className={cn("disabled:cursor-not-allowed", className)}
       {...props}
     />
@@ -20,7 +20,9 @@ InputOTP.displayName = "InputOTP";
 
 // ✅ OTP Group (Container)
 const InputOTPGroup = React.forwardRef<React.ElementRef<"div">, React.ComponentPropsWithoutRef<"div">>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn("flex items-center gap-2", className)} {...props} />
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex items-center gap-1 justify-between", className)} {...props} />
+  )
 );
 InputOTPGroup.displayName = "InputOTPGroup";
 
@@ -36,9 +38,9 @@ const InputOTPSlot = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "relative flex h-12 w-12 items-center justify-center border border-secondary rounded-md text-lg font-medium shadow-sm transition-all",
-        "border-secondary-200 bg-accent-white text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary",
-        isActive && "ring-2 ring-secondary-600 ring-offset-2",
+        "relative flex size-10 md:size-12 xl:size-14 3xl:size-15 items-center justify-center rounded-md text-lg font-medium shadow-sm transition-all",
+        "border-2 border-secondary/30 bg-accent-white text-secondary focus:outline-none focus:ring-0",
+        isActive && "ring-1 ring-secondary ring-offset-1",
         className
       )}
       {...props}
