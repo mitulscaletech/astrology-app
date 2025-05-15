@@ -28,7 +28,7 @@ export const HIGHTEST_QUALIFICATION: IOption[] = [
 export const LANGUAGE_OPTIONS: IOption[] = [
   { value: "english", label: "English" },
   { value: "hindi", label: "Hindi" },
-  { value: "spanish", label: "Spanish" }
+  { value: "gujarati", label: "Gujarati" }
 ];
 export const DEFAULT_ADULT_AGE = moment().subtract(18, "years").toDate();
 export const LOGIN_ANIMATION_VARIANTS = {
