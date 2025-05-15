@@ -19,7 +19,7 @@ const CommonTabsList = React.forwardRef<
       <TabsPrimitive.List
         ref={ref}
         className={cn(
-          "flex w-full border gap-2 border-secondary-200 rounded-2xl overflow-hidden bg-white p-1",
+          "flex w-full border gap-1 xl:gap-1.5 border-secondary/30 rounded-xl overflow-hidden bg-white p-1.5",
           className
         )}
         {...props}
