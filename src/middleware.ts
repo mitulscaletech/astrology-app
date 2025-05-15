@@ -17,8 +17,10 @@ interface TokenData {
 
 // Define public routes by role
 const PUBLIC_ROUTES = new Set([
-  "/login",
-  "/signup",
+  "/astrologer/login",
+  "/astrologer/signup",
+  "/user/login",
+  "/user/signup",
   "/admin/login"
 ]);
 
@@ -106,10 +108,10 @@ export async function middleware(req: NextRequest) {
   // Not logged in: block private routes
   if (!token) {
     if (isPrivateAstrologerRoute) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/astrologer/login", req.url));
     }
     if (isPrivateUserRoute) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/user/login", req.url));
     }
     if (isPrivateAdminRoute) {
       return NextResponse.redirect(new URL("/admin/login", req.url));

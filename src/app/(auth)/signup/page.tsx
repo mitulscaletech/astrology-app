@@ -106,21 +106,25 @@ export default function Login() {
         country_code: countryCode,
         mobile_number: mobileNumber,
         otp: +otp,
-        role: ROLE.astrologer
+        role: activeTab
       })
         .then(async (response) => {
+          debugger;
           if (!response.is_error) {
             const mockUser = {
               mobile_number: mobileNumber,
-              access_token: response.data,
+              access_token: response.data.token,
               country_code: countryCode
             };
             await signIn("credentials", {
               redirect: false,
               token: JSON.stringify(mockUser)
             });
-            const status = response.data.status;
-            const path = handleUserStatusRedirect(status);
+            const status = response.data.user.status;
+            debugger;
+            const path =
+              activeTab === ROLE.astrologer ? handleAstrologerRedirect(status) : handleUserStatusRedirect(status);
+
             if (path) router.push(path);
           } else {
             toast.error(response.message);
