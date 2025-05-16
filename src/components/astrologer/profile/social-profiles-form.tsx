@@ -17,6 +17,7 @@ import { getCurrentStep } from "@/lib/utils";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
 import IconClose from "@/shared/icons/close";
+import { IconPlus } from "@/shared/icons/booking";
 
 const schema = yup.object().shape({
   instagram: yup.string().url("Enter a valid Instagram URL").notRequired(),
@@ -166,11 +167,6 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
             />
           </Grid.Col>
           <Grid.Col>
-            {/* <InputField
-              label="Associated Companies (Optional)"
-              {...register("associated_companies")}
-              error={errors.associated_companies?.message}
-            /> */}
             {fields.map((field, index) => (
               <div key={field.id} className="flex items-center gap-2 mb-2">
                 <InputField
@@ -179,33 +175,24 @@ export function SocialProfilesForm({ onComplete, page }: SocialProfilesFormProps
                   placeholder="Company Name"
                   error={errors?.associated_companies?.[index]?.name?.message}
                 />
-                <div
-                  className="flex justify-center items-center size-6 rounded-full shadow-card"
-                  onClick={() => remove(index)}
+                <Button
+                  type="button"
+                  size="rounded"
+                  className="flex items-center"
+                  variant="highlight"
+                  onClick={() => append({ name: "" }, { shouldFocus: false })}
                 >
-                  <span className="size-6 ms-auto">
-                    <IconClose />
+                  <span className="size-6">
+                    <IconPlus />
                   </span>
-                  Remove
-                </div>
-                {/* <Button type="button" variant="secondary" size="sm" onClick={() => remove(index)}>
-                  <span className="size-6 ms-auto">
-                    <IconClose />
-                  </span>{" "}
-                  Remove
-                </Button> */}
-                <div
-                  className="flex justify-center items-center size-6  rounded-full shadow-card"
-                  onClick={() => append({ name: "" })}
-                >
-                  <span className="size-6 ms-auto">
-                    <IconClose />
-                  </span>
-                  Add
-                </div>
-                {/* <Button type="button" onClick={() => append({ name: "" })}>
-                  Add
-                </Button> */}
+                </Button>
+                {fields.length > 1 && (
+                  <Button type="button" size="rounded" onClick={() => remove(index)}>
+                    <span className="size-6">
+                      <IconClose />
+                    </span>
+                  </Button>
+                )}
               </div>
             ))}
           </Grid.Col>

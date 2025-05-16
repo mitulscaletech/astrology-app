@@ -245,7 +245,6 @@ export function BasicInfoForm({ onComplete, page }: IBasicInfoFormProps) {
               onChange={(value, country: any) => handleChangeMobile(value, country)}
               inputProps={{ name: "phone-input" }}
               inputStyle={{ width: "100%", height: "40px" }}
-              disableCountryCode={Boolean(getValues("country_code"))}
               disabled={Boolean(getValues("mobile_number"))}
             />
             {errors.mobile_number && <p className="text-danger text-sm mt-1">{errors.mobile_number.message}</p>}

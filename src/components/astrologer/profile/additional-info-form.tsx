@@ -40,6 +40,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset
   } = useForm({
@@ -61,7 +62,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
           if (!response.is_error) {
             if (typeof additionalData.video !== "string") {
               const formData = new FormData();
-              formData.append("media_file", additionalData.video[0]);
+              formData.append("media_file", additionalData.video);
               formData.append("media_type", "video");
               const data = await HttpService.post(API_CONFIG.uploadMedia, formData, {
                 contentType: "multipart/form-data"
@@ -173,10 +174,6 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
                         Brief intro, your expertise, and how you guide people.
                       </Typography>
                     </div>
-                    {/* <Button>
-                          <UploadIcon />
-                          Upload Video File
-                        </Button> */}
                     <label className="w-full bg-primary hover:bg-primary/80 py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors cursor-pointer">
                       <UploadIcon />
                       <span className="text-accent-white text-lg font-semibold">Upload Video File</span>
@@ -186,10 +183,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
                         className="hidden"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
-                          if (file) {
-                            console.log("Selected file:", file);
-                            // Handle the file upload logic here
-                          }
+                          setValue("video", file ? file : "");
                         }}
                       />
                     </label>

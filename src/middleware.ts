@@ -16,13 +16,7 @@ interface TokenData {
 }
 
 // Define public routes by role
-const PUBLIC_ROUTES = new Set([
-  "/astrologer/login",
-  "/astrologer/signup",
-  "/user/login",
-  "/user/signup",
-  "/admin/login"
-]);
+const PUBLIC_ROUTES = new Set(["/login", "/signup", "/admin/login"]);
 
 // Main Middleware
 export async function middleware(req: NextRequest) {

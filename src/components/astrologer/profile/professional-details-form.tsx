@@ -1,9 +1,10 @@
+/* eslint-disable indent */
 "use client";
 
 import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
-import { ISpecialization } from "next-auth";
+import { ICustomSpecialization, ISpecialization } from "next-auth";
 
 import * as yup from "yup";
 import toast from "react-hot-toast";
@@ -41,45 +42,70 @@ interface FormValues {
     value: string;
     label: string;
   };
-  custom_specialization: {
-    specialization_name: string;
-    specialization_desc: string;
-  };
+  custom_specialization: ICustomSpecialization[];
 }
 
-const schema = yup.object().shape({
-  years_of_experience: yup
-    .number()
-    .typeError("Experience must be a number")
-    .required("Experience is required")
-    .min(1, "Must be at least 1 year")
-    .max(50, "Must be less than 50 years"),
-  specializations: yup
-    .array()
-    .of(
-      yup.object().shape({
-        specialization_id: yup.string().required()
+const schema = yup
+  .object()
+  .shape({
+    years_of_experience: yup
+      .number()
+      .typeError("Experience must be a number")
+      .required("Experience is required")
+      .min(1, "Must be at least 1 year")
+      .max(50, "Must be less than 50 years"),
+    specializations: yup
+      .array()
+      .of(
+        yup.object().shape({
+          specialization_id: yup.string().required()
+        })
+      )
+      .nullable(),
+    certification: yup.mixed().test("is-file-or-string", "Certificate is required", function (value) {
+      return value !== null && value !== undefined;
+    }),
+    resume: yup.mixed().nullable(),
+    institute_university_name: yup.string().required("Institute/University name is required"),
+    highest_qualification: yup
+      .object()
+      .shape({
+        value: yup.string().required("Qualification is required"),
+        label: yup.string().required()
       })
-    )
-    .min(1, "Specialization is required")
-    .required("Specialization is required"),
-  certification: yup.mixed().test("is-file-or-string", "Certificate is required", function (value) {
-    return value !== null && value !== undefined;
-  }),
-  resume: yup.mixed().nullable(),
-  institute_university_name: yup.string().required("Institute/University name is required"),
-  highest_qualification: yup
-    .object()
-    .shape({
-      value: yup.string().required("Qualification is required"),
-      label: yup.string().required()
-    })
-    .required("Qualification is required"),
-  custom_specialization: yup.object().shape({
-    specialization_name: yup.string(),
-    specialization_desc: yup.string()
+      .required("Qualification is required"),
+    custom_specialization: yup
+      .array()
+      .of(
+        yup.object().shape({
+          specialization_name: yup.string().required(),
+          specialization_desc: yup.string().required()
+        })
+      )
+      .nullable()
   })
-}) as yup.ObjectSchema<FormValues>;
+  .test("specialization-or-custom", "Either Specialization or Custom Specialization is required", function (value) {
+    console.log(" value:", value);
+    const { createError } = this;
+
+    const hasSelectedSpecializations = Array.isArray(value?.specializations) && value.specializations.length > 0;
+
+    const hasCustomSpecialization =
+      Array.isArray(value?.custom_specialization) &&
+      value.custom_specialization.length > 0 &&
+      value.custom_specialization[0].specialization_desc.trim().length > 0;
+
+    if (!hasSelectedSpecializations && !hasCustomSpecialization) {
+      console.log("Error created");
+
+      return createError({
+        path: "specializations", // you can also point to "custom_specialization.specialization_desc"
+        message: "Either Specialization or Custom Specialization is required"
+      });
+    }
+
+    return true;
+  }) as yup.ObjectSchema<FormValues>;
 
 export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetailsFormProps) {
   const { update, data: session } = useSession();
@@ -92,6 +118,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
     reset,
     getValues,
     watch,
+    trigger,
     formState: { errors }
   } = useForm<FormValues>({
     mode: "all",
@@ -106,6 +133,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
       const params = {
         years_of_experience: data.years_of_experience,
         specializations: data.specializations,
+        custom_specialization: data.custom_specialization,
         highest_qualification: data.highest_qualification.value,
         institute_university_name: data.institute_university_name,
         completed_steps: getCurrentStep(
@@ -140,6 +168,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
       update({
         ...session?.user,
         specializations: params.specializations,
+        custom_specialization: params.custom_specialization,
         intake_form: {
           ...session?.user?.intake_form,
           years_of_experience: data.years_of_experience,
@@ -179,31 +208,28 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
       shouldDirty: true,
       shouldTouch: true
     });
-    setValue("custom_specialization", {
-      specialization_name: "",
-      specialization_desc: ""
-    });
+    setValue("custom_specialization", []);
   };
-
   const handleCustomSpecialization = (value: string) => {
-    setValue("specializations", [], {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true
-    });
+    setValue("specializations", []);
 
     setValue(
       "custom_specialization",
-      {
-        specialization_name: "Other",
-        specialization_desc: value
-      },
+      value.trim()
+        ? [
+            {
+              specialization_name: "Other",
+              specialization_desc: value
+            }
+          ]
+        : [],
       {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true
       }
     );
+    trigger("specializations");
   };
 
   useEffect(() => {
@@ -214,14 +240,14 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
         highest_qualification,
         institute_university_name
       } = session?.user?.intake_form || {};
-
       reset({
         years_of_experience: years_of_experience,
         highest_qualification: HIGHTEST_QUALIFICATION.find((que) => que.value === highest_qualification),
         institute_university_name: institute_university_name,
         specializations: session?.user?.specializations,
         resume: getMediaFile(session.user.media_files, "resume"),
-        certification: getMediaFile(session.user.media_files, "certification")
+        certification: getMediaFile(session.user.media_files, "certification"),
+        custom_specialization: session?.user?.custom_specialization
       });
     }
   }, [session, reset]);
@@ -280,7 +306,7 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
                   <InputButton
                     label="Other:"
                     placeholder="Future, Fortune..."
-                    value={getValues("custom_specialization")?.specialization_desc || ""}
+                    value={getValues("custom_specialization")?.[0]?.specialization_desc || []}
                     onChange={(e) => handleCustomSpecialization(e.target.value)}
                   />
                 </Grid.Col>
@@ -288,9 +314,6 @@ export function ProfessionalDetailsForm({ onComplete, page }: ProfessionalDetail
             </div>
             {errors.specializations && (
               <p className="mt-0.5 ml-1 text-sm text-primary">{errors.specializations?.message}</p>
-            )}
-            {errors.custom_specialization && (
-              <p className="mt-0.5 ml-1 text-sm text-primary">{errors.custom_specialization?.message}</p>
             )}
           </Grid.Col>
           <Grid.Col>

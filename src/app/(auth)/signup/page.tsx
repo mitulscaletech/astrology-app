@@ -109,19 +109,13 @@ export default function Login() {
         role: activeTab
       })
         .then(async (response) => {
-          debugger;
           if (!response.is_error) {
-            const mockUser = {
-              mobile_number: mobileNumber,
-              access_token: response.data.token,
-              country_code: countryCode
-            };
             await signIn("credentials", {
               redirect: false,
-              token: JSON.stringify(mockUser)
+              // token: JSON.stringify(mockUser)
+              token: JSON.stringify({ ...response.data.user, access_token: response.data.token })
             });
             const status = response.data.user.status;
-            debugger;
             const path =
               activeTab === ROLE.astrologer ? handleAstrologerRedirect(status) : handleUserStatusRedirect(status);
 
@@ -214,7 +208,8 @@ export default function Login() {
     HttpService.post(API_CONFIG.sendOtp, {
       country_code: countryCode,
       mobile_number: mobileNumber,
-      captcha_token: captchaToken
+      //captcha_token: captchaToken,
+      role: activeTab
     })
       .then((response) => {
         if (!response.is_error) {
@@ -386,7 +381,7 @@ export default function Login() {
                 variant="highlight"
                 className="cosmic-button"
                 onClick={manageSendOtp}
-                disabled={!isCaptchaVerified}
+                disabled={!isCaptchaVerified || !captchaToken}
               >
                 CONTINUE
               </Button>
