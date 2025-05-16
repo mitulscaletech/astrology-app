@@ -36,6 +36,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
   const router = useRouter();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isAgreementChecked, setIsAgreementChecked] = useState(false);
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
 
   const {
     register,
@@ -99,14 +100,21 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
       toast.error("Failed to submit profile");
     }
   };
+  const handleUploadVideo = (video: FileList | null) => {
+    if (video?.length) {
+      setValue("video", video[0]);
+      setVideoPreview(URL.createObjectURL(video[0]));
+    }
+  };
 
   useEffect(() => {
     if (session?.user) {
       const { short_bio } = session.user.intake_form;
-
+      const video = getMediaFile(session.user.media_files, "video");
+      setVideoPreview(video);
       reset({
         short_bio: short_bio,
-        video: getMediaFile(session.user.media_files, "video")
+        video: video
       });
     }
   }, [session, reset]);
@@ -141,13 +149,17 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
             <div className="border border-dashed border-secondary/30 rounded-md p-6">
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 <div className="w-full md:w-1/3">
-                  {/* <div className="bg-gray-200 rounded-md aspect-square max-w-[200px] mx-auto flex items-center justify-center"> */}
                   <div className="min-[200px] h-28  rounded-full flex items-center justify-center">
-                    <UserThumbnail />
+                    {videoPreview ? (
+                      <video key={videoPreview} controls={false} className="w-full max-w-md rounded-md">
+                        <source src={videoPreview} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <UserThumbnail />
+                    )}
                   </div>
-                  {/* </div> */}
                 </div>
-
                 <div className="w-full md:w-2/3">
                   <Typography variant="h4" size="h4-head" className="text-3.5xl font-bold mb-3">
                     Video Record
@@ -181,10 +193,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
                         type="file"
                         accept="video/*"
                         className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          setValue("video", file ? file : "");
-                        }}
+                        onChange={(e) => handleUploadVideo(e.target.files)}
                       />
                     </label>
                   </div>
@@ -217,6 +226,7 @@ export function AdditionalInfoForm({ onComplete, page }: IAdditionalInfoProps) {
                       Terms & Conditions
                     </Link>
                   </span>
+                  file
                 </label>
               </Grid.Col>
               <Grid.Col>

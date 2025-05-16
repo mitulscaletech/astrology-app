@@ -51,6 +51,7 @@ declare module "next-auth" {
       };
       specializations: ISpecialization[];
       media_files: IMediaFile[];
+      custom_specialization: ICustomSpecialization[];
     };
   }
   interface IAssociatedCompany {
@@ -60,6 +61,10 @@ declare module "next-auth" {
     specialization_id: string;
     specialization_name: string;
     description: string;
+  }
+  interface ICustomSpecialization {
+    specialization_name: string;
+    specialization_desc: string;
   }
   interface IOption {
     value: string;
