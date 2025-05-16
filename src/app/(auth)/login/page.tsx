@@ -219,7 +219,8 @@ export default function Login() {
     HttpService.post(API_CONFIG.sendOtp, {
       country_code: countryCode,
       mobile_number: mobileNumber,
-      captcha_token: captchaToken
+      role: activeTab
+      // captcha_token: captchaToken,
     })
       .then((response) => {
         if (!response.is_error) {

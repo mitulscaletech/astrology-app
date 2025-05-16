@@ -64,7 +64,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         children: (
           <>
             {isLoading && <Spinner />}
-            <span className={isLoading ? "opacity-0" : ""}>{(child as React.ReactElement).props.children}</span>
+            <span className={isLoading ? "opacity-0" : "inline-flex gap-1 md:gap-1.5 2xl:gap-2.5"}>
+              {(child as React.ReactElement).props.children}
+            </span>
           </>
         )
       });
@@ -73,7 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp className={buttonClasses} ref={ref} disabled={isLoading || props.disabled} {...props}>
         {isLoading && <Spinner />}
-        <span className={isLoading ? "opacity-0" : ""}>{children}</span>
+        <span className={isLoading ? "opacity-0" : "inline-flex gap-1 md:gap-1.5 2xl:gap-2.5"}>{children}</span>
       </Comp>
     );
   }
