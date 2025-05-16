@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Playfair_Display } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import "./globals.css";
+
 import AuthProvider from "@/components/auth-provider";
-import "react-phone-input-2/lib/style.css";
 import { LoaderProvider } from "@/context/LoaderContext";
+
+import "./globals.css";
+import "@/assets/scss/phone-input.scss";
+import "react-phone-input-2/lib/style.css";
 
 const inter = Inter({
   weight: ["400", "500", "600", "700"],

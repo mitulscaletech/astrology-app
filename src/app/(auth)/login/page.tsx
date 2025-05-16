@@ -25,8 +25,6 @@ import { DEFAULT_COUNTRY_CODE, LOGIN_ANIMATION_VARIANTS, ROLE } from "@/shared/c
 import { handleUserStatusRedirect } from "@/lib/utils";
 import { handleAstrologerRedirect } from "@/lib/utils-server";
 
-import "@/assets/scss/phone-input.scss";
-
 import {
   FacebookAuthProvider,
   fetchSignInMethodsForEmail,
