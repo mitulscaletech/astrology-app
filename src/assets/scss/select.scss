@@ -1,6 +1,6 @@
 .custom-select-container {
   .custom-select__control {
-    @apply bg-accent-white border-2 rounded-lg text-lg font-medium border-secondary/30 min-h-12 md:min-h-15;
+    @apply bg-accent-white border-2 rounded-lg text-lg font-medium border-secondary/30 min-h-12 md:min-h-14;
     box-shadow: none;
     &:hover {
       @apply border-secondary;
@@ -89,8 +89,8 @@
   // .custom-lable { }
   .custom-select-container {
     .custom-select__value-container {
-      padding-top: 22px;
-      padding-bottom: 2px;
+      padding-top: 20px;
+      padding-bottom: 0px;
     }
   }
 }

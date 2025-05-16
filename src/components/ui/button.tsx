@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex text-xs md:text-sm lg:text-small border-2 xl:text-base 2xl:text-lg gap-1 md:gap-1.5 2xl:gap-2.5 items-center justify-center tracking-[0.04em] uppercase whitespace-nowrap rounded-md font-semibold ring-offset-secondary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex text-xs md:text-sm lg:text-small border-2 xl:text-base 2xl:text-lg gap-1 md:gap-1.5 2xl:gap-2.5 items-center justify-center tracking-[0.04em] uppercase whitespace-nowrap rounded-md font-semibold ring-offset-secondary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative",
   {
     variants: {
       variant: {
@@ -36,16 +36,46 @@ const buttonVariants = cva(
   }
 );
 
+const Spinner = () => (
+  <span
+    className="block absolute start-1/2 top-1/2 -m-2 xl:-m-2.5 size-4 xl:size-5 border-2 border-current border-t-transparent rounded-full animate-spin align-middle"
+    aria-label="Loading"
+  />
+);
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild, ...props }, ref) => {
+  ({ className, variant, size, asChild, isLoading, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    const buttonClasses = cn(buttonVariants({ variant, size, className }));
+
+    if (asChild) {
+      const child = React.Children.only(children);
+      return React.cloneElement(child as React.ReactElement, {
+        className: cn(buttonClasses, (child as React.ReactElement).props.className),
+        disabled: isLoading || props.disabled,
+        ...props,
+        children: (
+          <>
+            {isLoading && <Spinner />}
+            <span className={isLoading ? "opacity-0" : ""}>{(child as React.ReactElement).props.children}</span>
+          </>
+        )
+      });
+    }
+
+    return (
+      <Comp className={buttonClasses} ref={ref} disabled={isLoading || props.disabled} {...props}>
+        {isLoading && <Spinner />}
+        <span className={isLoading ? "opacity-0" : ""}>{children}</span>
+      </Comp>
+    );
   }
 );
 Button.displayName = "Button";

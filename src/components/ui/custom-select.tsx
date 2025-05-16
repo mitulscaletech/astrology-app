@@ -63,7 +63,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     >
       {label && (
         <label
-          className={`custom-lable text-base absolute pointer-events-none top-1/2 start-3 z-2 duration-300 transform ${isFocused ? "text-secondary" : "text-secondary/50"} ${isFocused || hasValue ? "-translate-y-full" : "-translate-y-1/2"}`}
+          className={`custom-lable absolute pointer-events-none top-1/2 start-3.5 z-2 duration-300 transform ${isFocused ? "text-secondary" : "text-secondary/50"} ${isFocused || hasValue ? "-translate-y-full md:-translate-y-[125%] text-xs" : "-translate-y-1/2 text-base"}`}
         >
           {label}
         </label>

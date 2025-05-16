@@ -50,7 +50,7 @@ const CommonTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex-1 py-2.5 lg:py-3 text-small md:text-base lg:text-md 2xl:text-lg font-semibold transition-all focus:outline-none rounded-lg lg:rounded-xl relative z-10",
+      "flex-1 py-2 md:py-2.5 lg:py-3 text-sm md:text-base lg:text-md 2xl:text-lg font-semibold transition-all focus:outline-none rounded-lg lg:rounded-xl relative z-10",
       "data-[state=active]:bg-primary data-[state=active]:!text-primary-100",
       "data-[state=inactive]:bg-white data-[state=inactive]:text-primary",
       className

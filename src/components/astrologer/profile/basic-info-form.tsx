@@ -237,7 +237,6 @@ export function BasicInfoForm({ onComplete, page }: IBasicInfoFormProps) {
             />
           </Grid.Col>
           <Grid.Col className="md:w-6/12">
-            <Label htmlFor="mobile">Mobile Number *</Label>
             <PhoneInput
               country="in"
               value={`${getValues("country_code")}${getValues("mobile_number")}`}
