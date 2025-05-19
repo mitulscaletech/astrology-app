@@ -43,7 +43,7 @@ const AstrologyCard: FC<AstrologyCardProps> = ({
         </Typography>
         <div className="text-end mt-auto">
           <Button asChild variant="highlight" className="mt-3 md:mt-4 xl:mt-5 2xl:mt-6 3xl:mt-8">
-            <Link href="/">{btnText}</Link>
+            <Link href="/astrology/holistic-life-blueprint">{btnText}</Link>
           </Button>
         </div>
       </div>

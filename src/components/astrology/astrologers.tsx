@@ -65,7 +65,7 @@ const Astrologers = () => {
               all our Sessions
             </Typography>
             <Typography variant="h3" size="h4" className="font-bold">
-              How to Book Your Session
+              Meet our Astrologers
             </Typography>
           </div>
           {ASTROLOGY_DATA?.map((astrology) => {

@@ -89,7 +89,7 @@ const AstrologyList = () => {
                           variant="highlight"
                           className="mt-4 md:mt-5 xl:mt-5 2xl:mt-6 3xl:mt-8 mb-2 md:mb-0"
                         >
-                          <Link href="/">Learn More</Link>
+                          <Link href="/astrology/holistic-life-blueprint">Learn More</Link>
                         </Button>
                       </div>
                     </div>
