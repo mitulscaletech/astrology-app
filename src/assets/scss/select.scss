@@ -79,8 +79,11 @@
     }
   }
   &.size-sm {
+    .custom-select__control {
+      @apply min-h-10 md:min-h-12;
+    }
     .custom-select__value-container {
-      @apply min-h-12 py-1 px-3;
+      @apply pe-1 ps-2.5 md:ps-3 py-1 md:py-1.5;
     }
   }
 }

@@ -225,6 +225,7 @@ export default function AvailableTimeTab() {
                                 parentClass="w-32"
                                 placeholder="Select time"
                                 isFloatingLabel={false}
+                                size="sm"
                               />
                               <span className="text-foreground">to</span>
                               <CustomSelect
