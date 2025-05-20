@@ -47,7 +47,7 @@ export default function AstrologerProfile() {
 
   const handleTabChange = (newStep: string) => {
     if (session?.user?.status === USER_PROFILE_STATUS.AWAITING_FINAL_REVIEW) {
-      setStep("5");
+      setStep(newStep);
     } else {
       if (Number(newStep) < (session?.user?.intake_form?.completed_steps ?? 1)) {
         setStep(newStep);

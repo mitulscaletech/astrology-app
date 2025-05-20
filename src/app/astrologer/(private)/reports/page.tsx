@@ -15,7 +15,7 @@ import Typography from "@/components/ui/typography";
 import { InputField } from "@/components/ui/custom-input";
 
 import IconClose from "@/shared/icons/close";
-import { IconDownload, IconPlus } from "@/shared/icons/booking";
+import { IconUpload, IconPlus } from "@/shared/icons/booking";
 
 const schema = yup.object().shape({
   name: yup.string().url("Enter a valid Instagram URL").notRequired(),
@@ -206,7 +206,7 @@ export default function ReportsPage() {
                       className="bg-primary py-2 px-4 rounded-md flex items-center"
                     >
                       <span className="size-6">
-                        <IconDownload />
+                        <IconUpload />
                       </span>
                       Upload Image
                     </Button>
@@ -239,7 +239,7 @@ export default function ReportsPage() {
                       className="bg-primary py-2 px-4 rounded-md flex items-center"
                     >
                       <span className="size-6">
-                        <IconDownload />
+                        <IconUpload />
                       </span>
                       Upload Image
                     </Button>

@@ -21,7 +21,7 @@ export default function AstrologerDashboard() {
           </Typography>
         </div>
         <div className="flex justify-start gap-6">
-          <Button asChild variant="outline">
+          <Button asChild variant="outline-secondary">
             <div className="flex">
               <Typography size="p" className="text-lg font-semibold text-secondary">
                 Auto-Accept Bookings

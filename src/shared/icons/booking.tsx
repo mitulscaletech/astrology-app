@@ -30,7 +30,7 @@ export const IconPlus = () => (
     </g>
   </svg>
 );
-export const IconDownload = () => (
+export const IconUpload = () => (
   <svg
     className="w-full h-full block"
     width="25"
