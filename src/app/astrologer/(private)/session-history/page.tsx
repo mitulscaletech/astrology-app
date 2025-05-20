@@ -4,10 +4,11 @@ import React, { useState } from "react";
 
 import clsx from "clsx";
 import Typography from "@/components/ui/typography";
-import { IconPastSession, IconPaymentDetails } from "@/shared/icons/session-history";
+import { IconPastSession, IconPaymentDetails, IconSessionProvided } from "@/shared/icons/session-history";
 import { IconNext } from "@/shared/icons/my-profile";
 import PastSession from "@/components/astrologer/session-history/past-session";
 import PayoutDetails from "@/components/astrologer/session-history/payout-details";
+import ProvidedSessionCard from "@/components/astrologer/session-history/provided-session";
 
 export default function SessionHistory() {
   const [activeStep, setActiveStep] = useState(1);
@@ -15,6 +16,12 @@ export default function SessionHistory() {
   const steps = [
     {
       id: 1,
+      label: "Provided Session",
+      icon: <IconSessionProvided />,
+      content: <ProvidedSessionCard />
+    },
+    {
+      id: 2,
       label: "Past Session",
       icon: <IconPastSession />,
       content: <PastSession />
