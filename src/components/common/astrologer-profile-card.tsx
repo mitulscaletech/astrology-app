@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -14,6 +14,8 @@ import IconGroups from "@/shared/icons/groups";
 import DeleteDialog from "./delete-dialog";
 import ImageCropDialog from "./image-crop-dialog";
 import astrologerImg1 from "@/assets/images/dummy/astrologer-01.jpg";
+import HttpService from "@/shared/services/http.service";
+import { API_CONFIG } from "@/shared/constants/api";
 
 const DATA = {
   id: 1,
@@ -38,12 +40,24 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
   const [currentImage, setCurrentImage] = useState<FileList | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openImageCropDialog, setOpenImageCropDialog] = useState(false);
+  const [sessionDetails, setSessionDetails] = useState({ total_active_session: 0, total_session: 0 });
 
   const handleUploadMedia = (file: FileList | null) => {
     console.log(" file:", file);
     setCurrentImage(file);
     setOpenImageCropDialog(true);
   };
+
+  const getDashboardStatistics = () => {
+    HttpService.get(API_CONFIG.dashboardStatistic).then((response) => {
+      if (!response.is_error) {
+        setSessionDetails(response.data);
+      }
+    });
+  };
+  useEffect(() => {
+    getDashboardStatistics();
+  }, []);
 
   return (
     <div className="flex items-start flex-col md:flex-row my-2 lg:my-4 2xl:my-6 gap-4 md:gap-6 lg:gap-8 xl:gap-8 2xl:gap-12 4xl:gap-14 py-4 md:py-6 lg:py-8 xl:py-8 2xl:py-12 4xl:py-14 px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-14 4xl:px-16 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card">
@@ -79,13 +93,13 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
               <span className="size-5 lg:size-6">
                 <IconVideo />
               </span>
-              {DATA.activeSessions} Active Sessions
+              {sessionDetails.total_active_session || 0} Active Sessions
             </p>
             <p className="flex gap-3 items-center">
               <span className="size-5 lg:size-6">
                 <IconGroups />
               </span>
-              {DATA.totalSessions} Total Sessions
+              {sessionDetails.total_session || 0} Total Sessions
             </p>
           </div>
           {isButtons && (

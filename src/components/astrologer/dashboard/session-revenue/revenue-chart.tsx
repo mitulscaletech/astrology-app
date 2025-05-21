@@ -1,16 +1,13 @@
 "use client";
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from "recharts";
-import { BadgePercent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Typography from "@/components/ui/typography";
+import { IGraph } from "@/shared/interface";
 
 interface RevenueChartProps {
-  data: {
-    name: string;
-    revenue: number;
-  }[];
-  totalRevenue: string;
+  data: IGraph[];
+  totalRevenue: number;
   percentageChange: number;
   className?: string;
 }
@@ -43,14 +40,14 @@ const RevenueChart = ({ data, totalRevenue, percentageChange, className }: Reven
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e4e4e4" />
-            <XAxis hide={true} dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
+            <XAxis hide={true} dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
             <YAxis hide={true} />
             <Tooltip
               content={({ active, payload }) => {
-                if (active && payload?.[0]?.payload?.name && payload?.[0]?.value) {
+                if (active && payload?.[0]?.payload?.month && payload?.[0]?.value) {
                   return (
                     <div className="bg-primary text-accent-white text-sm lg:text-small px-2 py-1 rounded-full">
-                      <p className="font-medium">{`${payload[0].payload.name}: Rs. ${payload[0].value.toLocaleString()}`}</p>
+                      <p className="font-medium">{`${payload[0].payload.month}: Rs. ${payload[0].value.toLocaleString()}`}</p>
                     </div>
                   );
                 }
@@ -59,7 +56,7 @@ const RevenueChart = ({ data, totalRevenue, percentageChange, className }: Reven
             />
             <Area
               type="monotone"
-              dataKey="revenue"
+              dataKey="amount"
               stroke="rgb(var(--primary-500))"
               strokeWidth={4}
               fill="url(#colorRevenue)"

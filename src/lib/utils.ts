@@ -6,6 +6,8 @@ import HttpService from "@/shared/services/http.service";
 import { twMerge } from "tailwind-merge";
 import toast from "react-hot-toast";
 import { IMediaFile } from "next-auth";
+import { IGraph } from "@/shared/interface";
+import moment from "moment";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -130,4 +132,13 @@ export const getFileName = (url: string | FileList[]): string => {
     return url[0]?.name;
   }
   return "";
+};
+
+export const transformGraphData = (data: IGraph[]) => {
+  const modifiedData = data?.map((item) => ({
+    ...item,
+    name: moment(item.month).format("MMM"), // e.g., "Apr"
+    count: item.count // Ensure count is a number
+  }));
+  return modifiedData;
 };

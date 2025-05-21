@@ -176,8 +176,33 @@ export interface CalendarEvent {
   category: EventCategory;
   status: EventStatus;
   description?: string;
+
+  booking_id: string;
+  google_calendar_event_id: any;
+  booking_date: string;
+  start_time: string;
+  end_time: string;
+  timezone: string;
+  date_time_place_of_birth: any;
+  questions: any;
+  session_count: any;
+  payment_status: string;
+  cancellation_policy: string;
+  google_calendar_sync: boolean;
+  created_at: string;
+  updated_at: string;
+  service: IService;
 }
 
+export interface IService {
+  service_id: string;
+  service_name: string;
+  description: string;
+  admin_defined: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
 export interface Review {
   id: string;
   user: {
@@ -203,4 +228,23 @@ export interface ReviewSummary {
     2: number;
     1: number;
   };
+}
+
+export interface IInsights {
+  session: ISessionChart;
+  revenue: IRevenueChart;
+}
+
+export interface ISessionChart {
+  graph: IGraph[];
+  total_session: number;
+}
+
+export interface IRevenueChart {
+  graph: IGraph[];
+  total_revenue: number;
+}
+export interface IGraph {
+  month: string;
+  count: string;
 }

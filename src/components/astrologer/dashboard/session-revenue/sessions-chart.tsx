@@ -13,20 +13,17 @@ import {
   Cell
 } from "recharts";
 import { cn } from "@/lib/utils";
+import { IGraph } from "@/shared/interface";
 
-interface SessionsChartProps {
-  data: {
-    name: string;
-    sessions: number;
-    isHighlighted?: boolean;
-  }[];
+export interface ISessionsChartProps {
+  data: IGraph[];
   totalSessions: number;
   period: string;
   lastRecord: number;
   className?: string;
 }
 
-const SessionsChart = ({ data, totalSessions, period, lastRecord, className }: SessionsChartProps) => {
+const SessionsChart = ({ data, totalSessions, period, lastRecord, className }: ISessionsChartProps) => {
   return (
     <div className={cn("relative bg-secondary/5 p-4 xl:p-6 rounded-lg xl:rounded-xl 3xl:rounded-2xl", className)}>
       <div className="mb-6">
@@ -40,7 +37,7 @@ const SessionsChart = ({ data, totalSessions, period, lastRecord, className }: S
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} barSize={30}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgb(var(--secondary-500) / 0.1)" />
-            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
+            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
             <YAxis hide={true} />
             <Tooltip
               cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
@@ -63,7 +60,7 @@ const SessionsChart = ({ data, totalSessions, period, lastRecord, className }: S
             >
               <Label value={`${lastRecord}+`} position="right" fill="#000" fontSize={12} offset={10} />
             </ReferenceLine>
-            <Bar dataKey="sessions" radius={[8, 8, 8, 8]} fill="rgb(var(--secondary-500))">
+            <Bar dataKey="count" radius={[8, 8, 8, 8]} fill="rgb(var(--secondary-500))">
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}

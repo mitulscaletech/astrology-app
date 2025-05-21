@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Calendar as BigCalendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import { CalendarEvent } from "@/shared/interface";
-import { events } from "@/lib/data";
 import EventPopup from "@/components/common/custom-big-calendar/event-popup";
 import CustomHeader from "@/components/common/custom-big-calendar/custom-header";
 import EventComponent from "@/components/common/custom-big-calendar/event-component";
@@ -16,8 +15,14 @@ import CustomDateHeader from "@/components/astrologer/booking/custom-date-header
 
 // Setup localizer for the calendar
 const localizer = momentLocalizer(moment);
+interface ICalenderProps {
+  sessionList: any;
+}
 
-const CustomBigCalendar = () => {
+const CustomBigCalendar = (props: ICalenderProps) => {
+  const { sessionList } = props;
+  console.log("sessionList", sessionList);
+
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
   const { width } = useWindowSize();
@@ -53,7 +58,7 @@ const CustomBigCalendar = () => {
     <div className="small-section">
       <BigCalendar
         localizer={localizer}
-        events={events}
+        events={sessionList}
         startAccessor="start"
         endAccessor="end"
         // style={{ height: "100%" }}

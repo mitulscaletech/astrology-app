@@ -17,7 +17,10 @@ export const API_CONFIG = {
   verifyCaptcha: "user/verify-recaptcha",
   astrologerList: "astrologer",
   booking: "booking",
-  specialization: "astrologer/specialization"
+  specialization: "astrologer/specialization",
+  dashboardStatistic: "astrologer/dashboard-statistics",
+  astrologerCalender: "astrologer-schedules/calendar-view",
+  insights: "astrologer/statistic-insights"
 };
 
 export const getUrl = (url: string, params: any = {}): string => {
