@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { format, addMonths } from "date-fns";
-import DatePicker from "react-datepicker";
+import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "../Calendar";
-import { TimePicker } from "../TimePicker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Typography from "@/components/ui/typography";
+import Grid from "@/components/ui/grid";
+import IconClose from "@/shared/icons/close";
+import CustomSelect from "@/components/ui/custom-select";
+import IconDuplicate from "@/shared/icons/duplicate";
+import IconTimezone from "@/shared/icons/timezone";
 
 type UnavailableDate = {
   date: Date;
@@ -20,8 +23,77 @@ type UnavailableDate = {
   }[];
 };
 
+const timeOptions = [
+  "7:30 AM",
+  "7:45 AM",
+  "8:00 AM",
+  "8:15 AM",
+  "8:30 AM",
+  "8:45 AM",
+  "9:00 AM",
+  "9:15 AM",
+  "9:30 AM",
+  "9:45 AM",
+  "10:00 AM",
+  "10:15 AM",
+  "10:30 AM",
+  "10:45 AM",
+  "11:00 AM",
+  "11:15 AM",
+  "11:30 AM",
+  "11:45 AM",
+  "12:00 PM",
+  "12:15 PM",
+  "12:30 PM",
+  "12:45 PM",
+  "1:00 PM",
+  "1:15 PM",
+  "1:30 PM",
+  "1:45 PM",
+  "2:00 PM",
+  "2:15 PM",
+  "2:30 PM",
+  "2:45 PM",
+  "3:00 PM",
+  "3:15 PM",
+  "3:30 PM",
+  "3:45 PM",
+  "4:00 PM",
+  "4:15 PM",
+  "4:30 PM",
+  "4:45 PM",
+  "5:00 PM",
+  "5:15 PM",
+  "5:30 PM",
+  "5:45 PM",
+  "6:00 PM",
+  "6:15 PM",
+  "6:30 PM",
+  "6:45 PM",
+  "7:00 PM",
+  "7:15 PM",
+  "7:30 PM",
+  "7:45 PM",
+  "8:00 PM",
+  "8:15 PM",
+  "8:30 PM",
+  "8:45 PM",
+  "9:00 PM",
+  "9:15 PM",
+  "9:30 PM",
+  "9:45 PM",
+  "10:00 PM",
+  "10:15 PM",
+  "10:30 PM",
+  "10:45 PM",
+  "11:00 PM",
+  "11:15 PM",
+  "11:30 PM",
+  "11:45 PM"
+];
+const timeSelectOptions = timeOptions.map((t) => ({ value: t, label: t }));
+
 export default function UnavailableTimeTab() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [timezone, setTimezone] = useState("India (GMT)");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [unavailableDates, setUnavailableDates] = useState<UnavailableDate[]>([
@@ -34,18 +106,6 @@ export default function UnavailableTimeTab() {
 
   const [isAllDay, setIsAllDay] = useState(false);
   const [timeRange, setTimeRange] = useState({ from: "9:00 AM", to: "12:00 PM" });
-
-  const dateToString = (date: Date) => {
-    return format(date, "MMM d, yyyy");
-  };
-
-  const handlePrevMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, -1));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, 1));
-  };
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -63,31 +123,6 @@ export default function UnavailableTimeTab() {
     } else {
       setIsAllDay(false);
       setTimeRange({ from: "9:00 AM", to: "12:00 PM" });
-    }
-  };
-
-  const toggleDateAvailability = () => {
-    if (!selectedDate) return;
-
-    const existingDateIndex = unavailableDates.findIndex(
-      (item) => format(item.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
-    );
-
-    if (existingDateIndex !== -1) {
-      // Remove the date if it exists
-      const updatedDates = [...unavailableDates];
-      updatedDates.splice(existingDateIndex, 1);
-      setUnavailableDates(updatedDates);
-    } else {
-      // Add the date if it doesn't exist
-      setUnavailableDates([
-        ...unavailableDates,
-        {
-          date: selectedDate,
-          allDay: isAllDay,
-          timeRanges: isAllDay ? [] : [timeRange]
-        }
-      ]);
     }
   };
 
@@ -141,146 +176,136 @@ export default function UnavailableTimeTab() {
     }
   };
 
-  const isDateUnavailable = (date: Date): boolean => {
-    return unavailableDates.some((item) => format(item.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd"));
-  };
-
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="p-6">
-        <div className="space-y-6 mb-6">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">Set Unavailable Hours</h2>
-            <p className="text-muted-foreground">
-              Choose the specific dates and times you won&apos;t be available for sessions.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow-sm border border-primary/5">
-              <div className="p-4 flex items-center justify-between border-b border-primary/5">
-                <button className="p-2 hover:bg-muted rounded-full transition-colors" onClick={handlePrevMonth}>
-                  <ChevronLeft size={16} />
-                </button>
-                <span className="font-medium">
-                  {format(currentMonth, "MMMM")}
-                  <select
-                    className="mx-2 bg-transparent border-none outline-none"
-                    value={format(currentMonth, "yyyy")}
-                    onChange={(e) => {
-                      const newDate = new Date(currentMonth);
-                      newDate.setFullYear(parseInt(e.target.value));
-                      setCurrentMonth(newDate);
-                    }}
-                  >
-                    {[2025, 2026, 2027, 2028].map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </span>
-                <button className="p-2 hover:bg-muted rounded-full transition-colors" onClick={handleNextMonth}>
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-
-              <div className="p-3">
-                <div className="grid grid-cols-7 gap-1 text-center mb-2">
-                  {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => (
-                    <div key={day} className="text-xs text-muted-foreground font-medium py-1">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-
+    <div className="flex-1">
+      <div className="mb-6">
+        <div className="mb-3 md:mb-4 xl:mb-5 2xl:mb-6 4xl:mb-8">
+          <Typography variant="h4" size="h5" className="font-bold mb-1">
+            Set Unavailable Hours
+          </Typography>
+          <p>Choose the specific dates and times you won&apos;t be available for sessions.</p>
+        </div>
+        <div className="4xl:w-11/12">
+          <Grid className="" size="lg">
+            <Grid.Col className="md:w-6/12">
+              <div className="">
                 <Calendar
                   value={selectedDate}
                   onChange={handleDateSelect}
-                  currentMonth={currentMonth}
                   unavailableDates={unavailableDates.map((item) => item.date)}
+                  minYear={2025}
                 />
               </div>
-            </div>
+            </Grid.Col>
+            <Grid.Col className="md:w-6/12">
+              <div>
+                <div className="mb-6">
+                  <Typography variant="h4" size="h5" className="font-bold mb-1 md:mb-2">
+                    Date-specific hours
+                  </Typography>
+                  <p className="">
+                    You can block an entire day or set custom hours.
+                    <b>This ensures clients only book when you&apos;re truly available.</b>
+                  </p>
+                </div>
 
-            <div>
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-2">Date-specific hours</h3>
-                <p className="text-muted-foreground text-sm">
-                  You can block an entire day or set custom hours. This ensures clients only book when you&apos;re truly
-                  available.
-                </p>
-              </div>
-
-              {selectedDate && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{format(selectedDate, "MMM d, yyyy")}</span>
-                    <Switch checked={isDateUnavailable(selectedDate)} onCheckedChange={toggleDateAvailability} />
-                  </div>
-
-                  {isDateUnavailable(selectedDate) && (
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span>Unavailable All day</span>
-                        <Switch checked={isAllDay} onCheckedChange={toggleAllDay} />
-                      </div>
+                {selectedDate && (
+                  <div className="">
+                    <div className="flex items-center justify-between mb-1.5 xl:mb-2">
+                      <Typography variant="h4" size="base" className="text-primary font-medium">
+                        {format(selectedDate, "MMM d, yyyy")}
+                      </Typography>
+                      <Switch checked={isAllDay} onCheckedChange={toggleAllDay} />
+                    </div>
+                    <div className="">
+                      {isAllDay && (
+                        <div className="bg-secondary/10 text-secondary py-2 lg:py-3 px-2 lg:px-3 2xl:px-4 rounded-md inline-flex font-medium">
+                          Unavailable All day
+                        </div>
+                      )}
 
                       {!isAllDay && (
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-muted-foreground mr-1">Unavailable From</span>
-                          <TimePicker value={timeRange.from} onChange={(value) => updateTimeRange("from", value)} />
-                          <span className="mx-2">to</span>
-                          <TimePicker value={timeRange.to} onChange={(value) => updateTimeRange("to", value)} />
-                          <button className="ml-2 p-2 rounded-full bg-muted hover:bg-muted/80 transition-colors">
-                            <X size={16} className="text-foreground" />
-                          </button>
+                        <div>
+                          <p className="text-secondary/50 mb-2 font-medium">Unavailable From</p>
+                          <div className="flex justify-between">
+                            <div className="flex flex-wrap items-center gap-2 md:gap-3 xl:gap-4">
+                              <CustomSelect
+                                value={timeSelectOptions.find((opt) => opt.value === timeRange.from) || null}
+                                onChange={(option) => {
+                                  const selected = Array.isArray(option) ? option[0] : option;
+                                  updateTimeRange("from", (selected as { value: string; label: string })?.value || "");
+                                }}
+                                options={timeSelectOptions}
+                                isMulti={false}
+                                parentClass="w-28 text-center"
+                                placeholder="Select time"
+                                isFloatingLabel={false}
+                                size="sm"
+                                variant="secondary-10"
+                                hideDropdownIndicator={true}
+                              />
+                              <span className="font-medium">to</span>
+                              <CustomSelect
+                                value={timeSelectOptions.find((opt) => opt.value === timeRange.to) || null}
+                                onChange={(option) => {
+                                  const selected = Array.isArray(option) ? option[0] : option;
+                                  updateTimeRange("to", (selected as { value: string; label: string })?.value || "");
+                                }}
+                                options={timeSelectOptions}
+                                isMulti={false}
+                                parentClass="w-28 text-center"
+                                placeholder="Select time"
+                                isFloatingLabel={false}
+                                size="sm"
+                                variant="secondary-10"
+                                hideDropdownIndicator={true}
+                              />
+                            </div>
+                            <div className="flex items-center gap-2 lg:gap-3">
+                              <button className="size-12 inline-flex rounded-full bg-primary/10 text-primary hover:bg-primary/20">
+                                <span className="w-1/2 aspect-square m-auto">
+                                  <IconClose />
+                                </span>
+                              </button>
+                              <button className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20">
+                                <span className="w-1/2 aspect-square m-auto">
+                                  <IconDuplicate />
+                                </span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
 
-              <div className="flex items-center gap-2 mt-6">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3.5 12H2M12 2.5V1M20.5 12H22M12 21.5V23"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span className="text-muted-foreground text-sm">Timezone:</span>
-                <div className="w-56">
-                  <Select value={timezone} onValueChange={setTimezone}>
-                    <SelectTrigger>
-                      <SelectValue>{timezone}</SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="India (GMT)">India (GMT)</SelectItem>
-                      <SelectItem value="Pacific Time (PT)">Pacific Time (PT)</SelectItem>
-                      <SelectItem value="Eastern Time (ET)">Eastern Time (ET)</SelectItem>
-                      <SelectItem value="Central European Time (CET)">Central European Time (CET)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="flex items-center gap-2 mt-3 md:mt-4 xl:mt-5 2xl:mt-6 4xl:mt-8 text-secondary/70">
+                  <span className="size-5 xl:size-6 ">
+                    <IconTimezone />
+                  </span>
+                  <span className="text-muted-foreground text-sm">Timezone:</span>
+                  <div className="w-56">
+                    <Select value={timezone} onValueChange={setTimezone}>
+                      <SelectTrigger>
+                        <SelectValue>{timezone}</SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="India (GMT)">India (GMT)</SelectItem>
+                        <SelectItem value="Pacific Time (PT)">Pacific Time (PT)</SelectItem>
+                        <SelectItem value="Eastern Time (ET)">Eastern Time (ET)</SelectItem>
+                        <SelectItem value="Central European Time (CET)">Central European Time (CET)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </Grid.Col>
+          </Grid>
         </div>
       </div>
-
-      <div className="border-t border-primary/5 p-4 sticky bottom-0 bg-background">
-        <Button>SAVE</Button>
+      <div className="border-t border-primary/5 p-4 sticky bottom-0 bg-background text-end z-2 bg-accent-white/10 backdrop-blur-sm">
+        <Button variant="highlight">SAVE</Button>
       </div>
     </div>
   );

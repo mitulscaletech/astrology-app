@@ -16,6 +16,8 @@ type CustomSelectProps = SelectProps<OptionType, boolean, GroupBase<OptionType>>
   parentClass?: string;
   isFloatingLabel?: boolean;
   size?: "sm";
+  variant?: "secondary-10";
+  hideDropdownIndicator?: boolean;
 };
 
 const DropdownIndicator = (props: any) => (
@@ -32,7 +34,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   isFloatingLabel = true,
   error,
   parentClass,
+  hideDropdownIndicator = false,
   size,
+  variant,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -73,14 +77,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <Select
         {...props}
         isMulti={isMulti}
-        className={`custom-select-container size-${size}`}
+        className={`custom-select-container size-${size} ${variant} ${hideDropdownIndicator ? "hideDropdownIndicator" : ""}`}
         classNamePrefix="custom-select"
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
         placeholder=""
         components={{
-          DropdownIndicator: DropdownIndicator,
+          DropdownIndicator: hideDropdownIndicator ? () => null : DropdownIndicator,
           IndicatorSeparator: () => null
         }}
       />

@@ -5,7 +5,7 @@
   @apply w-full;
 }
 .custom-date-picker.react-datepicker {
-  @apply border-2 border-secondary/30 rounded-md w-full;
+  @apply border-2 border-secondary/20 rounded-md w-full;
   .react-datepicker__month-container {
     @apply w-full;
   }
@@ -35,10 +35,17 @@
   .react-datepicker__month-year-read-view--down-arrow,
   .react-datepicker__navigation-icon::before {
     @apply border-secondary;
+    border-width: 2px 2px 0 0;
   }
 
+  .react-datepicker__month-read-view,
+  .react-datepicker__year-read-view {
+    @apply inline-flex justify-center flex-row-reverse gap-2 items-center text-secondary;
+  }
+
+  .react-datepicker__month-read-view--down-arrow,
   .react-datepicker__year-read-view--down-arrow {
-    @apply top-1;
+    @apply static shrink-0 mb-1;
   }
 
   .react-datepicker__current-month,
@@ -132,6 +139,37 @@
     @apply py-2 md:py-3 lg:py-4 2xl:py-6 3xl:py-7 px-3 md:px-4 lg:px-6 2xl:px-8 3xl:px-10;
     .react-datepicker__day-names {
       @apply mt-3 lg:mt-4 2xl:mt-5 pt-1 lg:pt-2 2xl:pt-3;
+    }
+  }
+  &.astrologer-date-picker {
+    @apply border-secondary/10;
+    .react-datepicker__month-dropdown-container,
+    .react-datepicker__year-dropdown-container {
+      @apply border-2 border-secondary/10 px-4 py-2 rounded-lg xl:rounded-xl;
+    }
+    .react-datepicker__header__dropdown {
+      @apply flex justify-center gap-4 xl:gap-6 mt-1 xl:mt-2;
+    }
+    .react-datepicker__month-read-view,
+    .react-datepicker__year-read-view {
+      @apply min-w-32 text-center;
+    }
+    .react-datepicker__navigation--next {
+      @apply end-4;
+    }
+    .react-datepicker__navigation--previous {
+      @apply start-4;
+    }
+
+    .react-datepicker__navigation--next,
+    .react-datepicker__navigation--previous {
+      @apply top-2 size-10 rounded-lg xl:rounded-xl border-2 border-solid justify-center items-center border-secondary/10 absolute;
+      .react-datepicker__navigation-icon {
+        @apply text-[0px] w-2 mt-0.5;
+        &::before {
+          @apply static;
+        }
+      }
     }
   }
 }

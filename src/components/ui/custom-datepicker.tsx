@@ -7,7 +7,7 @@ import "@/assets/scss/datepicker.scss";
 import { InputField } from "./custom-input";
 
 interface DatePickerFieldProps {
-  label: string;
+  label?: string;
   placeholder: string;
   selected: Date | null;
   onChange: (date: Date | null) => void;
@@ -25,9 +25,12 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
   showTimeOnly = false,
   dateFormat = "dd/MM/yyyy",
   error,
+  isFloatingLabel,
+  variant,
+  inputSize,
   ...props
 }) => {
-  const inputId = label.toLowerCase().replace(/\s+/g, "-");
+  const inputId = label?.toLowerCase().replace(/\s+/g, "-");
 
   const CustomInput = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>(({ ...r }, ref) => {
     return (
@@ -37,11 +40,14 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
           ref={ref}
           label={label}
           placeholder={placeholder}
-          className="pe-10"
+          // className="pe-10"
           id="s"
           type="text"
           autoComplete="off"
           readOnly
+          isFloatingLabel={isFloatingLabel}
+          variant={variant}
+          inputSize={inputSize}
         ></InputField>
       </div>
     );
@@ -56,7 +62,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         onChange={(date) => onChange(date)}
         showTimeSelect={showTimeOnly}
         showTimeSelectOnly={showTimeOnly}
-        timeIntervals={15}
+        timeIntervals={30}
         timeCaption="Time"
         calendarClassName="custom-date-picker"
         dateFormat={dateFormat}

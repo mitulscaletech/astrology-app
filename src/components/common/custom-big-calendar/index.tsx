@@ -12,6 +12,7 @@ import useWindowSize from "@/shared/hooks/useWindowSize";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/assets/scss/calendar.scss";
 import CustomDateHeader from "@/components/astrologer/booking/custom-date-header";
+import { events } from "@/lib/data";
 
 // Setup localizer for the calendar
 const localizer = momentLocalizer(moment);
@@ -21,7 +22,6 @@ interface ICalenderProps {
 
 const CustomBigCalendar = (props: ICalenderProps) => {
   const { sessionList } = props;
-  console.log("sessionList", sessionList);
 
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
@@ -70,6 +70,8 @@ const CustomBigCalendar = (props: ICalenderProps) => {
         onNavigate={setDate}
         min={new Date(0, 0, 0, 7, 0)} // 07:00
         max={new Date(0, 0, 0, 18, 0)} // 18:00 6-1 = 5PM
+        step={30} // duration of each slot (in minutes)
+        timeslots={1} // number of slots per step
         components={{
           toolbar: (props) => (
             <CustomHeader {...props} view={view} date={date} onViewChange={setView} onNavigate={setDate} />

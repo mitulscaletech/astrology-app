@@ -24,7 +24,7 @@
   .custom-select__menu {
     @apply m-0 z-20 text-secondary/50 font-medium border-2 border-secondary/20 rounded-lg;
     .custom-select__option {
-      @apply py-2 px-4 text-base;
+      @apply py-2 px-2 text-base;
       &.custom-select__option--is-selected.custom-select__option--is-focused,
       &.custom-select__option--is-selected {
         @apply bg-secondary/10 text-secondary;
@@ -39,22 +39,13 @@
     margin-left: 0;
     margin-right: 0;
   }
-  &.select-light {
+  &.secondary-10 {
     .custom-select__control {
-      @apply bg-accent-white/20;
-      &.custom-select__control--is-focused {
-        @apply border-transparent;
-      }
-      &.custom-select__control--menu-is-open {
-        @apply border-transparent bg-accent-white;
-      }
-    }
-    .custom-select__single-value {
-      @apply text-accent-white;
+      @apply bg-secondary/10 border-transparent;
     }
     .custom-select__indicator > *,
     .custom-select__placeholder {
-      @apply text-accent-white/70 font-normal;
+      @apply text-secondary;
     }
   }
   &.custom-select--is-disabled {
@@ -84,6 +75,11 @@
     }
     .custom-select__value-container {
       @apply pe-1 ps-2.5 md:ps-3 py-1 md:py-1.5;
+    }
+    &.hideDropdownIndicator {
+      .custom-select__value-container {
+        @apply pe-2.5 md:pe-3;
+      }
     }
   }
 }

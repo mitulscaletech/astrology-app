@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import CustomSelect from "@/components/ui/custom-select";
 import IconChevronLeft from "@/shared/icons/chevronLeft";
 import IconChevronRight from "@/shared/icons/chevronRight";
+import moment from "moment";
 
 interface CustomHeaderProps {
   date: Date;
@@ -57,8 +58,50 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ date, view, onNavigate, onV
 
   // Navigation handlers
   const navigateToday = () => onNavigate(new Date());
-  const navigatePrev = () => onNavigate(subMonths(date, 1));
-  const navigateNext = () => onNavigate(addMonths(date, 1));
+
+  const navigatePrev = () => {
+    let newDate: Date;
+
+    switch (view) {
+      case Views.WEEK:
+        newDate = moment(date).subtract(1, "weeks").toDate();
+        break;
+      case Views.DAY:
+        newDate = moment(date).subtract(1, "days").toDate();
+        break;
+      case Views.AGENDA:
+        newDate = moment(date).subtract(1, "weeks").toDate(); // or "days", depending on how you want to paginate agenda
+        break;
+      case Views.MONTH:
+      default:
+        newDate = moment(date).subtract(1, "months").toDate();
+        break;
+    }
+
+    onNavigate(newDate);
+  };
+
+  const navigateNext = () => {
+    let newDate: Date;
+
+    switch (view) {
+      case Views.WEEK:
+        newDate = moment(date).add(1, "weeks").toDate();
+        break;
+      case Views.DAY:
+        newDate = moment(date).add(1, "days").toDate();
+        break;
+      case Views.AGENDA:
+        newDate = moment(date).add(1, "weeks").toDate(); // or "days" if needed
+        break;
+      case Views.MONTH:
+      default:
+        newDate = moment(date).add(1, "months").toDate();
+        break;
+    }
+
+    onNavigate(newDate);
+  };
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between mb-4 lg:mb-5 2xl:mb-6">

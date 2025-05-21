@@ -13,6 +13,7 @@ import IconUser from "@/shared/icons/user";
 import { cn } from "@/lib/utils";
 import IconEdit from "@/shared/icons/edit";
 import IconClose from "@/shared/icons/close";
+import moment from "moment";
 
 interface EventPopupProps {
   event: CalendarEvent;
@@ -24,7 +25,8 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, children }) => {
   const statusColors = {
     completed: "bg-primary text-accent-white",
     upcoming: "bg-highlight text-accent-white",
-    blocked: "bg-secondary text-accent-white"
+    blocked: "bg-secondary text-accent-white",
+    pending: "bg-highlight text-accent-white"
   };
 
   // Category colors
@@ -67,7 +69,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, children }) => {
             <div className="flex gap-2 items-center">
               <div className={cn("size-2 rounded-full", statusColors[event.status])}></div>
               <div>
-                <div className="text-xs truncate capitalize">{event.category}</div>
+                <div className="text-xs truncate capitalize">{event?.service?.service_name}</div>
                 <h3 className="text-base font-semibold">{event.title}</h3>
               </div>
             </div>
@@ -87,21 +89,21 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, children }) => {
               <span className="size-4 2xl:size-6">
                 <IconCalender />
               </span>
-              <span>{format(event.start, "EEEE, MMMM d, yyyy")}</span>
+              <span>{moment(event?.booking_date).format("dddd, MMMM D, YYYY")}</span>
             </div>
             <div className="flex gap-1 2xl:gap-2 items-center text-sm">
               <span className="size-4 2xl:size-6">
                 <IconClock />
               </span>
               <span>
-                {format(event.start, "h:mm a")} - {format(event.end, "h:mm a")}
+                {moment(event.start).format("hh:mm A")} - {moment(event.end).format("hh:mm A")}
               </span>
             </div>
             <div className="flex gap-1 2xl:gap-2 items-center text-sm">
               <span className="size-4 2xl:size-6">
                 <IconUser />
               </span>
-              <span className="font-semibold">{event.name}</span>
+              <span className="font-semibold">{event?.user?.name || "username"}</span>
             </div>
           </div>
 

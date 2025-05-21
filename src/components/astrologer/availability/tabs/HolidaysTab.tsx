@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { format, addMonths, isSameDay } from "date-fns";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, X } from "lucide-react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { TimePicker } from "../TimePicker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "../Calendar";
+import Typography from "@/components/ui/typography";
+import Grid from "@/components/ui/grid";
+import IconClose from "@/shared/icons/close";
+import IconDuplicate from "@/shared/icons/duplicate";
+import IconTimezone from "@/shared/icons/timezone";
+import { DatePickerField } from "@/components/ui/custom-datepicker";
+import { Controller, useForm } from "react-hook-form";
 
 type Holiday = {
   name: string;
@@ -15,23 +20,8 @@ type Holiday = {
   enabled: boolean;
 };
 
-type DateRange = {
-  startDate: Date | null;
-  endDate: Date | null;
-  startTime: string;
-  endTime: string;
-};
-
 export default function HolidaysTab() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [timezone, setTimezone] = useState("India (GMT)");
-  const [selectedRange, setSelectedRange] = useState<DateRange>({
-    startDate: new Date(),
-    endDate: new Date(),
-    startTime: "01:00 AM",
-    endTime: "01:00 AM"
-  });
-  const [isAllDay, setIsAllDay] = useState(false);
   const [publicHolidays, setPublicHolidays] = useState<Holiday[]>([
     { name: "New Year", date: new Date(2026, 0, 1), enabled: true },
     { name: "Good Friday", date: new Date(2026, 3, 3), enabled: true },
@@ -41,13 +31,17 @@ export default function HolidaysTab() {
     { name: "Independence Day", date: new Date(2025, 7, 25), enabled: true }
   ]);
 
-  const handlePrevMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, -1));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, 1));
-  };
+  const {
+    control,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      startDate: new Date(),
+      endDate: new Date(),
+      startTime: null,
+      endTime: null
+    }
+  });
 
   const toggleHoliday = (index: number) => {
     const updatedHolidays = [...publicHolidays];
@@ -56,121 +50,133 @@ export default function HolidaysTab() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="p-6">
-        <div className="space-y-8">
-          <div>
-            <h2 className="text-2xl font-bold mb-3">Plan Your Time Off</h2>
-            <p className="text-muted-foreground">
-              Everyone needs a break. Set your upcoming holidays so you won&apos;t receive bookings during those days.
-              You can always update or remove these later.
-            </p>
-          </div>
+    <div className="flex-1">
+      <div className="space-y-8">
+        <div className="mb-3 md:mb-4 xl:mb-5 2xl:mb-6 4xl:mb-8">
+          <Typography variant="h4" size="h5" className="font-bold mb-1">
+            Plan Your Time Off
+          </Typography>
+          <p>
+            Everyone needs a break. Set your upcoming holidays so you won&apos;t receive bookings during those days. You
+            can always update or remove these later.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Calendar Section */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <button className="p-2 hover:bg-muted rounded-full transition-colors" onClick={handlePrevMonth}>
-                  <ChevronLeft size={16} />
-                </button>
-                <div className="flex items-center gap-2">
-                  <select
-                    className="bg-transparent text-sm font-medium focus:outline-none"
-                    value={format(currentMonth, "MMMM")}
-                  >
-                    {[
-                      "January",
-                      "February",
-                      "March",
-                      "April",
-                      "May",
-                      "June",
-                      "July",
-                      "August",
-                      "September",
-                      "October",
-                      "November",
-                      "December"
-                    ].map((month) => (
-                      <option key={month} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="bg-transparent text-sm font-medium focus:outline-none"
-                    value={format(currentMonth, "yyyy")}
-                  >
-                    {[2024, 2025, 2026].map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <button className="p-2 hover:bg-muted rounded-full transition-colors" onClick={handleNextMonth}>
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-
-              <div className="bg-white rounded-lg border border-primary/5">
-                <div className="grid grid-cols-7 gap-px text-center p-4">
-                  {["S", "M", "T", "W", "T", "F", "S"].map((day, i) => (
-                    <div key={i} className="text-xs font-medium text-muted-foreground">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-                <Calendar
-                  value={selectedRange.startDate}
-                  onChange={(date) => setSelectedRange((prev) => ({ ...prev, startDate: date }))}
-                  currentMonth={currentMonth}
-                  unavailableDates={[]}
-                />
-              </div>
+        <Grid className="" size="lg">
+          <Grid.Col className="md:w-5/12">
+            <div>
+              <Calendar value={new Date()} onChange={() => {}} unavailableDates={[]} minYear={2025} />
             </div>
-
-            {/* Date Selection Section */}
+          </Grid.Col>
+          <Grid.Col className="md:w-7/12">
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">From</span>
-                    <div className="flex items-center gap-2">
-                      <div className="bg-muted rounded-md px-3 py-2 text-sm">
-                        {selectedRange.startDate ? format(selectedRange.startDate, "d MMMM yyyy") : "Select date"}
+              <div className="flex items-start gap-2 justify-between">
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <label className="font-semibold mb-2 lg:mb-3 inline-flex">From</label>
+                    <div className="flex gap-4">
+                      <div className="w-36">
+                        <Controller
+                          control={control}
+                          name="startDate"
+                          render={({ field }) => (
+                            <DatePickerField
+                              placeholder="From Date"
+                              selected={field.value}
+                              onChange={field.onChange}
+                              error={errors.startDate?.message}
+                              isFloatingLabel={false}
+                              variant="secondary-10"
+                              inputSize="sm"
+                              className="text-center"
+                            />
+                          )}
+                        />
                       </div>
-                      <TimePicker
-                        value={selectedRange.startTime}
-                        onChange={(time) => setSelectedRange((prev) => ({ ...prev, startTime: time }))}
-                      />
-                      <button className="p-2 hover:bg-muted rounded-full">
-                        <X size={16} />
-                      </button>
+                      <div className="w-32">
+                        <Controller
+                          control={control}
+                          name="startTime"
+                          render={({ field }) => (
+                            <DatePickerField
+                              placeholder="From Time"
+                              selected={field.value}
+                              onChange={field.onChange}
+                              error={errors.startDate?.message}
+                              showTimeOnly
+                              dateFormat="h:mm aa"
+                              isFloatingLabel={false}
+                              variant="secondary-10"
+                              inputSize="sm"
+                              className="text-center"
+                            />
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">to</span>
-                    <div className="flex items-center gap-2">
-                      <div className="bg-muted rounded-md px-3 py-2 text-sm">
-                        {selectedRange.endDate ? format(selectedRange.endDate, "d MMMM yyyy") : "Select date"}
+                  <div>
+                    <label className="font-semibold mb-2 lg:mb-3 inline-flex">To</label>
+                    <div className="flex gap-4">
+                      <div className="w-36">
+                        <Controller
+                          control={control}
+                          name="endDate"
+                          render={({ field }) => (
+                            <DatePickerField
+                              placeholder="To Date"
+                              selected={field.value}
+                              onChange={field.onChange}
+                              error={errors.endDate?.message}
+                              isFloatingLabel={false}
+                              variant="secondary-10"
+                              inputSize="sm"
+                              className="text-center"
+                            />
+                          )}
+                        />
                       </div>
-                      <TimePicker
-                        value={selectedRange.endTime}
-                        onChange={(time) => setSelectedRange((prev) => ({ ...prev, endTime: time }))}
-                      />
-                      <button className="p-2 hover:bg-muted rounded-full">
-                        <X size={16} />
-                      </button>
+                      <div className="w-32">
+                        <Controller
+                          control={control}
+                          name="endTime"
+                          render={({ field }) => (
+                            <DatePickerField
+                              placeholder="To Time"
+                              selected={field.value}
+                              onChange={field.onChange}
+                              error={errors.startDate?.message}
+                              showTimeOnly
+                              dateFormat="h:mm aa"
+                              isFloatingLabel={false}
+                              variant="secondary-10"
+                              inputSize="sm"
+                              className="text-center"
+                            />
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <Switch checked={isAllDay} onCheckedChange={setIsAllDay} />
+                <div className="flex items-center gap-2 lg:gap-3">
+                  <button className="size-12 inline-flex rounded-full bg-primary/10 text-primary hover:bg-primary/20">
+                    <span className="w-1/2 aspect-square m-auto">
+                      <IconClose />
+                    </span>
+                  </button>
+                  <button className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20">
+                    <span className="w-1/2 aspect-square m-auto">
+                      <IconDuplicate />
+                    </span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-muted-foreground" />
+                <span className="size-5 xl:size-6 ">
+                  <IconTimezone />
+                </span>
                 <span className="text-muted-foreground text-sm">Timezone:</span>
                 <div className="w-56">
                   <Select value={timezone} onValueChange={setTimezone}>
@@ -187,34 +193,39 @@ export default function HolidaysTab() {
                 </div>
               </div>
             </div>
+          </Grid.Col>
+        </Grid>
+
+        <div className="mt-3 md:mt-4 xl:mt-5 2xl:mt-6 4xl:mt-8">
+          <div className="mb-3 md:mb-4 xl:mb-5 2xl:mb-6 4xl:mb-8">
+            <Typography variant="h4" size="h6" className="font-bold mb-1">
+              Public Holidays
+            </Typography>
+            <p>
+              Your availability will be automatically blocked for national holidays, based on the Indian time zone,
+              across all session types.
+            </p>
           </div>
 
-          <div className="mt-12 space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold">Public Holidays</h2>
-              <p className="text-muted-foreground">
-                Your availability will be automatically blocked for national holidays, based on the Indian time zone,
-                across all session types.
-              </p>
-            </div>
-
-            <div className="space-y-4 mt-6">
-              {publicHolidays.map((holiday, index) => (
-                <div key={index} className="flex items-center justify-between p-4 border border-primary/5 rounded-md">
-                  <div className="flex-1">
-                    <div className="font-medium">{holiday.name}</div>
-                    <div className="text-sm text-muted-foreground">{format(holiday.date, "d MMM yyyy")}</div>
-                  </div>
-                  <Switch checked={holiday.enabled} onCheckedChange={() => toggleHoliday(index)} />
+          <div className="flex flex-col gap-2 md:gap-3 2xl:gap-4 mt-6 lg:w-8/12 xl:w-7/12 2xl:w-6/12">
+            {publicHolidays.map((holiday, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-1.5 md:gap-2 xl:gap-2.5 3xl:gap-3 justify-between p-4 bg-secondary/5 border border-secondary/10 rounded-md"
+              >
+                <div className="flex grow items-center justify-between gap-1.5 font-medium">
+                  <div>{holiday.name}</div>
+                  <div className="min-w-40">{format(holiday.date, "d MMM yyyy")}</div>
                 </div>
-              ))}
-            </div>
+                <Switch checked={holiday.enabled} onCheckedChange={() => toggleHoliday(index)} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="border-t border-primary/5 p-4 sticky bottom-0 bg-background">
-        <Button>SAVE</Button>
+      <div className="border-t border-primary/5 p-4 sticky bottom-0 bg-background text-end z-2 bg-accent-white/10 backdrop-blur-sm">
+        <Button variant="highlight">SAVE</Button>
       </div>
     </div>
   );

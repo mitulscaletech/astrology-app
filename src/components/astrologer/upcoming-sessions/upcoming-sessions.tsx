@@ -1,6 +1,7 @@
 import CustomBigCalendar from "@/components/common/custom-big-calendar";
 import { API_CONFIG } from "@/shared/constants/api";
 import HttpService from "@/shared/services/http.service";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 const UpcomingSessions = () => {
@@ -9,12 +10,21 @@ const UpcomingSessions = () => {
   const getAstrologerSession = () => {
     HttpService.get(API_CONFIG.astrologerCalender).then((response) => {
       if (!response.is_error) {
-        setSessionList(response.data.booked);
+        const tempData = response.data.booked;
+        tempData.map((session: any) => {
+          session.start = moment(`${session.booking_date} ${session.start_time}`, "YYYY-MM-DD HH:mm:ss").toDate();
+          session.end = moment(`${session.booking_date} ${session.end_time}`, "YYYY-MM-DD HH:mm:ss").toDate();
+        });
+        setSessionList(tempData);
       } else {
         setSessionList([]);
       }
     });
   };
+
+  // const day = moment(selectedDate).clone().add(i, "days");
+  // const start = day.clone().hour(slot.startHour).minute(slot.startMinute).toDate();
+  // const end = day.clone().hour(slot.endHour).minute(slot.endMinute).toDate();
 
   useEffect(() => {
     getAstrologerSession();

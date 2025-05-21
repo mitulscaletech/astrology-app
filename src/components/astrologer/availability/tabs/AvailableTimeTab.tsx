@@ -186,126 +186,131 @@ export default function AvailableTimeTab() {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="p-6">
-        <div className="space-y-6 mb-6">
-          <div>
-            <Typography variant="h4" size="h5" className="font-semibold mb-1">
-              Weekly hours
-            </Typography>
-            <p className="">Set when you are typically available</p>
-          </div>
+      <div className="space-y-6 mb-6">
+        <div>
+          <Typography variant="h4" size="h5" className="font-bold mb-1">
+            Weekly hours
+          </Typography>
+          <p className="">Set when you are typically available</p>
+        </div>
 
-          <div className="space-y-6">
-            {Object.entries(weekSchedule).map(([day, schedule]) => (
-              <div key={day} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium">{formatDayName(day)}</h3>
+        <div className="space-y-6">
+          {Object.entries(weekSchedule).map(([day, schedule]) => (
+            <div key={day} className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">{formatDayName(day)}</h3>
+              </div>
+
+              <div className="flex items-center">
+                <div className="w-8/12">
+                  {schedule.enabled ? (
+                    <div className="flex items-center gap-4 lg:gap-6 4xl:gap-8">
+                      {schedule.timeRanges.map((timeRange, index) => (
+                        <React.Fragment key={index}>
+                          <div className="flex flex-wrap items-center gap-2 md:gap-3 xl:gap-4 2xl:gap-5">
+                            <CustomSelect
+                              value={timeSelectOptions.find((opt) => opt.value === timeRange.from) || null}
+                              onChange={(option) => {
+                                const selected = Array.isArray(option) ? option[0] : option;
+                                updateTimeRange(
+                                  day,
+                                  index,
+                                  "from",
+                                  (selected as { value: string; label: string })?.value || ""
+                                );
+                              }}
+                              options={timeSelectOptions}
+                              isMulti={false}
+                              parentClass="w-28 text-center"
+                              placeholder="Select time"
+                              isFloatingLabel={false}
+                              size="sm"
+                              variant="secondary-10"
+                              hideDropdownIndicator={true}
+                            />
+                            <span className="text-foreground">to</span>
+                            <CustomSelect
+                              value={timeSelectOptions.find((opt) => opt.value === timeRange.to) || null}
+                              onChange={(option) => {
+                                const selected = Array.isArray(option) ? option[0] : option;
+                                updateTimeRange(
+                                  day,
+                                  index,
+                                  "to",
+                                  (selected as { value: string; label: string })?.value || ""
+                                );
+                              }}
+                              options={timeSelectOptions}
+                              isMulti={false}
+                              parentClass="w-28 text-center"
+                              placeholder="Select time"
+                              isFloatingLabel={false}
+                              size="sm"
+                              variant="secondary-10"
+                              hideDropdownIndicator={true}
+                            />
+                          </div>
+                          <div className="w-0.5 h-8 xl:h-10 bg-secondary/10 last:hidden"></div>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="bg-secondary/10 text-secondary py-2 lg:py-3 px-2 lg:px-3 2xl:px-4 font-medium rounded-md inline-flex">
+                      Unavailable
+                    </div>
+                  )}
                 </div>
+                <Switch checked={schedule.enabled} onCheckedChange={() => toggleDayAvailability(day)} />
 
-                <div className="flex items-center">
-                  <div className="w-8/12">
-                    {schedule.enabled ? (
-                      <div className="flex items-center gap-4 lg:gap-6 4xl:gap-8">
-                        {schedule.timeRanges.map((timeRange, index) => (
-                          <React.Fragment key={index}>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <CustomSelect
-                                value={timeSelectOptions.find((opt) => opt.value === timeRange.from) || null}
-                                onChange={(option) => {
-                                  const selected = Array.isArray(option) ? option[0] : option;
-                                  updateTimeRange(
-                                    day,
-                                    index,
-                                    "from",
-                                    (selected as { value: string; label: string })?.value || ""
-                                  );
-                                }}
-                                options={timeSelectOptions}
-                                isMulti={false}
-                                parentClass="w-32"
-                                placeholder="Select time"
-                                isFloatingLabel={false}
-                                size="sm"
-                              />
-                              <span className="text-foreground">to</span>
-                              <CustomSelect
-                                value={timeSelectOptions.find((opt) => opt.value === timeRange.to) || null}
-                                onChange={(option) => {
-                                  const selected = Array.isArray(option) ? option[0] : option;
-                                  updateTimeRange(
-                                    day,
-                                    index,
-                                    "to",
-                                    (selected as { value: string; label: string })?.value || ""
-                                  );
-                                }}
-                                options={timeSelectOptions}
-                                isMulti={false}
-                                parentClass="w-32"
-                                placeholder="Select time"
-                                isFloatingLabel={false}
-                              />
-                            </div>
-                            <div className="w-0.5 h-8 xl:h-10 bg-secondary/10 last:hidden"></div>
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="bg-secondary/10 text-secondary p-3 rounded-md inline-flex">Unavailable</div>
-                    )}
-                  </div>
-                  <Switch checked={schedule.enabled} onCheckedChange={() => toggleDayAvailability(day)} />
-
-                  <div className="ms-auto flex gap-2">
-                    {schedule.timeRanges.length < 2 && (
-                      <button
-                        className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20"
-                        onClick={() => addTimeRange(day)}
-                      >
-                        <span className="w-1/2 aspect-square m-auto">
-                          <IconDuplicate />
-                        </span>
-                      </button>
-                    )}
-                    {schedule.timeRanges.length > 1 && (
-                      <button
-                        className="size-12 inline-flex rounded-full bg-primary/10 text-primary hover:bg-primary/20"
-                        onClick={() => removeTimeRange(day, schedule.timeRanges.length - 1)}
-                      >
-                        <span className="w-1/2 aspect-square m-auto">
-                          <IconClose />
-                        </span>
-                      </button>
-                    )}
-                    <button className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20">
+                <div className="ms-auto flex gap-2">
+                  {schedule.timeRanges.length < 2 && (
+                    <button
+                      className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20"
+                      onClick={() => addTimeRange(day)}
+                    >
                       <span className="w-1/2 aspect-square m-auto">
-                        <IconEdit />
+                        <IconDuplicate />
                       </span>
                     </button>
-                  </div>
+                  )}
+                  {schedule.timeRanges.length > 1 && (
+                    <button
+                      className="size-12 inline-flex rounded-full bg-primary/10 text-primary hover:bg-primary/20"
+                      onClick={() => removeTimeRange(day, schedule.timeRanges.length - 1)}
+                    >
+                      <span className="w-1/2 aspect-square m-auto">
+                        <IconClose />
+                      </span>
+                    </button>
+                  )}
+                  <button className="size-12 inline-flex rounded-full bg-secondary/10 text-secondary hover:bg-secondary/20">
+                    <span className="w-1/2 aspect-square m-auto">
+                      <IconEdit />
+                    </span>
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2 mt-6">
-            <span className="size-4">
-              <IconTimezone />
-            </span>
-            <span className="text-muted-foreground text-sm">Timezone:</span>
-            <div className="w-56">
-              <Select value={timezone} onValueChange={setTimezone}>
-                <SelectTrigger>
-                  <SelectValue>{timezone}</SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="India (GMT)">India (GMT)</SelectItem>
-                  <SelectItem value="Pacific Time (PT)">Pacific Time (PT)</SelectItem>
-                  <SelectItem value="Eastern Time (ET)">Eastern Time (ET)</SelectItem>
-                  <SelectItem value="Central European Time (CET)">Central European Time (CET)</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2 mt-6">
+          <span className="size-4">
+            <IconTimezone />
+          </span>
+          <span className="text-muted-foreground text-sm">Timezone:</span>
+          <div className="w-56">
+            <Select value={timezone} onValueChange={setTimezone}>
+              <SelectTrigger>
+                <SelectValue>{timezone}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="India (GMT)">India (GMT)</SelectItem>
+                <SelectItem value="Pacific Time (PT)">Pacific Time (PT)</SelectItem>
+                <SelectItem value="Eastern Time (ET)">Eastern Time (ET)</SelectItem>
+                <SelectItem value="Central European Time (CET)">Central European Time (CET)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>

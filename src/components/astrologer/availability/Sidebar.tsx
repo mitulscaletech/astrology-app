@@ -1,8 +1,6 @@
 "use client";
 
-import { Calendar, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import IconClock from "@/shared/icons/clock";
 import IconChevronRight from "@/shared/icons/chevronRight";
 import IconClockActivity from "@/shared/icons/clock-activity";
 import IconClockAnalog from "@/shared/icons/clock-analog";
@@ -22,7 +20,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         <button
           onClick={() => onTabChange("available", "Working hours")}
           className={cn(
-            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 text-sm font-medium",
+            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 font-medium",
             "transition-colors duration-200 ease-in-out",
             activeTab === "available" ? "hover:bg-primary/5 text-primary" : "text-foreground hover:bg-primary/5"
           )}
@@ -39,7 +37,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         <button
           onClick={() => onTabChange("unavailable", "Unavailable Time")}
           className={cn(
-            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 text-sm font-medium",
+            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 font-medium",
             "transition-colors duration-200 ease-in-out",
             activeTab === "unavailable" ? "hover:bg-primary/5 text-primary" : "text-foreground hover:bg-primary/5"
           )}
@@ -56,7 +54,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         <button
           onClick={() => onTabChange("holidays", "Holidays")}
           className={cn(
-            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 text-sm font-medium",
+            "flex items-center gap-3 w-full px-3 md:px-4 xl:px-5 3xl:px-6 py-2 md:py-3 xl:py-3.5 3xl:py-4 font-medium",
             "transition-colors duration-200 ease-in-out",
             activeTab === "holidays" ? "hover:bg-primary/5 text-primary" : "text-foreground hover:bg-primary/5"
           )}

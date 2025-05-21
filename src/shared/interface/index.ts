@@ -163,7 +163,7 @@ export interface ReportDetail extends Report {
   astrologerName: string;
 }
 
-export type EventStatus = "completed" | "upcoming" | "blocked";
+export type EventStatus = "completed" | "upcoming" | "blocked" | "pending";
 
 export type EventCategory = "meeting" | "personal" | "health" | "business";
 export interface CalendarEvent {

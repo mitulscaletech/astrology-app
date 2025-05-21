@@ -1,81 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  format,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  addDays,
-  isSameMonth,
-  isSameDay,
-  getDay
-} from "date-fns";
-import { cn } from "@/lib/utils";
-
+import React from "react";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/assets/scss/datepicker.scss";
+import IconChevronLeft from "@/shared/icons/chevronLeft";
+import IconChevronRight from "@/shared/icons/chevronRight";
 interface CalendarProps {
   value: Date | null;
-  onChange: (date: Date) => void;
-  currentMonth: Date;
+  onChange: (_date: Date) => void;
   unavailableDates?: Date[];
+  minYear?: number;
 }
 
-export function Calendar({ value, onChange, currentMonth, unavailableDates = [] }: CalendarProps) {
-  const [calendarDays, setCalendarDays] = useState<Date[]>([]);
-
-  useEffect(() => {
-    // Get start and end of the month
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
-
-    // Get start and end of the calendar view (including days from prev/next months)
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
-
-    // Generate array of dates
-    const days: Date[] = [];
-    let day = startDate;
-
-    while (day <= endDate) {
-      days.push(day);
-      day = addDays(day, 1);
-    }
-
-    setCalendarDays(days);
-  }, [currentMonth]);
-
-  const isUnavailable = (date: Date): boolean => {
-    return unavailableDates.some((unavailableDate) => isSameDay(date, unavailableDate));
-  };
+export function Calendar({ value, onChange, unavailableDates = [], minYear = 2020 }: CalendarProps) {
+  // Convert unavailableDates to moment objects for comparison
+  const highlightDates = unavailableDates.map((d) => moment(d).toDate());
 
   return (
-    <div className="grid grid-cols-7 gap-1">
-      {calendarDays.map((day, i) => {
-        const isCurrentMonth = isSameMonth(day, currentMonth);
-        const isSelected = value ? isSameDay(day, value) : false;
-        const isUnavailableDay = isUnavailable(day);
-
-        return (
-          <button
-            key={i}
-            type="button"
-            onClick={() => onChange(day)}
-            className={cn(
-              "aspect-square flex items-center justify-center text-sm rounded-full",
-              "transition-colors duration-200",
-              isCurrentMonth ? "text-foreground" : "text-muted-foreground opacity-50",
-              isSelected && isCurrentMonth && !isUnavailableDay && "bg-primary text-primary-foreground",
-              isUnavailableDay && isCurrentMonth && "bg-destructive text-destructive-foreground",
-              !isSelected && !isUnavailableDay && isCurrentMonth && "hover:bg-muted",
-              !isCurrentMonth && "cursor-default"
-            )}
-            disabled={!isCurrentMonth}
-          >
-            {format(day, "d")}
-          </button>
-        );
-      })}
-    </div>
+    <DatePicker
+      selected={value}
+      onChange={(date) => date && onChange(date as Date)}
+      inline
+      highlightDates={highlightDates}
+      calendarClassName="custom-date-picker astrologer-date-picker"
+      minDate={moment(`${minYear}-01-01`).toDate()}
+      showMonthDropdown
+      showYearDropdown
+      dayClassName={(date) => {
+        const isUnavailable = highlightDates.some((d) => moment(d).isSame(date, "day"));
+        return isUnavailable ? "bg-primary/10 text-primary" : "";
+      }}
+    />
   );
 }
