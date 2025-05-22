@@ -1,7 +1,7 @@
 // components/FileUpload.tsx
 import React from "react";
 import { UseFormRegisterReturn, FieldError } from "react-hook-form";
-import { UploadCloud } from "lucide-react";
+import IconDownload from "@/shared/icons/download";
 
 interface FileUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -31,11 +31,13 @@ const FileUpload: React.FC<FileUploadProps> = ({
           error ? "border-primary-500" : ""
         }`}
       >
-        <div className="flex flex-col items-center justify-center space-y-1">
-          <span className="text-xs text-secondary/70 font-medium">{label}</span>
-          <div className="flex items-center gap-1 justify-center space-y-1">
-            <UploadCloud className="w-5 h-5 text-gray-500" />
-            <span className="text-sm font-medium text-gray-700">{title}</span>
+        <div className="flex flex-col items-center justify-center">
+          <span className="text-xs text-secondary/70 font-medium mb-0.5">{label}</span>
+          <div className="flex items-center gap-1.5 justify-center">
+            <span className="size-5 lg:size-6">
+              <IconDownload />
+            </span>
+            <span className="font-medium">{title}</span>
           </div>
         </div>
         <input id={name} type="file" multiple={multiple} accept={accept} {...register} className="hidden" {...props} />

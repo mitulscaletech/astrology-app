@@ -8,15 +8,16 @@ type AvatarProps = {
   src?: string;
   alt?: string;
   fallback?: string; // typically initials like "AB"
-  size?: "sm" | "md" | "lg" | "default";
+  size?: "sm" | "md" | "lg" | "xl" | "default";
   className?: string;
 };
 
 const sizeClasses = {
-  sm: "h-8 w-8 text-xs",
-  default: "h-10 w-10 text-sm",
-  md: "h-12 w-12 text-sm",
-  lg: "h-16 w-16 text-base"
+  sm: "size-8 text-xs",
+  default: "size-10 text-sm",
+  md: "size-12 text-base",
+  lg: "size-12 md:size-16 text-lg",
+  xl: "size-16 md:size-20 text-lg lg:text-xl 2xl:text-2xl"
 };
 
 export function Avatar({ src, alt, fallback = "??", size = "default", className }: AvatarProps) {

@@ -37,6 +37,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   hideDropdownIndicator = false,
   size,
   variant,
+  placeholder,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -82,7 +83,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
-        placeholder=""
+        placeholder={placeholder ? placeholder : ""}
         components={{
           DropdownIndicator: hideDropdownIndicator ? () => null : DropdownIndicator,
           IndicatorSeparator: () => null

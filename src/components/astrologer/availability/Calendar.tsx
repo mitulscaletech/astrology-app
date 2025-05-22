@@ -5,8 +5,6 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/assets/scss/datepicker.scss";
-import IconChevronLeft from "@/shared/icons/chevronLeft";
-import IconChevronRight from "@/shared/icons/chevronRight";
 interface CalendarProps {
   value: Date | null;
   onChange: (_date: Date) => void;
