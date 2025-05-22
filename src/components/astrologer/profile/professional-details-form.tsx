@@ -85,7 +85,6 @@ const schema = yup
       .nullable()
   })
   .test("specialization-or-custom", "Either Specialization or Custom Specialization is required", function (value) {
-    console.log(" value:", value);
     const { createError } = this;
 
     const hasSelectedSpecializations = Array.isArray(value?.specializations) && value.specializations.length > 0;
@@ -96,8 +95,6 @@ const schema = yup
       value.custom_specialization[0].specialization_desc.trim().length > 0;
 
     if (!hasSelectedSpecializations && !hasCustomSpecialization) {
-      console.log("Error created");
-
       return createError({
         path: "specializations", // you can also point to "custom_specialization.specialization_desc"
         message: "Either Specialization or Custom Specialization is required"
