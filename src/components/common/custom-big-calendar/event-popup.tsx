@@ -117,7 +117,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, children }) => {
           </div>
         </PopoverContent>
       </Popover>
-      <ManageBookingModal isOpen={isManageBookingOpen || true} onClose={() => setIsManageBookingOpen(false)} />
+      <ManageBookingModal isOpen={isManageBookingOpen} onClose={() => setIsManageBookingOpen(false)} />
     </>
   );
 };

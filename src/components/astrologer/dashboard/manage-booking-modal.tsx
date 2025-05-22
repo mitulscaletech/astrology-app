@@ -55,6 +55,7 @@ const ManageBookingModal = ({ isOpen, onClose }: ManageBookingModalProps) => {
           </Typography>
           <button
             aria-label="close"
+            onClick={onClose}
             className="block size-6 lg:size-8 xl:size-10 rounded-full p-1.5 lg:p-2 xl:p-3 bg-secondary/10 text-secondary absolute top-4 end-4"
           >
             <IconClose />
