@@ -60,3 +60,4 @@ export const DAYS_FILTER_OPTION = [
   { value: "30", label: "Last 30 Days" },
   { value: "60", label: "Last 60 Days" }
 ];
+export const IMAGE_MIME_TYPE = ".jpeg,.png,.jpg";

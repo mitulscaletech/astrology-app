@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
@@ -16,6 +17,7 @@ import ImageCropDialog from "./image-crop-dialog";
 import astrologerImg1 from "@/assets/images/dummy/astrologer-01.jpg";
 import HttpService from "@/shared/services/http.service";
 import { API_CONFIG } from "@/shared/constants/api";
+import { IMAGE_MIME_TYPE } from "@/shared/constants";
 
 const DATA = {
   id: 1,
@@ -37,13 +39,13 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
+  const { data: session, update } = useSession();
   const [currentImage, setCurrentImage] = useState<FileList | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openImageCropDialog, setOpenImageCropDialog] = useState(false);
   const [sessionDetails, setSessionDetails] = useState({ total_active_session: 0, total_session: 0 });
 
   const handleUploadMedia = (file: FileList | null) => {
-    console.log(" file:", file);
     setCurrentImage(file);
     setOpenImageCropDialog(true);
   };
@@ -55,6 +57,23 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
       }
     });
   };
+  const handleUploadImage = (profile_photo: File) => {
+    const formData = new FormData();
+    formData.append("media_type", "profile_photo");
+    formData.append("media_file", profile_photo);
+    HttpService.post(API_CONFIG.uploadMedia, formData, {
+      contentType: "multipart/form-data"
+    }).then((response) => {
+      if (!response.is_error) {
+        update({
+          ...session?.user,
+          profilePhoto: response.data
+        });
+        setCurrentImage(null);
+        setOpenImageCropDialog(false);
+      }
+    });
+  };
   useEffect(() => {
     getDashboardStatistics();
   }, []);
@@ -63,7 +82,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
     <div className="flex items-start flex-col md:flex-row my-2 lg:my-4 2xl:my-6 gap-4 md:gap-6 lg:gap-8 xl:gap-8 2xl:gap-12 4xl:gap-14 py-4 md:py-6 lg:py-8 xl:py-8 2xl:py-12 4xl:py-14 px-4 md:px-6 lg:px-8 xl:px-10 2xl:px-14 4xl:px-16 rounded-lg xl:rounded-2xl 2xl:rounded-3xl shadow-card">
       <div className="w-32 md:w-40 xl:w-48 2xl:w-64 4xl:w-72 relative shrink-0 shadow-card">
         <Image
-          src={DATA.thumbnail}
+          src={session?.user?.profilePhoto || DATA.thumbnail}
           width={770}
           height={440}
           alt={DATA.name}
@@ -75,6 +94,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
           </span>
           <input
             type="file"
+            accept={IMAGE_MIME_TYPE}
             className="absolute size-full bottom-0 end-0 opacity-0"
             onChange={(e) => handleUploadMedia(e.target.files)}
           />
@@ -83,10 +103,10 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
       <div className="flex flex-col-reverse md:flex-row justify-between md:gap-2 grow">
         <div className="lg:w-10/12 2xl:w-9/12 4xl:w-8/12">
           <Typography variant="p" size="p" className="text-secondary/50 mb-2">
-            {DATA.tags.join(" • ")}
+            {session?.user?.specializations.map((spe) => spe.specialization_name).join(" • ")}
           </Typography>
           <Typography variant="h3" size="h4" className="font-semibold">
-            {DATA.name}
+            {`${session?.user?.first_name} ${session?.user?.last_name}`}
           </Typography>
           <div className="text-secondary/50 font-medium flex flex-col gap-2 md:gap-2.5 lg:gap-3 2xl:gap-4 my-2 md:my-3 lg:my-4 2xl:my-5 4xl:my-6">
             <p className="flex gap-3 items-center">
@@ -151,9 +171,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ isButtons, isDesc = false }) => {
         header="Profile picture"
         onClose={() => setOpenImageCropDialog(false)} //manage delete
         handleDelete={() => setOpenDeleteDialog(true)}
-        confirm={(cropImage: File | null) => {
-          console.log(cropImage);
-        }} //delete API method
+        confirm={(cropImage: File) => handleUploadImage(cropImage)} //delete API method
       />
     </div>
   );

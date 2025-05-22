@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from "react";
+
+import toast from "react-hot-toast";
 import { Cropper, CropperRef, RectangleStencil } from "react-advanced-cropper";
-import "react-advanced-cropper/dist/style.css";
 
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 import { Modal, ModalContent } from "@/components/ui/modal";
+import "react-advanced-cropper/dist/style.css";
 
 interface IImageCropDialogProps {
   isOpen: boolean;
   onClose: () => void;
   header: string;
   image: FileList | null;
-  confirm: (croppedImageFile: File | null) => void;
+  confirm: (croppedImageFile: File) => void;
   handleDelete: () => void;
 }
 
@@ -60,7 +62,7 @@ export default function ImageCropDialog({
         const file = new File([blob], newFileName, { type: mimeType });
         confirm(file);
       } else {
-        confirm(null);
+        toast.error("Something went wrong. Try again");
       }
     }, mimeType);
   };
