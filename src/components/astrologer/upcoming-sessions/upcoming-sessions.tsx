@@ -10,10 +10,12 @@ const UpcomingSessions = () => {
   const getAstrologerSession = () => {
     HttpService.get(API_CONFIG.astrologerCalender).then((response) => {
       if (!response.is_error) {
-        const tempData = response.data.booked;
+        const tempData = response.data;
+        // console.log(" tempData:", tempData);
+
         tempData.map((session: any) => {
-          session.start = moment(`${session.booking_date} ${session.start_time}`, "YYYY-MM-DD HH:mm:ss").toDate();
-          session.end = moment(`${session.booking_date} ${session.end_time}`, "YYYY-MM-DD HH:mm:ss").toDate();
+          session.start = moment(`${session.start_at}`, "YYYY-MM-DD HH:mm:ss").toDate();
+          session.end = moment(`${session.end_at}`, "YYYY-MM-DD HH:mm:ss").toDate();
         });
         setSessionList(tempData);
       } else {

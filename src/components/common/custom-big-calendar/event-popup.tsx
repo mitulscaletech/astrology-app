@@ -3,10 +3,7 @@
 import React, { useState } from "react";
 import { CalendarEvent } from "@/shared/interface";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { Calendar, Clock, Users } from "lucide-react";
 import IconCalender from "@/shared/icons/calender";
 import IconClock from "@/shared/icons/clock";
 import IconUser from "@/shared/icons/user";

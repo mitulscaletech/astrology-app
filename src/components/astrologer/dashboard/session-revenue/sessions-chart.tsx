@@ -24,6 +24,7 @@ export interface ISessionsChartProps {
 }
 
 const SessionsChart = ({ data, totalSessions, period, lastRecord, className }: ISessionsChartProps) => {
+  console.log("data", data);
   return (
     <div className={cn("relative bg-secondary/5 p-4 xl:p-6 rounded-lg xl:rounded-xl 3xl:rounded-2xl", className)}>
       <div className="mb-6">

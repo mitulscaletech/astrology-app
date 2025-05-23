@@ -9,7 +9,7 @@ const CustomRadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  return <RadioGroupPrimitive.Root className={cn("grid gap-2", className)} {...props} ref={ref} />;
+  return <RadioGroupPrimitive.Root className={cn("grid gap-2 lg:gap-3", className)} {...props} ref={ref} />;
 });
 CustomRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 
@@ -25,17 +25,17 @@ const CustomRadioGroupItem = React.forwardRef<
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        "peer relative w-full rounded-lg border-2 border-secondary/30 p-5 transition-all",
-        "data-[state=checked]:border-primary data-[state=checked]:bg-primary/10",
+        "peer group relative font-medium w-full rounded-lg border-2 border-secondary/30 px-3 md:px-4 xl:px-5 py-2.5 md:py-3 xl:py-3.5 transition-all",
+        "data-[state=checked]:border-primary data-[state=checked]:text-primary data-[state=checked]:bg-primary/10",
         className
       )}
       {...props}
     >
-      <div className="flex items-center gap-3">
-        <div className="flex h-5 w-5 items-center justify-center rounded-full border data-[state=checked]:border-primary data-[state=unchecked]:border-secondary/30">
+      <div className="flex flex-col items-start gap-x-3 gap-y-2">
+        <div className="flex size-5 shrink-0 items-center justify-center rounded-full border-2 group-data-[state=checked]:border-primary group-data-[state=unchecked]:border-secondary/30">
           <RadioGroupPrimitive.Indicator className="h-2.5 w-2.5 rounded-full bg-primary" />
         </div>
-        <span className={cn("font-medium", props.checked ? "text-primary" : "text-secondary")}>{label}</span>
+        <span>{label}</span>
       </div>
     </RadioGroupPrimitive.Item>
   );

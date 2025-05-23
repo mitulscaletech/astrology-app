@@ -3,15 +3,17 @@
 import React, { useState } from "react";
 import { Calendar as BigCalendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
-import { CalendarEvent } from "@/shared/interface";
+
+import useWindowSize from "@/shared/hooks/useWindowSize";
 import EventPopup from "@/components/common/custom-big-calendar/event-popup";
 import CustomHeader from "@/components/common/custom-big-calendar/custom-header";
 import EventComponent from "@/components/common/custom-big-calendar/event-component";
-import useWindowSize from "@/shared/hooks/useWindowSize";
+import CustomDateHeader from "@/components/astrologer/booking/custom-date-header";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/assets/scss/calendar.scss";
-import CustomDateHeader from "@/components/astrologer/booking/custom-date-header";
+
+import { CalendarEvent } from "@/shared/interface";
 import { events } from "@/lib/data";
 
 // Setup localizer for the calendar
